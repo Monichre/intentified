@@ -1,15 +1,26 @@
-# Intentified Dashboard
+# Intentified - Intent-Driven Customer Relationship Platform
 
-A modern intelligence-driven customer relationship platform built with Next.js and Shadcn UI components, featuring an intuitive interface for creating intentional customer interactions, gaining actionable insights, and driving meaningful growth.
+A modern intelligence-driven customer relationship platform built with Next.js and Shadcn UI components, featuring an intuitive interface for capturing, analyzing, and acting on customer intent signals to drive meaningful revenue growth.
+
+## Product Overview
+
+Intentified transforms how businesses understand and respond to customer intent. By collecting and analyzing real-time intent signals across multiple touchpoints, the platform helps companies:
+
+- **Identify opportunities** based on real-time buying signals
+- **Convert unknown visitors** into qualified leads using AI-driven insights
+- **Optimize marketing spend** by focusing on high-intent prospects
+- **Streamline workflows** with automated, intent-based actions
+- **Drive revenue growth** through precision-targeted engagement
 
 ## Features
 
 - **Intelligence-Driven UI**: Built with Shadcn UI components and Tailwind CSS
+- **Intent Signal Tracking**: Capture and analyze real-time intent signals across billions of data points
+- **Comprehensive Modules**: Customers, Leads, Invoices, Orders, and Reports
 - **Responsive Design**: Fully responsive dashboard that works on all devices
-- **Intentional Analytics**: Visual representations of key metrics and actionable customer insights
-- **Comprehensive Modules**: Customers, Invoices, Leads, Orders, and more
 - **Dark Mode Support**: Toggle between light and dark themes
 - **Secure Authentication**: Role-based access control with Clerk authentication
+- **Supabase Integration**: Powerful database and backend services
 
 ## Screenshots
 
@@ -30,6 +41,28 @@ A modern intelligence-driven customer relationship platform built with Next.js a
   <img src="public/app-screenshots/mobile-2.png" alt="Mobile Analytics" width="32%" />
   <img src="public/app-screenshots/mobile-3.png" alt="Mobile Navigation" width="32%" />
 </div>
+
+## Core Capabilities
+
+### Intent Identification
+- Real-Time Signal Capture: Monitor active buying signals across touchpoints
+- Competitor Insights: Identify and target prospects looking at competitors
+- Anonymous Visitor Tracking: Build profiles before formal identification
+
+### Precision Analytics
+- AI-driven Insights: Transform anonymous data into actionable intelligence
+- Intent Dashboard: Visual representations of customer journey and intent
+- Conversion Metrics: Track how intent signals translate to revenue
+
+### Lead Management
+- Lead Scoring: Prioritize prospects based on intent strength and fit
+- Automated Workflows: Trigger actions based on intent signals
+- Qualification Tracking: Monitor the journey from lead to customer
+
+### Customer Relationship Tools
+- Customer Segmentation: Group customers by behavior and value
+- Order and Invoice Tracking: Manage transactions in one place
+- Activity Logging: Keep detailed records of all customer interactions
 
 ## Project Structure
 
@@ -56,6 +89,10 @@ src/
 - **Styling**: Tailwind CSS
 - **UI Components**: Shadcn UI with Radix UI primitives
 - **Authentication**: Clerk with role-based access control
+- **Database**: Supabase
+- **State Management**: React Query for server state
+- **Charts & Visualizations**: Recharts
+- **Form Handling**: React Hook Form with Zod validation
 
 ## Authentication Setup
 
@@ -74,6 +111,19 @@ This project uses [Clerk](https://clerk.com) for authentication and user managem
    - Go to your Clerk Dashboard -> Users
    - Select a user and add metadata: `{ "role": "admin" }`
    - Only users with admin role can access dashboard routes
+
+## Database Setup
+
+This project uses [Supabase](https://supabase.com) for database and backend services:
+
+1. Create a Supabase account and project
+2. Add the following to your `.env.local` file:
+
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+   ```
 
 ## Getting Started
 
@@ -114,9 +164,7 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
+## Deployment
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
