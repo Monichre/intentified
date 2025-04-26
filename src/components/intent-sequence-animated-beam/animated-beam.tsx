@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import type { RefObject } from "react";
 import { useEffect, useId, useState } from "react";
-import { ny } from "~/lib/utils";
-
+import { cn } from "@/lib/utils";
 export interface AnimatedBeamProps {
   className?: string;
   containerRef: RefObject<HTMLElement>; // Container ref
@@ -124,7 +123,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
       width={svgDimensions.width}
       height={svgDimensions.height}
       xmlns="http://www.w3.org/2000/svg"
-      className={ny(
+      className={cn(
         "pointer-events-none absolute top-0 left-0 transform-gpu stroke-2",
         className,
       )}

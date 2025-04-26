@@ -3,7 +3,7 @@
 // External imports
 import Link from "next/link";
 import { Zap } from "lucide-react";
-
+import Image from "next/image";
 // Internal imports
 import { XIcon, GitHubIcon, LinkedInIcon } from "@/components/icons";
 
@@ -112,37 +112,6 @@ export function Footer() {
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="xl:grid xl:grid-cols-3 xl:gap-12">
-          <div className="space-y-8">
-            <div className="flex items-center">
-              <div
-                className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-lg"
-                aria-hidden="true"
-              >
-                <Zap className="text-primary h-6 w-6" />
-              </div>
-              <span className="ml-4 text-xl font-bold tracking-tight">
-                Intentified
-              </span>
-            </div>
-            <p className="text-muted-foreground text-base">
-              Transform intent into revenue with AI-powered marketing
-              intelligence.
-            </p>
-            <div className="flex space-x-5">
-              {navigation.social.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
-                  aria-label={item.name}
-                  target={item.openInNewTab ? "_blank" : "_self"}
-                >
-                  <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-5 w-5" aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
-          </div>
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
@@ -187,6 +156,34 @@ export function Footer() {
                   ))}
                 </ul>
               </div>
+            </div>
+          </div>
+          <div className="space-y-8">
+            <div className="flex items-center">
+              <Image
+                src="/logo-white.png"
+                alt="Intentified"
+                width={200}
+                height={50}
+              />
+            </div>
+            <p className="text-muted-foreground text-base">
+              Transform intent into revenue with AI-powered marketing
+              intelligence.
+            </p>
+            <div className="flex space-x-5">
+              {navigation.social.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                  aria-label={item.name}
+                  target={item.openInNewTab ? "_blank" : "_self"}
+                >
+                  <span className="sr-only">{item.name}</span>
+                  <item.icon className="h-5 w-5" aria-hidden="true" />
+                </Link>
+              ))}
             </div>
           </div>
         </div>

@@ -33,6 +33,7 @@ const SectionTitle = ({
  * TestimonialCard component for displaying individual customer testimonial
  */
 interface Testimonial {
+  id: string;
   quote: string;
   author: string;
   role: string;
@@ -101,24 +102,27 @@ const TestimonialCard = ({
  */
 const testimonials = [
   {
+    id: "testimonial-1",
     quote:
-      "Intentified transformed our lead generation strategy overnight. ROI jumped significantly.",
-    author: "Sarah Benson",
-    role: "VP Marketing, ClearEdge",
+      "Intentified has revolutionized our marketing strategy. We saw a 40% increase in qualified leads within the first month.",
+    author: "Jennifer Miller",
+    role: "Marketing Director, TARGET",
     avatar: "/avatars/avatar.png",
   },
   {
+    id: "testimonial-2",
     quote:
-      "The platform delivers exactly what it promises—high-quality leads and unmatched insights.",
-    author: "Mark Jenkins",
-    role: "Growth Lead, DigiScale",
+      "The intent-based approach completely transformed how we understand and engage with our customers. Worth every penny.",
+    author: "Michael Chen",
+    role: "Chief Digital Officer, NYU Langone Medical Center",
     avatar: "/avatars/avatar.png",
   },
   {
+    id: "testimonial-3",
     quote:
-      "We've drastically reduced our customer acquisition costs thanks to Intentified.",
-    author: "Nina Watts",
-    role: "CMO, Peak Perform",
+      "Intentified helped us identify customer patterns we never knew existed. Our conversion rates have doubled since implementation.",
+    author: "David Wilson",
+    role: "VP of Customer Experience, Best Buy",
     avatar: "/avatars/avatar.png",
   },
 ];
@@ -154,11 +158,11 @@ export function Testimonials() {
         />
 
         <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((testimonial, i) => (
+          {testimonials.map((testimonial) => (
             <TestimonialCard
-              key={`testimonial-${i}`}
+              key={testimonial.id}
               testimonial={testimonial}
-              index={i}
+              index={Number.parseInt(testimonial.id.split("-")[1]) - 1}
             />
           ))}
         </div>

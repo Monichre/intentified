@@ -7,6 +7,8 @@ import { ArrowRight, LineChart, TrendingUp, Users } from "lucide-react";
 // Internal imports
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { IntentSequenceMultipleInputs } from "../../components/intent-sequence-animated-beam/IntentSequenceMultipleInputs";
+import { DotPattern } from "@/components/dot-pattern";
 
 /**
  * HeroTitle component displaying the main heading with styled text
@@ -120,8 +122,8 @@ export function Hero() {
           <HeroTitle />
 
           <p className="text-muted-foreground mt-8 max-w-2xl text-center text-lg">
-            Everything your marketing needs, integrated seamlessly into one
-            powerful intent-driven platform.
+            Everything your marketing needs, so you can stop blowing the budget
+            and integrate seamlessly with one powerful intent-driven platform.
           </p>
 
           <p className="text-muted-foreground mt-4 max-w-2xl text-center text-lg">
@@ -141,7 +143,7 @@ export function Hero() {
             ></div>
 
             <CTAButton
-              href="/dashboard"
+              href="#"
               icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
             >
               START FREE TRIAL
@@ -204,6 +206,14 @@ export function Hero() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="relative mx-auto max-w-4xl">
+        <IntentSequenceMultipleInputs />
+        <DotPattern
+          className={cn(
+            "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
+          )}
+        />
       </div>
     </section>
   );
