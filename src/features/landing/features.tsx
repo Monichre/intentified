@@ -57,8 +57,10 @@ const FeatureCard = ({ feature, index }: { feature: any; index: number }) => {
       <div className="relative p-5">
         <div
           className="group-hover:bg-opacity-80 mb-3 flex h-14 w-14 items-center justify-center rounded-lg transition-all duration-300"
-          style={{ backgroundColor: feature.bgColor, color: feature.textColor }}
-          aria-hidden="true"
+          style={{ 
+            backgroundColor: feature.bgColor,
+            color: feature.textColor 
+          }}
         >
           {feature.icon}
         </div>
@@ -94,7 +96,7 @@ const features = [
   {
     title: "Intelligent Automation",
     description:
-      "Automate repetitive tasks and workflows with our powerful but easy-to-use automation engine.",
+      "Automate repetitive tasks and workflows with intentional intelligence, maintaining the human touch that customers expect and value.",
     icon: <Zap className="h-7 w-7" aria-hidden="true" />,
     bgColor: "rgba(168, 85, 247, 0.1)",
     textColor: "rgb(168, 85, 247)",
@@ -137,11 +139,7 @@ export function Features() {
     >
       {/* Background elements */}
       <div
-        className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
-        aria-hidden="true"
-      ></div>
-      <div
-        className="absolute top-1/4 left-1/4 -z-10 h-64 w-64 rounded-full bg-purple-500/20 blur-3xl"
+        className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] opacity-50"
         aria-hidden="true"
       ></div>
       <div
@@ -151,8 +149,8 @@ export function Features() {
 
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
         <SectionTitle
-          title="Powerful Features"
-          subtitle="Everything you need to manage relationships, close deals, and grow your business effectively."
+          title="Why choose Intentified"
+          subtitle="Bringing intentional intelligence to your customer relationships for more meaningful engagement and growth."
         />
 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

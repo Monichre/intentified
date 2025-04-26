@@ -64,19 +64,19 @@ const navigation = {
   social: [
     {
       name: "X",
-      href: "https://x.com/KaraBharat",
+      href: "https://x.com/intentified",
       openInNewTab: true,
       icon: XIcon,
     },
     {
       name: "GitHub",
-      href: "https://github.com/KaraBharat/shadcn-crm-dashboard",
+      href: "https://github.com/intentified",
       openInNewTab: true,
       icon: GitHubIcon,
     },
     {
       name: "LinkedIn",
-      href: "https://www.linkedin.com/in/kara-bharat/",
+      href: "https://www.linkedin.com/company/intentified",
       openInNewTab: true,
       icon: LinkedInIcon,
     },
@@ -121,11 +121,11 @@ export function Footer() {
                 <Zap className="text-primary h-6 w-6" />
               </div>
               <span className="ml-4 text-xl font-bold tracking-tight">
-                Piper
+                Intentified
               </span>
             </div>
             <p className="text-muted-foreground text-base">
-              Making customer relationships smarter, faster, and more human.
+              Bringing intentional intelligence to your customer relationships.
             </p>
             <div className="flex space-x-5">
               {navigation.social.map((item) => (
@@ -191,7 +191,7 @@ export function Footer() {
         </div>
         <div className="border-border/50 mt-12 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
-            &copy; {new Date().getFullYear()} Piper, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} Intentified, Inc. All rights reserved.
           </p>
         </div>
       </div>

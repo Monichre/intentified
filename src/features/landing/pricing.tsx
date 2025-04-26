@@ -122,10 +122,11 @@ const tiers = [
   {
     name: "Starter",
     price: "$29",
-    description: "Perfect for small teams just getting started",
+    description: "Perfect for small teams looking to build intentional customer relationships.",
     features: [
       "Up to 5 team members",
-      "Basic email automation",
+      "Basic CRM features",
+      "Email integration",
       "Customer data insights",
       "Standard support",
       "1GB storage",
@@ -134,10 +135,11 @@ const tiers = [
     popular: false,
   },
   {
-    name: "Professional",
+    name: "Intelligence",
     price: "$79",
-    description: "Ideal for growing businesses",
+    description: "Elevate your business with AI-powered customer intelligence and insights.",
     features: [
+      "Everything in Starter, plus:",
       "Up to 20 team members",
       "Advanced automation workflows",
       "AI-powered insights",
@@ -152,8 +154,9 @@ const tiers = [
   {
     name: "Enterprise",
     price: "Custom",
-    description: "For large organizations with specific needs",
+    description: "Comprehensive intelligence solutions for organizations with complex needs",
     features: [
+      "Everything in Intelligence, plus:",
       "Unlimited team members",
       "Custom automation workflows",
       "Advanced AI capabilities",
@@ -180,7 +183,7 @@ export function Pricing() {
     >
       {/* Background elements */}
       <div
-        className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
+        className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] opacity-50"
         aria-hidden="true"
       ></div>
       <div
@@ -220,6 +223,10 @@ export function Pricing() {
           >
             Contact Sales
           </Button>
+          <p className="text-muted-foreground mt-6 text-lg">
+            Whether you're a small business or enterprise, Intentified has a plan
+            that's perfect for your needs.
+          </p>
         </div>
       </div>
     </section>

@@ -16,14 +16,14 @@ const HeroTitle = () => {
     <div className="relative">
       <h1 className="inline-block max-w-6xl leading-none font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
         <div className="relative mb-3 pb-2 text-center text-4xl sm:text-5xl md:mb-5 md:text-6xl">
-          <span className="inline-block">TURN INTERACTIONS INTO</span>
+          <span className="inline-block">TRANSFORM INSIGHTS INTO</span>
         </div>
         <div className="mt-1 block text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
           <span className="bg-primary text-primary-foreground relative inline-block px-4 py-1">
-            REVENUE
+            INTENTIONAL
           </span>
           <span className="text-foreground ml-2 inline-block uppercase">
-            Growth
+            Actions
           </span>
         </div>
       </h1>
@@ -115,13 +115,13 @@ export function Hero() {
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 py-32 sm:px-6 sm:py-40 md:min-h-screen lg:min-h-screen lg:px-8">
         <div className="flex flex-col items-center text-center">
-          <BadgeLabel text="New: Analytics Dashboard 2.0" />
+          <BadgeLabel text="New: Intentified Dashboard 2.0" />
 
           <HeroTitle />
 
           <p className="text-muted-foreground mt-8 max-w-2xl text-center text-lg">
-            Transform how you connect with customers. Piper brings AI-powered
-            insights, automation, and a delightful interface to your CRM.
+            Transform how you understand your customers. Intentified brings AI-powered
+            intelligence, strategic insights, and an intuitive interface to your business.
           </p>
 
           <div className="relative mt-12 flex flex-col gap-5 sm:flex-row sm:gap-6">
