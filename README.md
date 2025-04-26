@@ -45,42 +45,115 @@ Intentified transforms how businesses understand and respond to customer intent.
 ## Core Capabilities
 
 ### Intent Identification
+
 - Real-Time Signal Capture: Monitor active buying signals across touchpoints
 - Competitor Insights: Identify and target prospects looking at competitors
 - Anonymous Visitor Tracking: Build profiles before formal identification
 
 ### Precision Analytics
+
 - AI-driven Insights: Transform anonymous data into actionable intelligence
 - Intent Dashboard: Visual representations of customer journey and intent
 - Conversion Metrics: Track how intent signals translate to revenue
 
 ### Lead Management
+
 - Lead Scoring: Prioritize prospects based on intent strength and fit
 - Automated Workflows: Trigger actions based on intent signals
 - Qualification Tracking: Monitor the journey from lead to customer
 
 ### Customer Relationship Tools
+
 - Customer Segmentation: Group customers by behavior and value
 - Order and Invoice Tracking: Manage transactions in one place
 - Activity Logging: Keep detailed records of all customer interactions
+
+## Technical Architecture
+
+Intentified follows a feature-based architecture with clear separation of concerns:
+
+### Frontend Framework
+
+- **Next.js 15**: Server-side rendering, API routes, and modern React features
+- **React 19**: Latest React version with concurrent rendering capabilities
+- **TypeScript**: Strong typing throughout the application
+
+### UI Components
+
+- **Shadcn UI**: Re-usable components built on Radix UI primitives
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **Lucide Icons**: SVG icon set for consistent iconography
+
+### Authentication & Authorization
+
+- **Clerk**: User authentication, session management, and user metadata
+- **Role-Based Access**: Protected routes based on user roles
+- **Middleware**: Enforces authentication and authorization rules
+
+### Database & Backend
+
+- **Supabase**: PostgreSQL database with real-time capabilities
+- **React Query**: Server state management, caching, and data fetching
+- **Server Actions**: Form submissions and data mutations
+
+### Data Visualization
+
+- **Recharts**: Responsive charts and data visualization
+- **TanStack Table**: Powerful, headless table library for data display
+
+## Key Technical Features
+
+### Intent Sequence Visualization
+
+Custom components for visualizing customer intent:
+
+- `IntentSequenceMultipleInputs`: Multiple data sources feeding the intent engine
+- `IntentSequenceMultipleOutputs`: Intent signals driving multiple outputs
+- `IntentSequenceWorkflowAnimation`: Animated intent data flows
+
+### Dashboard Layout System
+
+- Collapsible sidebar navigation
+- Breadcrumb-based navigation
+- Responsive design with mobile adaptations
+- Light/dark theme switching
+
+### Data Management Features
+
+- Filtering capabilities
+- Sorting functionality
+- Pagination
+- Export/import tools
+- Context menus for actions
 
 ## Project Structure
 
 ```
 src/
 ├── app/                 # Next.js App Router
-│   ├── dashboard/       # Dashboard routes (protected)
+│   ├── dashboard/       # Protected dashboard routes
+│   │   ├── activity-logs/
+│   │   ├── customers/
+│   │   ├── leads/
+│   │   ├── orders/
+│   │   ├── reports/
+│   │   └── ...
 │   ├── sign-in/         # Authentication pages
-│   ├── sign-up/         # Authentication pages
-│   └── page.tsx         # Landing page
-├── components/
+│   └── sign-up/
+├── components/          # Reusable components
 │   ├── ui/              # Shadcn UI components
-│   └── shared/          # Shared components
-├── features/
-│   ├── dashboard/       # Dashboard feature components
-│   │   ├── components/  # Dashboard UI components 
-│   │   └── pages/       # Dashboard page components
-│   └── landing/         # Intentified landing page components
+│   ├── shared/          # Common shared components
+│   └── intent-sequence/ # Intent visualization components
+├── features/            # Feature-based modules
+│   ├── dashboard/       # Dashboard-related features
+│   │   ├── components/  # UI components specific to dashboard
+│   │   └── pages/       # Page components for dashboard sections
+│   └── landing/         # Landing page components
+├── data/                # Static data and fixtures
+├── hooks/               # Custom React hooks
+├── lib/                 # Utility functions and helpers
+├── providers/           # Context providers
+└── utils/               # Helper utilities
 ```
 
 ## Tech Stack
@@ -98,32 +171,24 @@ src/
 
 This project uses [Clerk](https://clerk.com) for authentication and user management. To set it up:
 
-1. Create a Clerk account and project at <https://clerk.com>
+1. Create a Clerk account and project
 2. Copy your API keys from the Clerk Dashboard
-3. Create a `.env.local` file based on `.env.example`:
-
-   ```
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_publishable_key
-   CLERK_SECRET_KEY=your_secret_key
-   ```
-
-4. Configure admin users by setting the role metadata in Clerk Dashboard:
-   - Go to your Clerk Dashboard -> Users
-   - Select a user and add metadata: `{ "role": "admin" }`
-   - Only users with admin role can access dashboard routes
+3. Create a `.env.local` file with your Clerk keys
+4. Configure admin users by setting the role metadata in Clerk Dashboard
 
 ## Database Setup
 
 This project uses [Supabase](https://supabase.com) for database and backend services:
 
 1. Create a Supabase account and project
-2. Add the following to your `.env.local` file:
+2. Add the required environment variables to your `.env.local` file
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-   ```
+## Future Development Opportunities
+
+- Advanced AI functionality for intent analysis
+- Expanded integration capabilities
+- Enhanced visualization and reporting tools
+- Mobile application development
 
 ## Getting Started
 
@@ -153,19 +218,6 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
 ## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For detailed deployment instructions, please see [DEPLOYMENT.md](./DEPLOYMENT.md).
