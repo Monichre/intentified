@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { DocumentSearch, DocumentsList } from "@/features/ai/blocks";
-import { UploadZoneWrapper } from "@/features/ai/blocks/document-processing-pipeline/upload-zone";
+import { DocumentSearch } from "@/features/dashboard/document-processing/document-search";
+import { DocumentsList } from "@/features/dashboard/document-processing/documents-list";
+// import { DocumentSearch, DocumentsList } from "@/features/ai/blocks";
 
 export default async function Page() {
   return (
@@ -23,7 +24,7 @@ export default async function Page() {
           turned into chunked vector embedding documents.
         </p>
       </div>
-      <UploadZoneWrapper />
+      {/* <UploadZoneWrapper /> */}
       {/* Documents List */}
       <div className="space-y-4">
         <DocumentSearch />
