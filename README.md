@@ -1,13 +1,13 @@
-# Shadcn CRM Dashboard - UI
+# Intentified Dashboard
 
-A modern CRM dashboard built with Next.js and Shadcn UI components, featuring a clean and responsive interface for managing customer relationships, sales, and analytics.
+A modern intelligence-driven customer relationship platform built with Next.js and Shadcn UI components, featuring an intuitive interface for creating intentional customer interactions, gaining actionable insights, and driving meaningful growth.
 
 ## Features
 
-- **Modern UI**: Built with Shadcn UI components and Tailwind CSS
+- **Intelligence-Driven UI**: Built with Shadcn UI components and Tailwind CSS
 - **Responsive Design**: Fully responsive dashboard that works on all devices
-- **Dashboard Analytics**: Visual representations of key metrics and customer data
-- **Multiple Modules**: Customers, Invoices, Leads, Orders, and more
+- **Intentional Analytics**: Visual representations of key metrics and actionable customer insights
+- **Comprehensive Modules**: Customers, Invoices, Leads, Orders, and more
 - **Dark Mode Support**: Toggle between light and dark themes
 
 ## Screenshots
@@ -41,7 +41,7 @@ src/
 │   ├── dashboard/       # Dashboard feature components
 │   │   ├── components/  # Dashboard UI components 
 │   │   └── pages/       # Dashboard page components
-│   └── landing/         # Landing page components
+│   └── landing/         # Intentified landing page components
 ```
 
 ## Tech Stack
@@ -52,7 +52,19 @@ src/
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev

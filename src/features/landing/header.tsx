@@ -61,14 +61,14 @@ export function Header() {
               <Link
                 href="/"
                 className="group flex items-center gap-2.5"
-                aria-label="Piper homepage"
+                aria-label="Intentified homepage"
               >
                 <div className="flex items-center gap-2">
                   <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
                     <Zap className="text-primary h-4 w-4" aria-hidden="true" />
                   </div>
                   <span className="text-lg font-bold tracking-tight">
-                    Piper
+                    Intentified
                   </span>
                 </div>
               </Link>
