@@ -3,7 +3,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { DocumentCard } from "./document-card";
-import { supabaseAdminClient } from "../lib/db/client";
+import { supabaseAdminClient } from "@/lib/db/client";
 
 export async function DocumentsList() {
   // Fetch initial documents
