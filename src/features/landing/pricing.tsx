@@ -39,7 +39,16 @@ const SectionTitle = ({
 /**
  * PricingCard component for displaying individual pricing tier
  */
-const PricingCard = ({ tier, index }: { tier: any; index: number }) => {
+interface PricingTier {
+  name: string;
+  price: string;
+  description: string;
+  features: string[];
+  cta: string;
+  popular: boolean;
+}
+
+const PricingCard = ({ tier, index }: { tier: PricingTier; index: number }) => {
   return (
     <Card
       key={index}
@@ -84,7 +93,10 @@ const PricingCard = ({ tier, index }: { tier: any; index: number }) => {
       <CardContent className="flex-1 p-6 pt-0">
         <ul className="space-y-3" aria-label={`Features for ${tier.name} plan`}>
           {tier.features.map((feature: string, j: number) => (
-            <li key={j} className="flex items-center gap-2.5">
+            <li
+              key={`feature-${tier.name}-${j}`}
+              className="flex items-center gap-2.5"
+            >
               <div
                 className="bg-primary/10 flex h-5 w-5 items-center justify-center rounded-full"
                 aria-hidden="true"
@@ -122,10 +134,11 @@ const tiers = [
   {
     name: "Starter",
     price: "$29",
-    description: "Perfect for small teams looking to build intentional customer relationships.",
+    description:
+      "Perfect for small teams looking to build intentional customer relationships.",
     features: [
       "Up to 5 team members",
-      "Basic CRM features",
+      "Basic intent identification",
       "Email integration",
       "Customer data insights",
       "Standard support",
@@ -135,9 +148,10 @@ const tiers = [
     popular: false,
   },
   {
-    name: "Intelligence",
+    name: "Pro",
     price: "$79",
-    description: "Elevate your business with AI-powered customer intelligence and insights.",
+    description:
+      "Elevate your business with AI-powered customer intelligence and insights.",
     features: [
       "Everything in Starter, plus:",
       "Up to 20 team members",
@@ -154,9 +168,10 @@ const tiers = [
   {
     name: "Enterprise",
     price: "Custom",
-    description: "Comprehensive intelligence solutions for organizations with complex needs",
+    description:
+      "Comprehensive intelligence solutions for organizations with complex needs",
     features: [
-      "Everything in Intelligence, plus:",
+      "Everything in Pro, plus:",
       "Unlimited team members",
       "Custom automation workflows",
       "Advanced AI capabilities",
@@ -185,15 +200,15 @@ export function Pricing() {
       <div
         className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] opacity-50"
         aria-hidden="true"
-      ></div>
+      />
       <div
         className="bg-primary/20 absolute top-1/4 left-1/4 -z-10 h-72 w-72 rounded-full blur-3xl"
         aria-hidden="true"
-      ></div>
+      />
       <div
         className="absolute right-1/4 bottom-1/4 -z-10 h-72 w-72 rounded-full bg-yellow-500/20 blur-3xl"
         aria-hidden="true"
-      ></div>
+      />
 
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
         <SectionTitle
@@ -203,29 +218,28 @@ export function Pricing() {
 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
           {tiers.map((tier, i) => (
-            <PricingCard key={i} tier={tier} index={i} />
+            <PricingCard key={`tier-${i}`} tier={tier} index={i} />
           ))}
         </div>
 
         {/* Custom plan section */}
         <div className="border-border/50 bg-background/50 mt-24 rounded-xl border p-8 text-center">
           <h3 className="text-2xl font-bold tracking-tight" id="custom-plan">
-            Need a Custom Plan?
+            Ready to revolutionize your marketing strategy?
           </h3>
           <p className="text-muted-foreground mx-auto mt-4 max-w-md text-lg">
-            Contact our sales team for a tailored solution that meets your
-            specific requirements.
+            Start converting intent signals into real results today.
           </p>
           <Button
             className="mt-8 h-14 px-8 font-semibold tracking-wide"
             size="lg"
             variant="outline"
           >
-            Contact Sales
+            Schedule Your Demo
           </Button>
           <p className="text-muted-foreground mt-6 text-lg">
-            Whether you're a small business or enterprise, Intentified has a plan
-            that's perfect for your needs.
+            Join thousands of businesses that use Intentified to drive growth
+            based on real customer intent.
           </p>
         </div>
       </div>

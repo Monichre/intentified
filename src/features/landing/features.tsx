@@ -3,15 +3,12 @@
 // External imports
 import {
   BarChart3,
-  BrainCircuit,
-  Inbox,
-  LayoutDashboard,
-  MessagesSquare,
-  Sparkles,
-  TimerReset,
+  Target,
+  BarChart,
+  Zap,
   UserCheck,
   Users2,
-  Zap,
+  LayoutDashboard,
 } from "lucide-react";
 
 // Internal imports
@@ -31,8 +28,11 @@ const SectionTitle = ({
     <div className="mx-auto mb-12 max-w-2xl text-center md:mb-16">
       <h2 className="text-3xl font-bold tracking-tight uppercase sm:text-4xl">
         <span className="relative">
-          {title.split(" ").map((word, i) => (
-            <span key={i} className={i === 1 ? "text-primary" : ""}>
+          {title.split(" ").map((word, idx) => (
+            <span
+              key={`word-${idx}`}
+              className={idx === 1 ? "text-primary" : ""}
+            >
               {word}{" "}
             </span>
           ))}
@@ -48,7 +48,21 @@ const SectionTitle = ({
 /**
  * FeatureCard component displaying individual feature with icon and description
  */
-const FeatureCard = ({ feature, index }: { feature: any; index: number }) => {
+interface Feature {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  bgColor: string;
+  textColor: string;
+}
+
+const FeatureCard = ({
+  feature,
+  index,
+}: {
+  feature: Feature;
+  index: number;
+}) => {
   return (
     <Card
       key={index}
@@ -57,9 +71,9 @@ const FeatureCard = ({ feature, index }: { feature: any; index: number }) => {
       <div className="relative p-5">
         <div
           className="group-hover:bg-opacity-80 mb-3 flex h-14 w-14 items-center justify-center rounded-lg transition-all duration-300"
-          style={{ 
+          style={{
             backgroundColor: feature.bgColor,
-            color: feature.textColor 
+            color: feature.textColor,
           }}
         >
           {feature.icon}
@@ -78,49 +92,48 @@ const FeatureCard = ({ feature, index }: { feature: any; index: number }) => {
  */
 const features = [
   {
-    title: "Smart Inbox",
+    title: "Intent Identification",
     description:
-      "AI-powered email management that automatically categorizes, prioritizes, and suggests responses.",
-    icon: <Inbox className="h-7 w-7" aria-hidden="true" />,
+      "Real-Time Signals: Capture active buying signals across billions of data points. Competitor Insights: Borrow leads directly from competitors and dominate your niche.",
+    icon: <Target className="h-7 w-7" aria-hidden="true" />,
     bgColor: "rgba(59, 130, 246, 0.1)",
     textColor: "rgb(59, 130, 246)",
   },
   {
-    title: "Pipeline Analytics",
+    title: "Precision Analytics",
     description:
-      "Real-time insights into your sales pipeline with AI-driven forecasting and recommendations.",
-    icon: <BarChart3 className="h-7 w-7" aria-hidden="true" />,
+      "AI-driven Insights: Turn anonymous visitors into actionable leads. Intent Dashboard: Clear visuals that highlight critical insights instantly.",
+    icon: <BarChart className="h-7 w-7" aria-hidden="true" />,
     bgColor: "rgba(234, 179, 8, 0.1)",
     textColor: "rgb(234, 179, 8)",
   },
   {
-    title: "Intelligent Automation",
+    title: "Seamless Integrations",
     description:
-      "Automate repetitive tasks and workflows with intentional intelligence, maintaining the human touch that customers expect and value.",
+      "Connect effortlessly with your existing CRM, marketing, and sales platforms. Automate workflows without writing a single line of code.",
     icon: <Zap className="h-7 w-7" aria-hidden="true" />,
     bgColor: "rgba(168, 85, 247, 0.1)",
     textColor: "rgb(168, 85, 247)",
   },
   {
-    title: "Customer Insights",
-    description:
-      "Get a 360° view of your customers with aggregated data from all touchpoints and interactions.",
-    icon: <UserCheck className="h-7 w-7" aria-hidden="true" />,
+    title: "Built for Growth",
+    description: "Accelerate revenue with precision-driven intent data.",
+    icon: <BarChart3 className="h-7 w-7" aria-hidden="true" />,
     bgColor: "rgba(34, 197, 94, 0.1)",
     textColor: "rgb(34, 197, 94)",
   },
   {
-    title: "Team Collaboration",
+    title: "Speed of Implementation",
     description:
-      "Work seamlessly with your team through shared workspaces, comments, and real-time updates.",
-    icon: <Users2 className="h-7 w-7" aria-hidden="true" />,
+      "Deploy in minutes, not months, to start capturing opportunities immediately.",
+    icon: <Zap className="h-7 w-7" aria-hidden="true" />,
     bgColor: "rgba(249, 115, 22, 0.1)",
     textColor: "rgb(249, 115, 22)",
   },
   {
-    title: "Interactive Dashboard",
+    title: "ROI Guaranteed",
     description:
-      "Customizable dashboards that display your most important metrics and KPIs at a glance.",
+      "Stop guessing—focus on leads that convert and maximize your marketing spend.",
     icon: <LayoutDashboard className="h-7 w-7" aria-hidden="true" />,
     bgColor: "rgba(14, 165, 233, 0.1)",
     textColor: "rgb(14, 165, 233)",
@@ -141,21 +154,21 @@ export function Features() {
       <div
         className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] opacity-50"
         aria-hidden="true"
-      ></div>
+      />
       <div
         className="absolute right-1/4 bottom-1/4 -z-10 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
         aria-hidden="true"
-      ></div>
+      />
 
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
         <SectionTitle
-          title="Why choose Intentified"
-          subtitle="Bringing intentional intelligence to your customer relationships for more meaningful engagement and growth."
+          title="Packed with Cutting-Edge Features"
+          subtitle="Intentified identifies your prospects' real-time interests so you can deliver exactly what they're searching for."
         />
 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, i) => (
-            <FeatureCard key={i} feature={feature} index={i} />
+            <FeatureCard key={`feature-${i}`} feature={feature} index={i} />
           ))}
         </div>
 
@@ -166,17 +179,15 @@ export function Features() {
               className="bg-primary/10 flex h-20 w-20 items-center justify-center rounded-lg md:h-24 md:w-24"
               aria-hidden="true"
             >
-              <BrainCircuit className="text-primary h-10 w-10 md:h-12 md:w-12" />
+              <Zap className="text-primary h-10 w-10 md:h-12 md:w-12" />
             </div>
             <div className="flex-1">
               <h3 className="text-2xl font-bold tracking-tight">
-                AI-POWERED ASSISTANCE
+                POWERED BY BILLIONS OF INTENT SIGNALS
               </h3>
               <p className="text-muted-foreground mt-4 text-lg">
-                Our advanced AI helps you make better decisions by analyzing
-                customer data, predicting outcomes, and suggesting next best
-                actions. Focus on building relationships while our AI handles
-                the repetitive tasks.
+                Reveal hidden opportunities in your marketing funnel: Website
+                Intent → Social Signals → Keyword Analysis
               </p>
 
               <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -185,10 +196,10 @@ export function Features() {
                     className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
                     aria-hidden="true"
                   >
-                    <Sparkles className="text-primary h-4 w-4" />
+                    <Target className="text-primary h-4 w-4" />
                   </span>
                   <span className="text-sm font-medium">
-                    Predictive insights
+                    Real-time tracking
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -196,19 +207,21 @@ export function Features() {
                     className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
                     aria-hidden="true"
                   >
-                    <MessagesSquare className="text-primary h-4 w-4" />
+                    <BarChart className="text-primary h-4 w-4" />
                   </span>
-                  <span className="text-sm font-medium">Smart responses</span>
+                  <span className="text-sm font-medium">
+                    Actionable insights
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span
                     className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
                     aria-hidden="true"
                   >
-                    <TimerReset className="text-primary h-4 w-4" />
+                    <Zap className="text-primary h-4 w-4" />
                   </span>
                   <span className="text-sm font-medium">
-                    Time-saving automations
+                    Revenue acceleration
                   </span>
                 </div>
               </div>

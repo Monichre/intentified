@@ -125,7 +125,8 @@ export function Footer() {
               </span>
             </div>
             <p className="text-muted-foreground text-base">
-              Bringing intentional intelligence to your customer relationships.
+              Transform intent into revenue with AI-powered marketing
+              intelligence.
             </p>
             <div className="flex space-x-5">
               {navigation.social.map((item) => (
@@ -146,7 +147,7 @@ export function Footer() {
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <FooterHeading>Product</FooterHeading>
-                <ul role="list" className="mt-4 space-y-3">
+                <ul className="mt-4 space-y-3">
                   {navigation.product.map((item) => (
                     <li key={item.name}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
@@ -156,7 +157,7 @@ export function Footer() {
               </div>
               <div className="mt-12 md:mt-0">
                 <FooterHeading>Company</FooterHeading>
-                <ul role="list" className="mt-4 space-y-3">
+                <ul className="mt-4 space-y-3">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
@@ -168,7 +169,7 @@ export function Footer() {
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <FooterHeading>Support</FooterHeading>
-                <ul role="list" className="mt-4 space-y-3">
+                <ul className="mt-4 space-y-3">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
@@ -178,7 +179,7 @@ export function Footer() {
               </div>
               <div className="mt-12 md:mt-0">
                 <FooterHeading>Legal</FooterHeading>
-                <ul role="list" className="mt-4 space-y-3">
+                <ul className="mt-4 space-y-3">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
@@ -191,7 +192,8 @@ export function Footer() {
         </div>
         <div className="border-border/50 mt-12 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
-            &copy; {new Date().getFullYear()} Intentified, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} Intentified, Inc. All rights
+            reserved.
           </p>
         </div>
       </div>

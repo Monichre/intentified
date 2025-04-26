@@ -9,18 +9,22 @@ A modern intelligence-driven customer relationship platform built with Next.js a
 - **Intentional Analytics**: Visual representations of key metrics and actionable customer insights
 - **Comprehensive Modules**: Customers, Invoices, Leads, Orders, and more
 - **Dark Mode Support**: Toggle between light and dark themes
+- **Secure Authentication**: Role-based access control with Clerk authentication
 
 ## Screenshots
 
 ### Dashboard Views
+
 ![Dashboard Overview](public/app-screenshots/dashboard-1.png)
 ![Dashboard Analytics](public/app-screenshots/dashboard-2.png)
 ![Dashboard Customers](public/app-screenshots/dashboard-3.png)
 
 ### Landing Page
+
 ![Landing Page](public/app-screenshots/landing.png)
 
 ### Mobile Experience
+
 <div style="display: flex; justify-content: space-between;">
   <img src="public/app-screenshots/mobile-1.png" alt="Mobile Dashboard" width="32%" />
   <img src="public/app-screenshots/mobile-2.png" alt="Mobile Analytics" width="32%" />
@@ -32,7 +36,9 @@ A modern intelligence-driven customer relationship platform built with Next.js a
 ```
 src/
 ├── app/                 # Next.js App Router
-│   ├── dashboard/       # Dashboard routes
+│   ├── dashboard/       # Dashboard routes (protected)
+│   ├── sign-in/         # Authentication pages
+│   ├── sign-up/         # Authentication pages
 │   └── page.tsx         # Landing page
 ├── components/
 │   ├── ui/              # Shadcn UI components
@@ -49,6 +55,25 @@ src/
 - **Framework**: Next.js 15.x with React 19
 - **Styling**: Tailwind CSS
 - **UI Components**: Shadcn UI with Radix UI primitives
+- **Authentication**: Clerk with role-based access control
+
+## Authentication Setup
+
+This project uses [Clerk](https://clerk.com) for authentication and user management. To set it up:
+
+1. Create a Clerk account and project at <https://clerk.com>
+2. Copy your API keys from the Clerk Dashboard
+3. Create a `.env.local` file based on `.env.example`:
+
+   ```
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_publishable_key
+   CLERK_SECRET_KEY=your_secret_key
+   ```
+
+4. Configure admin users by setting the role metadata in Clerk Dashboard:
+   - Go to your Clerk Dashboard -> Users
+   - Select a user and add metadata: `{ "role": "admin" }`
+   - Only users with admin role can access dashboard routes
 
 ## Getting Started
 

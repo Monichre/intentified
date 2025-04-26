@@ -29,7 +29,11 @@ const CTAButton = ({
   );
 
   const button = (
-    <Button size="lg" variant={variant as any} className={buttonClass}>
+    <Button
+      size="lg"
+      variant={variant as "default" | "outline"}
+      className={buttonClass}
+    >
       {icon && (
         <span
           className="bg-primary-foreground/10 mr-3 -ml-2 inline-flex h-8 w-8 items-center justify-center rounded-full"
@@ -55,38 +59,55 @@ export function CTA() {
   return (
     <section className="relative" aria-labelledby="cta-heading">
       {/* Background elements */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" aria-hidden="true"></div>
-      <div className="absolute bottom-1/4 left-1/4 -z-10 h-72 w-72 rounded-full bg-primary/20 blur-3xl" aria-hidden="true"></div>
-      <div className="absolute top-1/4 right-1/4 -z-10 h-72 w-72 rounded-full bg-yellow-500/20 blur-3xl" aria-hidden="true"></div>
-      
+      <div
+        className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
+        aria-hidden="true"
+      />
+      <div
+        className="bg-primary/20 absolute bottom-1/4 left-1/4 -z-10 h-72 w-72 rounded-full blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute top-1/4 right-1/4 -z-10 h-72 w-72 rounded-full bg-yellow-500/20 blur-3xl"
+        aria-hidden="true"
+      />
+
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
         <div className="relative">
           <div className="mx-auto max-w-2xl lg:max-w-4xl">
-            <div className="border-border/50 bg-background/80 rounded-xl border p-8 sm:p-12 lg:p-16 shadow-lg backdrop-blur-sm">
+            <div className="border-border/50 bg-background/80 rounded-xl border p-8 shadow-lg backdrop-blur-sm sm:p-12 lg:p-16">
               <div className="mx-auto max-w-xl lg:max-w-none">
-                <h2 id="cta-heading" className="text-center text-2xl font-bold tracking-tight uppercase sm:text-3xl lg:text-4xl">
-                  Ready to bring intention to your customer interactions?
+                <h2
+                  id="cta-heading"
+                  className="text-center text-2xl font-bold tracking-tight uppercase sm:text-3xl lg:text-4xl"
+                >
+                  Ready to revolutionize your marketing strategy?
                 </h2>
                 <p className="text-muted-foreground mx-auto mt-6 max-w-xl text-center text-lg">
-                  Join thousands of businesses that use Intentified to create more meaningful
-                  customer relationships, harness intelligent insights, and drive purposeful growth.
+                  Start converting intent signals into real results today.
                 </p>
                 <div className="relative mt-12 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-6">
                   {/* Decorative elements around buttons */}
-                  <div className="border-primary/30 absolute -top-4 -left-4 h-4 w-4 border-t-2 border-l-2" aria-hidden="true"></div>
-                  <div className="border-primary/30 absolute -right-4 -bottom-4 h-4 w-4 border-r-2 border-b-2" aria-hidden="true"></div>
-                  
+                  <div
+                    className="border-primary/30 absolute -top-4 -left-4 h-4 w-4 border-t-2 border-l-2"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="border-primary/30 absolute -right-4 -bottom-4 h-4 w-4 border-r-2 border-b-2"
+                    aria-hidden="true"
+                  />
+
                   <CTAButton
                     href="/dashboard"
                     icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
                   >
-                    START INTENTIONAL GROWTH
+                    START FREE TRIAL
                   </CTAButton>
-                  
-                  <CTAButton variant="outline">SCHEDULE A DEMO</CTAButton>
+
+                  <CTAButton variant="outline">SCHEDULE YOUR DEMO</CTAButton>
                 </div>
                 <p className="text-muted-foreground mt-6 text-center text-sm">
-                  No credit card required. 14-day free trial.
+                  No credit card required. See Intentified in action.
                 </p>
               </div>
             </div>

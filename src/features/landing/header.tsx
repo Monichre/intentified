@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, Zap } from "lucide-react";
+import { useAuth, SignedIn, SignedOut } from "@clerk/nextjs";
 
 // Internal imports
 import { Button } from "@/components/ui/button";
@@ -46,6 +47,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navItems = ["Home", "Features", "Pricing", "Testimonials"];
   const { activeHash } = useActiveSection(navItems);
+  const { isSignedIn } = useAuth();
 
   return (
     <>
@@ -88,14 +90,25 @@ export function Header() {
 
               {/* Desktop CTA */}
               <div className="hidden items-center gap-3 md:flex">
-                <Button variant="ghost" className="font-medium tracking-wide">
-                  Sign in
-                </Button>
-                <Link href="/dashboard">
-                  <Button className="px-4 font-medium tracking-wide">
-                    Get Started
-                  </Button>
-                </Link>
+                <SignedIn>
+                  <Link href="/dashboard">
+                    <Button variant="ghost" className="font-medium tracking-wide">
+                      Dashboard
+                    </Button>
+                  </Link>
+                </SignedIn>
+                <SignedOut>
+                  <Link href="/sign-in">
+                    <Button variant="ghost" className="font-medium tracking-wide">
+                      Sign in
+                    </Button>
+                  </Link>
+                  <Link href="/sign-up">
+                    <Button className="px-4 font-medium tracking-wide">
+                      Get Started
+                    </Button>
+                  </Link>
+                </SignedOut>
 
                 <ModeToggle />
               </div>
@@ -148,21 +161,35 @@ export function Header() {
                 );
               })}
               <div className="border-border/50 mt-6 grid grid-cols-2 gap-3 border-t pt-6">
-                <Button
-                  variant="outline"
-                  className="w-full font-medium tracking-wide"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign in
-                </Button>
-                <Link href="/dashboard" className="w-full">
-                  <Button
-                    className="w-full font-medium tracking-wide"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Get Started
-                  </Button>
-                </Link>
+                <SignedIn>
+                  <Link href="/dashboard" className="col-span-2 w-full">
+                    <Button 
+                      className="w-full font-medium tracking-wide"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+                </SignedIn>
+                <SignedOut>
+                  <Link href="/sign-in" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full font-medium tracking-wide"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign in
+                    </Button>
+                  </Link>
+                  <Link href="/sign-up" className="w-full">
+                    <Button
+                      className="w-full font-medium tracking-wide"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
+                </SignedOut>
               </div>
               <div className="flex items-center justify-end pt-6">
                 <ModeToggle />
