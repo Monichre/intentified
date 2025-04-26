@@ -1,8 +1,7 @@
 import "@ungap/with-resolvers";
 import { getDocument } from "pdfjs-dist";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "../db/types";
-import { JSDOM } from "jsdom";
+
 import { Readability } from "@mozilla/readability";
 import mammoth from "mammoth";
 import { analyzeDocument } from "./analyze";
@@ -16,7 +15,7 @@ type ExtractedContent = {
 };
 
 export async function processDocument(
-	supabase: SupabaseClient<Database>,
+	supabase: SupabaseClient<any>,
 	documentId: string,
 ) {
 	const startTime = Date.now();
