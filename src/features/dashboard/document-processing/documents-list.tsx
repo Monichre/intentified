@@ -1,4 +1,5 @@
 // @ts-nocheck
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { DocumentCard } from "./document-card";
