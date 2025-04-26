@@ -16,14 +16,14 @@ const HeroTitle = () => {
     <div className="relative">
       <h1 className="inline-block max-w-6xl leading-none font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
         <div className="relative mb-3 pb-2 text-center text-4xl sm:text-5xl md:mb-5 md:text-6xl">
-          <span className="inline-block">TRANSFORM INSIGHTS INTO</span>
+          <span className="inline-block">CONVERT INTENT INTO</span>
         </div>
         <div className="mt-1 block text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
-          <span className="bg-primary text-primary-foreground relative inline-block px-4 py-1">
-            INTENTIONAL
+          <span className="text-primary-foreground relative inline-block bg-[var(--accent)] px-4 py-1">
+            REVENUE
           </span>
           <span className="text-foreground ml-2 inline-block uppercase">
-            Actions
+            with AI
           </span>
         </div>
       </h1>
@@ -115,13 +115,18 @@ export function Hero() {
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 py-32 sm:px-6 sm:py-40 md:min-h-screen lg:min-h-screen lg:px-8">
         <div className="flex flex-col items-center text-center">
-          <BadgeLabel text="New: Intentified Dashboard 2.0" />
+          <BadgeLabel text="Transform intent into action" />
 
           <HeroTitle />
 
           <p className="text-muted-foreground mt-8 max-w-2xl text-center text-lg">
-            Transform how you understand your customers. Intentified brings AI-powered
-            intelligence, strategic insights, and an intuitive interface to your business.
+            Everything your marketing needs, integrated seamlessly into one
+            powerful intent-driven platform.
+          </p>
+
+          <p className="text-muted-foreground mt-4 max-w-2xl text-center text-lg">
+            Transform unknown visitors into loyal customers with precision and
+            scale.
           </p>
 
           <div className="relative mt-12 flex flex-col gap-5 sm:flex-row sm:gap-6">
@@ -148,6 +153,16 @@ export function Hero() {
           <p className="text-muted-foreground mt-4 text-sm">
             No credit card required • 14-day free trial
           </p>
+
+          {/* Trusted by section */}
+          <div className="mt-16 text-center">
+            <p className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
+              Trusted by Industry Leaders
+            </p>
+            <p className="text-foreground mt-4 text-lg font-medium">
+              HubSpot · Salesforce · Adobe · Shopify
+            </p>
+          </div>
 
           {/* Stats bar */}
           <div

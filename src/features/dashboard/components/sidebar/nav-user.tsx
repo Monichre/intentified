@@ -10,6 +10,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 // Internal components
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -34,27 +35,22 @@ import {
  *
  * User profile section in the dashboard sidebar footer.
  * Displays user information and provides a dropdown with user-related actions.
- *
- * @param {Object} props - Component props
- * @param {Object} props.user - User information
- * @param {string} props.user.name - User's name
- * @param {string} props.user.email - User's email
- * @param {string} props.user.avatar - URL to user's avatar image
  */
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
   const router = useRouter();
   const { isMobile } = useSidebar();
+  const { signOut } = useClerk();
+  const { user } = useUser();
 
-  const signOut = () => {
-    router.push("/");
+  // If user is not loaded yet, show default data
+  const userData = {
+    name: user?.fullName || "User",
+    email: user?.primaryEmailAddress?.emailAddress || "user@example.com",
+    avatar: user?.imageUrl || "/avatars/avatar.png",
+  };
+
+  const handleSignOut = () => {
+    signOut(() => router.push("/"));
   };
 
   return (
@@ -68,9 +64,9 @@ export function NavUser({
               aria-label="User profile and options"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={`${user.name}'s profile`} />
+                <AvatarImage src={userData.avatar} alt={`${userData.name}'s profile`} />
                 <AvatarFallback className="rounded-lg">
-                  {user.name
+                  {userData.name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")
@@ -79,8 +75,8 @@ export function NavUser({
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{userData.name}</span>
+                <span className="truncate text-xs">{userData.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" aria-hidden="true" />
             </SidebarMenuButton>
@@ -97,11 +93,11 @@ export function NavUser({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={user.avatar}
-                    alt={`${user.name}'s profile`}
+                    src={userData.avatar}
+                    alt={`${userData.name}'s profile`}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {user.name
+                    {userData.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")
@@ -110,8 +106,8 @@ export function NavUser({
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">{userData.name}</span>
+                  <span className="truncate text-xs">{userData.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -138,7 +134,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut()} role="menuitem">
+            <DropdownMenuItem onClick={handleSignOut} role="menuitem">
               <LogOut aria-hidden="true" />
               Log out
             </DropdownMenuItem>
