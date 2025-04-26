@@ -1,14 +1,13 @@
 "use server";
 
 import { createClient } from "@supabase/supabase-js";
-import type { Database } from "./db/types";
 
-import { processDocument } from "./pipeline/extract";
 import { revalidatePath } from "next/cache";
-import { analyzeDocument } from "./pipeline/analyze";
 
 import { embed, embedMany } from "ai";
 import { openai } from "@ai-sdk/openai";
+import { analyzeDocument } from "@/features/dashboard/document-processing/helpers/analyze";
+import { processDocument } from "@/features/dashboard/document-processing/helpers/vectorize";
 
 if (!process.env.NEXT_PUBLIC_BLOCKS_SUPABASE_URL) {
 	throw new Error("Missing env.NEXT_PUBLIC_BLOCKS_SUPABASE_URL");
@@ -18,7 +17,7 @@ if (!process.env.BLOCKS_SUPABASE_SERVICE_ROLE_KEY) {
 }
 
 // Create Supabase client with service role for admin access
-const supabaseAdmin = createClient<Database>(
+const supabaseAdmin = createClient<any>(
 	process.env.NEXT_PUBLIC_BLOCKS_SUPABASE_URL,
 	process.env.BLOCKS_SUPABASE_SERVICE_ROLE_KEY,
 	{
