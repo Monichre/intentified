@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, Zap } from "lucide-react";
 import { useAuth, SignedIn, SignedOut } from "@clerk/nextjs";
-
+import Image from "next/image";
 // Internal imports
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -66,12 +66,24 @@ export function Header() {
                 aria-label="Intentified homepage"
               >
                 <div className="flex items-center gap-2">
-                  <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
-                    <Zap className="text-primary h-4 w-4" aria-hidden="true" />
-                  </div>
-                  <span className="text-lg font-bold tracking-tight">
+                  <Image
+                    src="/logo-white.png"
+                    alt="Intentified"
+                    width={200}
+                    height={50}
+                  />
+                  {/* <div className="bg-primary/10 flex items-center justify-center rounded-full"> */}
+                  {/* <Zap className="text-primary h-4 w-4" aria-hidden="true" /> */}
+                  {/* <Image
+                      src="/logo-white.png"
+                      alt="Intentified"
+                      width={100}
+                      height={32}
+                    /> */}
+                  {/* </div> */}
+                  {/* <span className="text-lg font-bold tracking-tight">
                     Intentified
-                  </span>
+                  </span> */}
                 </div>
               </Link>
 
@@ -91,15 +103,16 @@ export function Header() {
               {/* Desktop CTA */}
               <div className="hidden items-center gap-3 md:flex">
                 <SignedIn>
-                  <Link href="/dashboard">
-                    <Button variant="ghost" className="font-medium tracking-wide">
-                      Dashboard
-                    </Button>
-                  </Link>
+                  <Button variant="ghost" className="font-medium tracking-wide">
+                    <Link href="/dashboard">Dashboard</Link>
+                  </Button>
                 </SignedIn>
                 <SignedOut>
                   <Link href="/sign-in">
-                    <Button variant="ghost" className="font-medium tracking-wide">
+                    <Button
+                      variant="ghost"
+                      className="font-medium tracking-wide"
+                    >
                       Sign in
                     </Button>
                   </Link>
@@ -162,33 +175,26 @@ export function Header() {
               })}
               <div className="border-border/50 mt-6 grid grid-cols-2 gap-3 border-t pt-6">
                 <SignedIn>
-                  <Link href="/dashboard" className="col-span-2 w-full">
-                    <Button 
-                      className="w-full font-medium tracking-wide"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
+                  <Button className="w-full font-medium tracking-wide">
+                    <Link href="/dashboard" className="col-span-2 w-full">
                       Dashboard
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </SignedIn>
                 <SignedOut>
-                  <Link href="/sign-in" className="w-full">
-                    <Button
-                      variant="outline"
-                      className="w-full font-medium tracking-wide"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
+                  <Button
+                    variant="outline"
+                    className="w-full font-medium tracking-wide"
+                  >
+                    <Link href="/sign-in" className="w-full">
                       Sign in
-                    </Button>
-                  </Link>
-                  <Link href="/sign-up" className="w-full">
-                    <Button
-                      className="w-full font-medium tracking-wide"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
+                    </Link>
+                  </Button>
+                  <Button className="w-full font-medium tracking-wide">
+                    <Link href="/sign-up" className="w-full">
                       Get Started
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </SignedOut>
               </div>
               <div className="flex items-center justify-end pt-6">

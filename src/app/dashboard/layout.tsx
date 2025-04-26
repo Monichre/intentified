@@ -8,13 +8,14 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   // Get the current user
-  const { userId } = auth();
-  
-  // This is a backup check, as middleware should already filter
-  // But it's good to have defense in depth
-  if (!userId) {
-    redirect("/sign-in");
-  }
-  
+
+  const session = await auth();
+
+  console.log("🚀 ~ session:", session);
+
+  // if (!session?.userId) {
+  //   redirect("/sign-in");
+  // }
+
   return <DashboardLayoutWrapper>{children}</DashboardLayoutWrapper>;
 }

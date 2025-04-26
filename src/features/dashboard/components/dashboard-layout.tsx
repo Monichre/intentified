@@ -1,7 +1,7 @@
 "use client";
 
 // External dependencies
-import React from "react";
+import type React from "react";
 import { useIsClient } from "@uidotdev/usehooks";
 
 // Internal components
