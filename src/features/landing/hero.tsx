@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { IntentSequenceMultipleInputs } from "../../components/intent-sequence-animated-beam/IntentSequenceMultipleInputs";
 import { DotPattern } from "@/components/dot-pattern";
+import { TrustedBySection } from "@/components/shared/TrustedBySection";
 
 /**
  * HeroTitle component displaying the main heading with styled text
@@ -115,7 +116,7 @@ export function Hero() {
         aria-hidden="true"
       ></div>
 
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 py-32 sm:px-6 sm:py-40 md:min-h-screen lg:min-h-screen lg:px-8">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 py-32 sm:px-6 sm:py-40 lg:px-8">
         <div className="flex flex-col items-center text-center">
           <BadgeLabel text="Transform intent into action" />
 
@@ -142,78 +143,49 @@ export function Hero() {
               aria-hidden="true"
             ></div>
 
-            <CTAButton
-              href="#"
-              icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
-            >
-              START FREE TRIAL
-            </CTAButton>
-
             <CTAButton variant="outline">BOOK A DEMO</CTAButton>
           </div>
 
           <p className="text-muted-foreground mt-4 text-sm">
             No credit card required • 14-day free trial
           </p>
-
-          {/* Trusted by section */}
-          <div className="mt-16 text-center">
-            <p className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
-              Trusted by Industry Leaders
-            </p>
-            <p className="text-foreground mt-4 text-lg font-medium">
-              HubSpot · Salesforce · Adobe · Shopify
+        </div>
+        {/* Stats bar */}
+        <div
+          className="border-border/50 bg-background/50 mt-16 flex flex-wrap items-center justify-center gap-6 rounded-lg border p-4 sm:gap-10 md:gap-16"
+          aria-label="Key statistics"
+        >
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-1.5">
+              <TrendingUp className="text-primary h-4 w-4" aria-hidden="true" />
+              <p className="text-lg font-bold">245%</p>
+            </div>
+            <p className="text-muted-foreground text-xs">
+              Lead conversion rate
             </p>
           </div>
-
-          {/* Stats bar */}
-          <div
-            className="border-border/50 bg-background/50 mt-16 flex flex-wrap items-center justify-center gap-6 rounded-lg border p-4 sm:gap-10 md:gap-16"
-            aria-label="Key statistics"
-          >
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1.5">
-                <TrendingUp
-                  className="text-primary h-4 w-4"
-                  aria-hidden="true"
-                />
-                <p className="text-lg font-bold">245%</p>
-              </div>
-              <p className="text-muted-foreground text-xs">
-                Lead conversion rate
-              </p>
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-1.5">
+              <LineChart
+                className="h-4 w-4 text-yellow-500"
+                aria-hidden="true"
+              />
+              <p className="text-lg font-bold">3.8M</p>
             </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1.5">
-                <LineChart
-                  className="h-4 w-4 text-yellow-500"
-                  aria-hidden="true"
-                />
-                <p className="text-lg font-bold">3.8M</p>
-              </div>
-              <p className="text-muted-foreground text-xs">
-                Customer interactions
-              </p>
+            <p className="text-muted-foreground text-xs">
+              Customer interactions
+            </p>
+          </div>
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-1.5">
+              <Users className="h-4 w-4 text-green-500" aria-hidden="true" />
+              <p className="text-lg font-bold">15k+</p>
             </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1.5">
-                <Users className="h-4 w-4 text-green-500" aria-hidden="true" />
-                <p className="text-lg font-bold">15k+</p>
-              </div>
-              <p className="text-muted-foreground text-xs">
-                Companies onboarded
-              </p>
-            </div>
+            <p className="text-muted-foreground text-xs">Companies onboarded</p>
           </div>
         </div>
-      </div>
-      <div className="relative mx-auto max-w-4xl">
-        <IntentSequenceMultipleInputs />
-        <DotPattern
-          className={cn(
-            "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
-          )}
-        />
+        {/* Trusted by section */}
+        {/* <TrustedBySection /> */}
       </div>
     </section>
   );

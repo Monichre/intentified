@@ -9,10 +9,16 @@ import {
   UserCheck,
   Users2,
   LayoutDashboard,
+  LineChart,
+  TrendingUp,
+  Users,
 } from "lucide-react";
 
 // Internal imports
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DotPattern } from "@/components/dot-pattern";
+import { IntentSequenceMultipleInputs } from "@/components/intent-sequence-animated-beam/IntentSequenceMultipleInputs";
+import { cn } from "@/lib/utils";
 
 /**
  * SectionTitle component for consistent headings across sections
@@ -172,61 +178,72 @@ export function Features() {
           ))}
         </div>
 
-        {/* Feature highlight */}
-        <div className="border-border/50 bg-background/50 mt-24 rounded-xl border p-8 lg:p-10">
-          <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
-            <div
-              className="bg-primary/10 flex h-20 w-20 items-center justify-center rounded-lg md:h-24 md:w-24"
-              aria-hidden="true"
-            >
-              <Zap className="text-primary h-10 w-10 md:h-12 md:w-12" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-2xl font-bold tracking-tight">
-                POWERED BY BILLIONS OF INTENT SIGNALS
-              </h3>
-              <p className="text-muted-foreground mt-4 text-lg">
-                Reveal hidden opportunities in your marketing funnel: Website
-                Intent → Social Signals → Keyword Analysis
-              </p>
+        <div className="relative mx-auto max-w-7xl px-4">
+          {/* Feature highlight */}
+          <div className="border-border/50 bg-background/50 mt-24 rounded-xl border p-8 lg:p-10">
+            <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
+              <div
+                className="bg-primary/10 flex h-20 w-20 items-center justify-center rounded-lg md:h-24 md:w-24"
+                aria-hidden="true"
+              >
+                <Zap className="text-primary h-10 w-10 md:h-12 md:w-12" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold tracking-tight">
+                  POWERED BY BILLIONS OF INTENT SIGNALS
+                </h3>
+                <p className="text-muted-foreground mt-4 text-lg">
+                  Reveal hidden opportunities in your marketing funnel: Website
+                  Intent → Social Signals → Keyword Analysis
+                </p>
 
-              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <div className="flex items-center gap-2">
-                  <span
-                    className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
-                    aria-hidden="true"
-                  >
-                    <Target className="text-primary h-4 w-4" />
-                  </span>
-                  <span className="text-sm font-medium">
-                    Real-time tracking
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
-                    aria-hidden="true"
-                  >
-                    <BarChart className="text-primary h-4 w-4" />
-                  </span>
-                  <span className="text-sm font-medium">
-                    Actionable insights
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
-                    aria-hidden="true"
-                  >
-                    <Zap className="text-primary h-4 w-4" />
-                  </span>
-                  <span className="text-sm font-medium">
-                    Revenue acceleration
-                  </span>
+                <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
+                      aria-hidden="true"
+                    >
+                      <Target className="text-primary h-4 w-4" />
+                    </span>
+                    <span className="text-sm font-medium">
+                      Real-time tracking
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
+                      aria-hidden="true"
+                    >
+                      <BarChart className="text-primary h-4 w-4" />
+                    </span>
+                    <span className="text-sm font-medium">
+                      Actionable insights
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
+                      aria-hidden="true"
+                    >
+                      <Zap className="text-primary h-4 w-4" />
+                    </span>
+                    <span className="text-sm font-medium">
+                      Revenue acceleration
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* <div className="relative mx-auto my-32 sm:my-40">
+            <IntentSequenceMultipleInputs />
+            <DotPattern
+              className={cn(
+                "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
+              )}
+            />
+          </div> */}
         </div>
       </div>
     </section>

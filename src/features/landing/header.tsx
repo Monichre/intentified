@@ -26,10 +26,23 @@ const NavLink = ({
   onClick?: () => void;
   children: React.ReactNode;
 }) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const id = href.slice(1);
+      const el = document.getElementById(id) || document.querySelector(href);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        // Update the URL hash without jumping
+        window.history.pushState(null, "", href);
+      }
+      if (onClick) onClick();
+    }
+  };
   return (
     <Link
       href={href}
-      onClick={onClick}
+      onClick={handleClick}
       className={cn(
         "relative rounded-md px-4 py-2 text-sm font-medium tracking-wide transition-all",
         isActive

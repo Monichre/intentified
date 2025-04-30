@@ -11,7 +11,7 @@ import { Footer } from "@/features/landing/footer";
 import { Header } from "@/features/landing/header";
 import { Hero } from "@/features/landing/hero";
 import { Pricing } from "@/features/landing/pricing";
-import { Testimonials } from "@/features/landing/testimonials";
+import { Clients } from "@/features/landing/testimonials";
 
 export default function Home() {
   return (
@@ -19,8 +19,8 @@ export default function Home() {
       <Header />
       <Hero />
       <Features />
-      <Pricing />
-      <Testimonials />
+
+      <Clients />
       <CTA />
       <Footer />
     </main>
