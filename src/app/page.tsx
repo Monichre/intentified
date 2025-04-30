@@ -1,7 +1,3 @@
-/**
- * Home Page Component
- */
-
 "use client";
 
 // Internal imports from feature components
