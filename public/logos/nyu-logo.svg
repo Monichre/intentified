@@ -1,5 +1,1 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="25" y="60" width="150" height="80" fill="#57068C"/>
-  <text x="65" y="95" font-family="Arial" font-weight="bold" font-size="24" fill="white">NYU</text>
-  <text x="45" y="115" font-family="Arial" font-weight="bold" font-size="12" fill="white">LANGONE MEDICAL CENTER</text>
-</svg> 
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="none" viewBox="0 0 200 200"><rect width="150" height="80" x="25" y="60" fill="#57068C"/><text x="65" y="95" fill="#fff" font-family="Arial" font-size="24" font-weight="bold">NYU</text><text x="45" y="115" fill="#fff" font-family="Arial" font-size="12" font-weight="bold">LANGONE MEDICAL CENTER</text></svg>
