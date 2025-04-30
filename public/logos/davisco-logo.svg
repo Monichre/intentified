@@ -1,5 +1,1 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="70" width="160" height="60" rx="10" fill="#27AE60"/>
-  <text x="33" y="105" font-family="Arial" font-weight="bold" font-size="16" fill="white">DAVISCO FOODS</text>
-  <text x="47" y="125" font-family="Arial" font-weight="bold" font-size="14" fill="white">INTERNATIONAL</text>
-</svg> 
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="none" viewBox="0 0 200 200"><rect width="160" height="60" x="20" y="70" fill="#27AE60" rx="10"/><text x="33" y="105" fill="#fff" font-family="Arial" font-size="16" font-weight="bold">DAVISCO FOODS</text><text x="47" y="125" fill="#fff" font-family="Arial" font-size="14" font-weight="bold">INTERNATIONAL</text></svg>

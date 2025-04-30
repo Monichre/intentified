@@ -1,5 +1,1 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="25" y="60" width="150" height="80" rx="10" fill="#2C3E50"/>
-  <path d="M45 100H155" stroke="white" stroke-width="5" stroke-linecap="round"/>
-  <text x="50" y="130" font-family="Arial" font-weight="bold" font-size="24" fill="white">SEIDIO</text>
-</svg> 
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="none" viewBox="0 0 200 200"><rect width="150" height="80" x="25" y="60" fill="#2C3E50" rx="10"/><path stroke="#fff" stroke-linecap="round" stroke-width="5" d="M45 100H155"/><text x="50" y="130" fill="#fff" font-family="Arial" font-size="24" font-weight="bold">SEIDIO</text></svg>
