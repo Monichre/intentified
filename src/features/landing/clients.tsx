@@ -43,9 +43,21 @@ const ClientCard = ({ client, index }: { client: Client; index: number }) => {
       key={index}
       className="border-border/50 bg-background/60 hover:border-primary/20 group overflow-hidden rounded-xl border p-1 transition-all duration-300 hover:shadow-lg"
     >
-      <CardContent className="flex flex-col items-center justify-center p-6">
+      <CardContent className="flex h-full flex-col items-center justify-center p-6">
         <div className="flex w-full flex-col gap-5">
-          <div className="flex items-center justify-center">
+          <div className="flex w-full items-center justify-between">
+            <div
+              className="bg-primary/10 group-hover:bg-primary/20 flex h-12 w-12 items-center justify-center rounded-full transition-all"
+              aria-hidden="true"
+            >
+              <BuildingIcon className="text-primary h-6 w-6" />
+            </div>
+            <div className="text-muted-foreground text-right text-sm tracking-wide italic">
+              Trusted Partner
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center py-8">
             <div className="relative flex h-32 w-full items-center justify-center">
               <img
                 src={client.logo}
@@ -133,7 +145,7 @@ export function Clients() {
 
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
         <SectionTitle
-          title="Our Clients"
+          title="Trusted by Industry Leaders"
           subtitle="We partner with top companies across various industries to deliver exceptional results."
         />
 
