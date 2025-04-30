@@ -7,9 +7,18 @@ import { ArrowRight, LineChart, TrendingUp, Users } from "lucide-react";
 // Internal imports
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { IntentSequenceMultipleInputs } from "../../components/intent-sequence-animated-beam/IntentSequenceMultipleInputs";
-import { DotPattern } from "@/components/dot-pattern";
+// import { IntentSequenceMultipleInputs } from "../../components/intent-sequence-animated-beam/IntentSequenceMultipleInputs";
+// import { DotPattern } from "@/components/dot-pattern";
+// import { TrustedBySection } from "@/components/shared/TrustedBySection";
+import { LeadTargetingModal } from "@/components/lead-targeting-form/LeadTargetingModal";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalTrigger,
+} from "@/components/animated-modal";
 import { TrustedBySection } from "@/components/shared/TrustedBySection";
+import { LeadTargetingForm } from "@/components/lead-targeting-form/LeadTargetingForm";
 
 /**
  * HeroTitle component displaying the main heading with styled text
@@ -37,7 +46,7 @@ const HeroTitle = () => {
 /**
  * BadgeLabel component for displaying feature announcement badges
  */
-const BadgeLabel = ({ text }: { text: string }) => {
+export const BadgeLabel = ({ text }: { text: string }) => {
   return (
     <div
       className="border-border bg-background mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm"
@@ -46,7 +55,7 @@ const BadgeLabel = ({ text }: { text: string }) => {
       <span
         className="bg-primary flex h-2 w-2 rounded-full"
         aria-hidden="true"
-      ></span>
+      />
       <span className="text-muted-foreground text-xs font-medium">{text}</span>
     </div>
   );
@@ -55,11 +64,12 @@ const BadgeLabel = ({ text }: { text: string }) => {
 /**
  * CTAButton component for consistent call-to-action buttons
  */
-const CTAButton = ({
+export const CTAButton = ({
   children,
   variant = "default",
   href,
   icon,
+  text,
 }: {
   children: React.ReactNode;
   variant?: "default" | "outline";
@@ -72,10 +82,10 @@ const CTAButton = ({
   );
 
   const button = (
-    <Button size="lg" variant={variant as any} className={buttonClass}>
+    <Button size="lg" variant={variant} className={buttonClass}>
       {icon && (
         <span
-          className="bg-primary-foreground/10 mr-3 -ml-2 inline-flex h-8 w-8 items-center justify-center rounded-full"
+          className="bg-primary-foreground/10 -ml-2 inline-flex h-8 w-8 items-center justify-center rounded-full"
           aria-hidden="true"
         >
           {icon}
@@ -97,96 +107,112 @@ const CTAButton = ({
  */
 export function Hero() {
   return (
-    <section
-      className="relative overflow-hidden"
-      id="home"
-      aria-labelledby="hero-heading"
-    >
-      {/* Background elements */}
-      <div
-        className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
-        aria-hidden="true"
-      ></div>
-      <div
-        className="absolute top-0 right-0 -z-10 h-16 w-16 rounded-full bg-yellow-400/20 blur-2xl md:h-72 md:w-72"
-        aria-hidden="true"
-      ></div>
-      <div
-        className="bg-primary/20 absolute bottom-16 left-0 -z-10 h-36 w-36 rounded-full blur-3xl"
-        aria-hidden="true"
-      ></div>
-
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 py-32 sm:px-6 sm:py-40 lg:px-8">
-        <div className="flex flex-col items-center text-center">
-          <BadgeLabel text="Transform intent into action" />
-
-          <HeroTitle />
-
-          <p className="text-muted-foreground mt-8 max-w-2xl text-center text-lg">
-            Everything your marketing needs, so you can stop blowing the budget
-            and integrate seamlessly with one powerful intent-driven platform.
-          </p>
-
-          <p className="text-muted-foreground mt-4 max-w-2xl text-center text-lg">
-            Transform unknown visitors into loyal customers with precision and
-            scale.
-          </p>
-
-          <div className="relative mt-12 flex flex-col gap-5 sm:flex-row sm:gap-6">
-            {/* Decorative elements around buttons */}
-            <div
-              className="border-primary/30 absolute -top-4 -left-4 h-4 w-4 border-t-2 border-l-2"
-              aria-hidden="true"
-            ></div>
-            <div
-              className="border-primary/30 absolute -right-4 -bottom-4 h-4 w-4 border-r-2 border-b-2"
-              aria-hidden="true"
-            ></div>
-
-            <CTAButton variant="outline">BOOK A DEMO</CTAButton>
-          </div>
-
-          <p className="text-muted-foreground mt-4 text-sm">
-            No credit card required • 14-day free trial
-          </p>
-        </div>
-        {/* Stats bar */}
+    <Modal>
+      <section
+        className="relative overflow-hidden"
+        id="home"
+        aria-labelledby="hero-heading"
+      >
+        {/* Background elements */}
         <div
-          className="border-border/50 bg-background/50 mt-16 flex flex-wrap items-center justify-center gap-6 rounded-lg border p-4 sm:gap-10 md:gap-16"
-          aria-label="Key statistics"
-        >
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1.5">
-              <TrendingUp className="text-primary h-4 w-4" aria-hidden="true" />
-              <p className="text-lg font-bold">245%</p>
-            </div>
-            <p className="text-muted-foreground text-xs">
-              Lead conversion rate
+          className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute top-0 right-0 -z-10 h-16 w-16 rounded-full bg-yellow-400/20 blur-2xl md:h-72 md:w-72"
+          aria-hidden="true"
+        />
+        <div
+          className="bg-primary/20 absolute bottom-16 left-0 -z-10 h-36 w-36 rounded-full blur-3xl"
+          aria-hidden="true"
+        />
+
+        <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 py-32 sm:px-6 sm:py-40 lg:px-8">
+          <div className="flex flex-col items-center text-center">
+            <BadgeLabel text="Transform intent into action" />
+
+            <HeroTitle />
+
+            <p className="text-muted-foreground mt-8 max-w-2xl text-center text-lg">
+              Everything your marketing needs, so you can stop blowing the
+              budget and integrate seamlessly with one powerful intent-driven
+              platform.
             </p>
-          </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1.5">
-              <LineChart
-                className="h-4 w-4 text-yellow-500"
+
+            <p className="text-muted-foreground mt-4 max-w-2xl text-center text-lg">
+              Transform unknown visitors into loyal customers with precision and
+              scale.
+            </p>
+
+            <div className="relative mt-12 flex flex-col gap-5 sm:flex-row sm:gap-6">
+              {/* Decorative elements around buttons */}
+              <div
+                className="border-primary/30 absolute -top-4 -left-4 h-4 w-4 border-t-2 border-l-2"
                 aria-hidden="true"
               />
-              <p className="text-lg font-bold">3.8M</p>
+              <div
+                className="border-primary/30 absolute -right-4 -bottom-4 h-4 w-4 border-r-2 border-b-2"
+                aria-hidden="true"
+              />
+
+              <CTAButton
+                variant="outline"
+                icon={<ArrowRight className="h-4 w-4" />}
+              >
+                <ModalTrigger asChild>
+                  <span>BOOK A DEMO</span>
+                </ModalTrigger>
+              </CTAButton>
             </div>
-            <p className="text-muted-foreground text-xs">
-              Customer interactions
-            </p>
           </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1.5">
-              <Users className="h-4 w-4 text-green-500" aria-hidden="true" />
-              <p className="text-lg font-bold">15k+</p>
+          {/* Stats bar */}
+          <div
+            className="border-border/50 bg-background/50 mt-16 flex flex-wrap items-center justify-center gap-6 rounded-lg border p-4 sm:gap-10 md:gap-16"
+            aria-label="Key statistics"
+          >
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1.5">
+                <TrendingUp
+                  className="text-primary h-4 w-4"
+                  aria-hidden="true"
+                />
+                <p className="text-lg font-bold">245%</p>
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Lead conversion rate
+              </p>
             </div>
-            <p className="text-muted-foreground text-xs">Companies onboarded</p>
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1.5">
+                <LineChart
+                  className="h-4 w-4 text-yellow-500"
+                  aria-hidden="true"
+                />
+                <p className="text-lg font-bold">3.8M</p>
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Customer interactions
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1.5">
+                <Users className="h-4 w-4 text-green-500" aria-hidden="true" />
+                <p className="text-lg font-bold">15k+</p>
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Companies onboarded
+              </p>
+            </div>
           </div>
+          {/* Trusted by section */}
+          <TrustedBySection />
         </div>
-        {/* Trusted by section */}
-        {/* <TrustedBySection /> */}
-      </div>
-    </section>
+      </section>
+      <ModalBody className="bg-background/95 overflow-y-auto backdrop-blur-sm">
+        <ModalContent className="bg-background border-border mx-auto w-full border shadow-lg">
+          <LeadTargetingForm />
+        </ModalContent>
+      </ModalBody>
+    </Modal>
   );
 }

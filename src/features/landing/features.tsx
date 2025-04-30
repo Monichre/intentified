@@ -166,7 +166,7 @@ export function Features() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
+      <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-32">
         <SectionTitle
           title="Packed with Cutting-Edge Features"
           subtitle="Intentified identifies your prospects' real-time interests so you can deliver exactly what they're searching for."
@@ -177,66 +177,66 @@ export function Features() {
             <FeatureCard key={`feature-${i}`} feature={feature} index={i} />
           ))}
         </div>
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4">
+        {/* Feature highlight */}
+        <div className="border-border/50 bg-background/50 mt-24 rounded-xl border p-8 lg:p-10">
+          <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
+            <div
+              className="bg-primary/10 flex h-20 w-20 items-center justify-center rounded-lg md:h-24 md:w-24"
+              aria-hidden="true"
+            >
+              <Zap className="text-primary h-10 w-10 md:h-12 md:w-12" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold tracking-tight">
+                POWERED BY BILLIONS OF INTENT SIGNALS
+              </h3>
+              <p className="text-muted-foreground mt-4 text-lg">
+                Reveal hidden opportunities in your marketing funnel: Website
+                Intent → Social Signals → Keyword Analysis
+              </p>
 
-        <div className="relative mx-auto max-w-7xl px-4">
-          {/* Feature highlight */}
-          <div className="border-border/50 bg-background/50 mt-24 rounded-xl border p-8 lg:p-10">
-            <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
-              <div
-                className="bg-primary/10 flex h-20 w-20 items-center justify-center rounded-lg md:h-24 md:w-24"
-                aria-hidden="true"
-              >
-                <Zap className="text-primary h-10 w-10 md:h-12 md:w-12" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold tracking-tight">
-                  POWERED BY BILLIONS OF INTENT SIGNALS
-                </h3>
-                <p className="text-muted-foreground mt-4 text-lg">
-                  Reveal hidden opportunities in your marketing funnel: Website
-                  Intent → Social Signals → Keyword Analysis
-                </p>
-
-                <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
-                      aria-hidden="true"
-                    >
-                      <Target className="text-primary h-4 w-4" />
-                    </span>
-                    <span className="text-sm font-medium">
-                      Real-time tracking
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
-                      aria-hidden="true"
-                    >
-                      <BarChart className="text-primary h-4 w-4" />
-                    </span>
-                    <span className="text-sm font-medium">
-                      Actionable insights
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
-                      aria-hidden="true"
-                    >
-                      <Zap className="text-primary h-4 w-4" />
-                    </span>
-                    <span className="text-sm font-medium">
-                      Revenue acceleration
-                    </span>
-                  </div>
+              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
+                    aria-hidden="true"
+                  >
+                    <Target className="text-primary h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-medium">
+                    Real-time tracking
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
+                    aria-hidden="true"
+                  >
+                    <BarChart className="text-primary h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-medium">
+                    Actionable insights
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full"
+                    aria-hidden="true"
+                  >
+                    <Zap className="text-primary h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-medium">
+                    Revenue acceleration
+                  </span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* <div className="relative mx-auto my-32 sm:my-40">
+        {/* <div className="relative mx-auto my-32 sm:my-40">
             <IntentSequenceMultipleInputs />
             <DotPattern
               className={cn(
@@ -244,7 +244,6 @@ export function Features() {
               )}
             />
           </div> */}
-        </div>
       </div>
     </section>
   );

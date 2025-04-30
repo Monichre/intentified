@@ -110,84 +110,37 @@ export function Footer() {
         aria-hidden="true"
       ></div>
 
-      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-12">
-          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <FooterHeading>Product</FooterHeading>
-                <ul className="mt-4 space-y-3">
-                  {navigation.product.map((item) => (
-                    <li key={item.name}>
-                      <FooterLink href={item.href}>{item.name}</FooterLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-12 md:mt-0">
-                <FooterHeading>Company</FooterHeading>
-                <ul className="mt-4 space-y-3">
-                  {navigation.company.map((item) => (
-                    <li key={item.name}>
-                      <FooterLink href={item.href}>{item.name}</FooterLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <FooterHeading>Support</FooterHeading>
-                <ul className="mt-4 space-y-3">
-                  {navigation.support.map((item) => (
-                    <li key={item.name}>
-                      <FooterLink href={item.href}>{item.name}</FooterLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-12 md:mt-0">
-                <FooterHeading>Legal</FooterHeading>
-                <ul className="mt-4 space-y-3">
-                  {navigation.legal.map((item) => (
-                    <li key={item.name}>
-                      <FooterLink href={item.href}>{item.name}</FooterLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="space-y-8">
-            <div className="flex items-center">
-              <Image
-                src="/logo-white.png"
-                alt="Intentified"
-                width={200}
-                height={50}
-              />
-            </div>
-            <p className="text-muted-foreground text-base">
-              Transform intent into revenue with AI-powered marketing
-              intelligence.
-            </p>
-            <div className="flex space-x-5">
-              {navigation.social.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
-                  aria-label={item.name}
-                  target={item.openInNewTab ? "_blank" : "_self"}
-                >
-                  <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-5 w-5" aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
-          </div>
+      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="flex w-full items-center justify-center space-x-5">
+          <Image
+            src="/logo-white.png"
+            alt="Intentified"
+            width={200}
+            height={50}
+            className="object-scale-down"
+          />
+          {navigation.social.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              aria-label={item.name}
+              target={item.openInNewTab ? "_blank" : "_self"}
+            >
+              <span className="sr-only">{item.name}</span>
+              <item.icon className="h-5 w-5" aria-hidden="true" />
+            </Link>
+          ))}
+
+          <ul className="flex space-x-4">
+            {navigation.product.map((item) => (
+              <li key={item.name}>
+                <FooterLink href={item.href}>{item.name}</FooterLink>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="border-border/50 mt-12 border-t pt-8">
+        <div className="border-border/50 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
             &copy; {new Date().getFullYear()} Intentified, Inc. All rights
             reserved.

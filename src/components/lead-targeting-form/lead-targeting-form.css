@@ -1,0 +1,170 @@
+/* lead-targeting-form.css - Tailwind CSS v4 compatible */
+
+/* Form container styling */
+#leadTargetingForm {
+	border: 1px solid var(--color-border);
+	padding: 1.5rem;
+	box-shadow: var(--shadow-md);
+	border-radius: 0.5rem;
+	transition: all 200ms ease-in-out;
+}
+
+/* Section styling */
+#leadTargetingForm section {
+	margin-bottom: 2rem;
+	padding: 1.5rem;
+	border-radius: 0.375rem;
+	transition: all 200ms ease-in-out;
+	background-color: color-mix(in oklch, var(--color-card), transparent 70%);
+}
+
+/* Heading styling */
+#leadTargetingForm h2 {
+	margin-bottom: 0.75rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--color-foreground);
+}
+
+/* Paragraph styling */
+#leadTargetingForm p {
+	margin-bottom: 1rem;
+	color: var(--color-muted-foreground);
+}
+
+/* Italic text styling */
+#leadTargetingForm .italic {
+	font-size: 0.875rem;
+	color: var(--color-accent-foreground);
+}
+
+/* Input and label styling */
+#leadTargetingForm label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
+	color: var(--color-foreground);
+}
+
+#leadTargetingForm input[type="text"] {
+	width: 100%;
+	padding: 0.625rem 1rem;
+	border-radius: 0.375rem;
+	transition: all 200ms ease-in-out;
+	border: 1px solid var(--color-input);
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+}
+
+#leadTargetingForm input[type="text"]:focus {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 2px
+		color-mix(in oklch, var(--color-primary), transparent 80%);
+	outline: none;
+}
+
+#leadTargetingForm input[type="submit"] {
+	padding: 0.75rem 1.5rem;
+	font-weight: 600;
+	border-radius: 0.375rem;
+	transition: all 200ms ease-in-out;
+	background-color: var(--color-primary);
+	color: var(--color-primary-foreground);
+}
+
+#leadTargetingForm input[type="submit"]:hover {
+	background-color: color-mix(in oklch, var(--color-primary), black 10%);
+	transform: scale(1.01);
+}
+
+#leadTargetingForm input[type="submit"]:focus {
+	box-shadow: 0 0 0 2px
+		color-mix(in oklch, var(--color-primary), transparent 50%);
+	outline: none;
+}
+
+/* Error state styling */
+#formError {
+	font-size: 0.875rem;
+	font-weight: 500;
+	margin-bottom: 1rem;
+	padding: 0.75rem;
+	border-radius: 0.375rem;
+	color: var(--color-destructive);
+	background-color: color-mix(
+		in oklch,
+		var(--color-destructive),
+		transparent 90%
+	);
+}
+
+#formError ~ form input[required]:invalid {
+	border-color: var(--color-destructive);
+}
+
+/* Required field indicator */
+label[for]::after {
+	content: attr(data-required);
+	margin-left: 0.25rem;
+	font-size: 0.875rem;
+	font-weight: 400;
+	color: var(--color-destructive);
+}
+
+/* Grid layout improvements */
+#leadTargetingForm .grid {
+	gap: 1.5rem;
+}
+
+/* Links styling */
+#leadTargetingForm a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 4px;
+	transition: color 200ms ease;
+}
+
+#leadTargetingForm a:hover {
+	color: color-mix(in oklch, var(--color-primary), black 20%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	#leadTargetingForm {
+		padding: 1rem;
+	}
+
+	#leadTargetingForm section {
+		padding: 1rem;
+	}
+}
+
+/* Animate form elements on load */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+#leadTargetingForm section {
+	animation: fadeIn 0.3s ease-out forwards;
+	animation-delay: calc(var(--section-index, 0) * 0.1s);
+}
+
+#leadTargetingForm section:nth-child(1) {
+	--section-index: 1;
+}
+#leadTargetingForm section:nth-child(2) {
+	--section-index: 2;
+}
+#leadTargetingForm section:nth-child(3) {
+	--section-index: 3;
+}
+#leadTargetingForm section:nth-child(4) {
+	--section-index: 4;
+}

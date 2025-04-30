@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { GeistMono } from "geist/font/mono";
 import { ClerkProvider } from "@clerk/nextjs";
 
-import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/providers/theme-provider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Intentified - Customer Relationship Management",
