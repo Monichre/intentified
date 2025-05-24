@@ -1,0 +1,14 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+- **Testing**
+  - Place tests in `__tests__` directories adjacent to source
+  - Cover core business logic, API endpoints, and UI components
+  - Use descriptive test names and clear assertions
+- **Documentation**
+  - Maintain up-to-date [README.md](mdc:README.md) and [docs/](mdc:docs/)
+  - Document key modules, data flow, and extension points
+  - Use code comments for complex logic
+  - Reference actual code in documentation and rules

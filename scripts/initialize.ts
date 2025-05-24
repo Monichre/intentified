@@ -78,7 +78,7 @@ const setupOrm = async (packageManager: string) => {
     'run',
     'build',
     filterCommand,
-    '@repo/database',
+    '@repo/db',
   ].join(' ');
 
   await exec(command, execSyncOpts);

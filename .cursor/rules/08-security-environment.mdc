@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+- **Secrets**
+  - Store all secrets in `.env` and never commit them
+- **Environment**
+  - Use environment variables for config
+  - Document required env vars in [README.md](mdc:README.md)
+- **Security**
+  - Validate all user input
+  - Sanitize data before DB/API usage
+  - Use HTTPS and secure cookies
+  - Regularly update dependencies

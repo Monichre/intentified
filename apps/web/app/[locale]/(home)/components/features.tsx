@@ -1,21 +1,16 @@
-import type { Dictionary } from '@repo/internationalization';
 import { User } from 'lucide-react';
 
-type FeaturesProps = {
-  dictionary: Dictionary;
-};
-
-export const Features = ({ dictionary }: FeaturesProps) => (
+export const Features = () => (
   <div className="w-full py-20 lg:py-40">
     <div className="container mx-auto">
       <div className="flex flex-col gap-10">
         <div className="flex flex-col items-start gap-4">
           <div className="flex flex-col gap-2">
             <h2 className="max-w-xl text-left font-regular text-3xl tracking-tighter md:text-5xl">
-              {dictionary.web.home.features.title}
+              Features built for modern businesses
             </h2>
             <p className="max-w-xl text-left text-lg text-muted-foreground leading-relaxed tracking-tight lg:max-w-lg">
-              {dictionary.web.home.features.description}
+              Our platform offers a comprehensive suite of tools designed to enhance your business operations
             </p>
           </div>
         </div>
@@ -24,10 +19,10 @@ export const Features = ({ dictionary }: FeaturesProps) => (
             <User className="h-8 w-8 stroke-1" />
             <div className="flex flex-col">
               <h3 className="text-xl tracking-tight">
-                {dictionary.web.home.features.items[0].title}
+                Streamlined Workflows
               </h3>
               <p className="max-w-xs text-base text-muted-foreground">
-                {dictionary.web.home.features.items[0].description}
+                Automate repetitive tasks and optimize your team's productivity with intelligent workflow management
               </p>
             </div>
           </div>
@@ -35,10 +30,10 @@ export const Features = ({ dictionary }: FeaturesProps) => (
             <User className="h-8 w-8 stroke-1" />
             <div className="flex flex-col">
               <h3 className="text-xl tracking-tight">
-                {dictionary.web.home.features.items[1].title}
+                Advanced Analytics
               </h3>
               <p className="max-w-xs text-base text-muted-foreground">
-                {dictionary.web.home.features.items[1].description}
+                Gain valuable insights from your data with our powerful analytics and reporting tools
               </p>
             </div>
           </div>
@@ -47,10 +42,10 @@ export const Features = ({ dictionary }: FeaturesProps) => (
             <User className="h-8 w-8 stroke-1" />
             <div className="flex flex-col">
               <h3 className="text-xl tracking-tight">
-                {dictionary.web.home.features.items[2].title}
+                Secure Collaboration
               </h3>
               <p className="max-w-xs text-base text-muted-foreground">
-                {dictionary.web.home.features.items[2].description}
+                Work securely with team members and partners with our encrypted collaboration features
               </p>
             </div>
           </div>
@@ -58,10 +53,10 @@ export const Features = ({ dictionary }: FeaturesProps) => (
             <User className="h-8 w-8 stroke-1" />
             <div className="flex flex-col">
               <h3 className="text-xl tracking-tight">
-                {dictionary.web.home.features.items[3].title}
+                Customizable Integration
               </h3>
               <p className="max-w-xs text-base text-muted-foreground">
-                {dictionary.web.home.features.items[3].description}
+                Connect with your favorite tools and services using our flexible API and integration options
               </p>
             </div>
           </div>

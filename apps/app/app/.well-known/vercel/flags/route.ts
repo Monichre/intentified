@@ -1,3 +1,5 @@
-import { getFlags } from '@repo/feature-flags/access';
+import { NextResponse } from 'next/server';
 
-export const GET = getFlags;
+export const GET = () => {
+  return NextResponse.json({});
+};

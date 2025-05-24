@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+- **Branching**
+  - Use feature branches for new work
+  - Merge via pull requests with code review
+- **CI/CD**
+  - Use GitHub Actions for automated tests and builds
+- **Releases**
+  - Tag releases and update changelogs
+- **Code Review**
+  - Require reviews for all merges to main
+  - Use linters and formatters (see [biome.json](mdc:biome.json))

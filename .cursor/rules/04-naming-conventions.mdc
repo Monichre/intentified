@@ -1,0 +1,22 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+- **Directory Naming**
+  - Use lowercase with dashes (e.g., `components/auth-wizard`)
+- **File Naming**
+  - React components: PascalCase (e.g., `AuthWizard.tsx`)
+  - Hooks: camelCase (e.g., `useAuthWizard.ts`)
+  - Utility files: lowercase with dashes (e.g., `get-wizard-data.ts`)
+- **Export Style**
+  - Always use named exports for modules and components
+- **Constants**
+  - Use all caps with underscores (e.g., `export const API_URL = '...'`)
+- **Examples**
+  ```typescript
+  // ✅ DO:
+  export const API_URL = '...';
+  export function useAuthWizard() { ... }
+  export { AuthWizard } from './AuthWizard';
+  ```

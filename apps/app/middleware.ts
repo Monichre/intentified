@@ -1,19 +1,11 @@
 import { authMiddleware } from '@repo/auth/middleware';
-import {
-  noseconeMiddleware,
-  noseconeOptions,
-  noseconeOptionsWithToolbar,
-} from '@repo/security/middleware';
+import { NextResponse } from 'next/server';
 import type { NextMiddleware } from 'next/server';
-import { env } from './env';
 
-const securityHeaders = env.FLAGS_SECRET
-  ? noseconeMiddleware(noseconeOptionsWithToolbar)
-  : noseconeMiddleware(noseconeOptions);
-
-export default authMiddleware(() =>
-  securityHeaders()
-) as unknown as NextMiddleware;
+export default authMiddleware(async (_auth, request) => {
+  // Authentication is handled by authMiddleware
+  return NextResponse.next();
+}) as unknown as NextMiddleware;
 
 export const config = {
   matcher: [

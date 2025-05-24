@@ -1,0 +1,21 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description:
+globs:
+alwaysApply: false
+---
+- **API Endpoints**
+  - Define endpoints in `apps/api/app/` and `apps/api/app/api/`
+  - Use RESTful conventions and clear naming
+  - Validate input and handle errors gracefully
+- **Database**
+  - Use Prisma or ORM in `packages/database/prisma/`
+  - Keep schema and migrations in sync
+  - Use abstraction layers for DB access
+- **External Services**
+  - Integrate via dedicated packages (e.g., `packages/payments/`, `packages/notifications/`)
+  - Store secrets in `.env` and never commit them

@@ -1,0 +1,6 @@
+---
+title: Resend Email Integration with Next.js
+description: Guidelines for implementing transactional emails using Resend, Next.js, and React Email
+glob: "**/*.{ts,tsx,js,jsx}"
+alwaysApply: false
+---

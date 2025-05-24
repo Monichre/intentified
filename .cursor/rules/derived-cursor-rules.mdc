@@ -1,0 +1,50 @@
+---
+description: AI rules derived by SpecStory from the project AI interaction history
+globs: *
+---
+
+## PROJECT DOCUMENTATION & CONTEXT SYSTEM
+
+All project documentation, including coding standards, workflow guidelines, and this rules file itself, will be stored in the project root directory.  The main documentation will be in markdown format.  New versions of this file will be tracked with timestamps in filenames (e.g., `ai_coding_assistant_rules_2025-10-27.md`).  Version updates to the Prisma schema are documented in the `README.md` file within the `document-processing` directory. The `schema-extension.sql` file contains PostgreSQL-specific extensions, functions, and policies that complement the Prisma schema.  Comprehensive documentation for Prisma setup and usage, including context7 MCP, should be added to the `document-processing` directory.  This documentation should follow a step-by-step approach, including planning and pseudocode stages.  The documentation should also include details about existing database structure and the relevant files (e.g., `index.ts`, `schema.prisma`, `schema-extension.sql`).
+
+
+## TECH STACK
+
+- **Programming Languages:**  TypeScript (Add languages as needed)
+- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape (add libraries as needed)
+- **Databases:** PostgreSQL
+- **Cloud Providers:** Supabase (add providers as needed)
+- **Version Control:** Git
+
+## CODING STANDARDS
+
+- Code should be well-documented.
+- Follow consistent indentation (e.g., 2 spaces).
+- Use descriptive variable and function names.
+- All Prisma models should be defined in `document-processing.prisma`
+- When handling form input changes, ensure proper mapping between input IDs and state variables to prevent update issues. Use explicit mapping or a helper function (as demonstrated in the fix for the 2025-05-24 issue).
+
+
+## WORKFLOW & RELEASE RULES
+
+- All code changes must be submitted via pull requests.
+- Pull requests must be reviewed by at least one other engineer before merging.
+-  Thorough testing is required before each release.
+- The AI assistant should be used to scrape data as needed (e.g., using `firecrawl_scrape`).  Results should be saved in markdown format.  If the scraping tool is blocked, the user should provide alternative access to the data (e.g., text, PDF, HTML export). The output should be saved to the specified location (e.g., `apps/intentified/content/intent-data.md`).
+
+
+## DEBUGGING
+
+- Use a debugger to step through code.
+- Add logging statements to track execution flow.
+- Leverage Prisma's error messages for database-related issues.
+
+
+## DATABASE SCHEMA
+
+The database schema is defined using Prisma. The main schema file is `document-processing.prisma`.  PostgreSQL extensions, functions, triggers, and RLS policies are defined separately in `schema-extension.sql` and must be applied after running Prisma migrations.  The `Vector` type in the Prisma schema requires the `vector` extension in PostgreSQL.  The schema includes models for documents, chunks, entities, and processing tasks.  See the `README.md` file in the `document-processing` directory for detailed setup instructions.
+
+
+## AI CODING ASSISTANT RULES
+
+This file defines the rules for the AI coding assistant.  All rules should be clearly stated and easy to understand.  Any conflicts between rules must be resolved or flagged for user confirmation.  The AI coding assistant must adhere to all rules defined in this file at all times.  New rules will be added as needed.  The AI assistant may utilize external tools like `firecrawl_scrape` to retrieve and process data as directed by the user.  Output from these tools should be saved appropriately (e.g., `intent-data.md`).  If a website blocks scraping attempts, alternative data access methods (e.g., direct text, PDF, HTML) should be requested from the user.  The issue reported on 2025-05-24 regarding input updates not being reflected has been resolved by implementing explicit field mapping in the `handleInputChange` function.  This ensures accurate data updates in the application state.  The AI assistant should also incorporate the `@onboarding-form.tsx` component into `@page.tsx` and integrate the `@intentified dashboard/pipelines/seo-digital-processing` sequence into `@page.tsx` (pending resolution of file path issues).

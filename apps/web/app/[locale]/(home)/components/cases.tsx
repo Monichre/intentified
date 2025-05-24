@@ -6,14 +6,9 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@repo/design-system/components/ui/carousel';
-import type { Dictionary } from '@repo/internationalization';
 import { useEffect, useState } from 'react';
 
-type CasesProps = {
-  dictionary: Dictionary;
-};
-
-export const Cases = ({ dictionary }: CasesProps) => {
+export const Cases = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -38,7 +33,7 @@ export const Cases = ({ dictionary }: CasesProps) => {
       <div className="container mx-auto">
         <div className="flex flex-col gap-10">
           <h2 className="text-left font-regular text-xl tracking-tighter md:text-5xl lg:max-w-xl">
-            {dictionary.web.home.cases.title}
+            Trusted by industry leaders worldwide
           </h2>
           <Carousel setApi={setApi} className="w-full">
             <CarouselContent>

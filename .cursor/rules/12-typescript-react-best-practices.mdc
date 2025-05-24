@@ -1,0 +1,20 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+- **TypeScript**
+  - Use interfaces over types where possible
+  - Avoid enums; use const maps instead
+  - Ensure type safety and inference
+  - Use `satisfies` for type validation
+- **React 19/Next.js 15**
+  - Favor React Server Components (RSC) where possible
+  - Minimize 'use client' directives
+  - Use Suspense for async operations
+  - Use `useActionState` for form state
+  - Use async runtime APIs (e.g., `await cookies()`)
+- **Component Structure**
+  - Structure: exports, subcomponents, helpers, types
+  - Use early returns for readability
+  - Implement error boundaries and accessibility

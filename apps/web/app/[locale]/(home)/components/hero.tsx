@@ -2,15 +2,10 @@ import { env } from '@/env';
 import { blog } from '@repo/cms';
 import { Feed } from '@repo/cms/components/feed';
 import { Button } from '@repo/design-system/components/ui/button';
-import type { Dictionary } from '@repo/internationalization';
 import { MoveRight, PhoneCall } from 'lucide-react';
 import Link from 'next/link';
 
-type HeroProps = {
-  dictionary: Dictionary;
-};
-
-export const Hero = async ({ dictionary }: HeroProps) => (
+export const Hero = async () => (
   <div className="w-full">
     <div className="container mx-auto">
       <div className="flex flex-col items-center justify-center gap-8 py-20 lg:py-40">
@@ -23,7 +18,7 @@ export const Hero = async ({ dictionary }: HeroProps) => (
               return (
                 <Button variant="secondary" size="sm" className="gap-4" asChild>
                   <Link href={`/blog/${data.blog.posts.item?._slug}`}>
-                    {dictionary.web.home.hero.announcement}{' '}
+                    Read our latest post{' '}
                     <MoveRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -33,10 +28,10 @@ export const Hero = async ({ dictionary }: HeroProps) => (
         </div>
         <div className="flex flex-col gap-4">
           <h1 className="max-w-2xl text-center font-regular text-5xl tracking-tighter md:text-7xl">
-            {dictionary.web.home.meta.title}
+            Next-gen platform for modern businesses
           </h1>
           <p className="max-w-2xl text-center text-lg text-muted-foreground leading-relaxed tracking-tight md:text-xl">
-            {dictionary.web.home.meta.description}
+            Streamline your operations with our innovative solution designed for today's challenges
           </p>
         </div>
         <div className="flex flex-row gap-3">

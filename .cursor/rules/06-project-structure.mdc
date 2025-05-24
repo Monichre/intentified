@@ -1,0 +1,19 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+- **Project Root**
+  - Contains configuration files: [package.json](mdc:package.json), [tsconfig.json](mdc:tsconfig.json), [README.md](mdc:README.md), [biome.json](mdc:biome.json)
+  - Top-level directories:
+    - `apps/`: Application entry points (API, web, docs, studio, etc.)
+    - `packages/`: Shared libraries, design system, utilities, and feature modules
+    - `scripts/`: Project automation and code generation scripts
+    - `turbo/`: TurboRepo configuration and generators
+    - `.github/`: GitHub workflows and issue templates
+    - `.specstory/`, `.turbo/`: Internal tooling and cache
+- **Navigation Tips**
+  - Use `apps/` for app-specific logic and routes
+  - Use `packages/` for shared, reusable code
+  - Use `intentified/` for the main Next.js app and its features
+  - Use `docs/` for documentation and API references

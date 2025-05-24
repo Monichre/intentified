@@ -1,0 +1,21 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+- **Single Responsibility Principle**
+  - Each module/function should have one reason to change
+  - Refactor modules exceeding 100–150 lines or mixing concerns
+- **Open/Closed Principle**
+  - Design modules to be open for extension, closed for modification
+  - Use interfaces and abstract types for contracts
+- **Liskov Substitution Principle**
+  - Ensure substitutability and maintain invariants in extensions
+- **Interface Segregation Principle**
+  - Design focused, minimal interfaces; avoid "fat" interfaces
+- **Dependency Inversion Principle**
+  - Depend on abstractions, not concretions; use dependency injection
+- **Implementation**
+  - Use composition over inheritance
+  - Favor functional and declarative patterns
+  - Avoid deep inheritance hierarchies and type checks

@@ -14,35 +14,28 @@ import {
 import { Menu, MoveRight, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-
-import type { Dictionary } from '@repo/internationalization';
 import Image from 'next/image';
-import { LanguageSwitcher } from './language-switcher';
 import Logo from './logo.svg';
 
-type HeaderProps = {
-  dictionary: Dictionary;
-};
-
-export const Header = ({ dictionary }: HeaderProps) => {
+export const Header = () => {
   const navigationItems = [
     {
-      title: dictionary.web.header.home,
+      title: 'Home',
       href: '/',
       description: '',
     },
     {
-      title: dictionary.web.header.product.title,
-      description: dictionary.web.header.product.description,
+      title: 'Product',
+      description: 'Everything you need to know about our product',
       items: [
         {
-          title: dictionary.web.header.product.pricing,
+          title: 'Pricing',
           href: '/pricing',
         },
       ],
     },
     {
-      title: dictionary.web.header.blog,
+      title: 'Blog',
       href: '/blog',
       description: '',
     },
@@ -50,7 +43,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
 
   if (env.NEXT_PUBLIC_DOCS_URL) {
     navigationItems.push({
-      title: dictionary.web.header.docs,
+      title: 'Docs',
       href: env.NEXT_PUBLIC_DOCS_URL,
       description: '',
     });
@@ -89,7 +82,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
                             </div>
                             <Button size="sm" className="mt-10" asChild>
                               <Link href="/contact">
-                                {dictionary.web.global.primaryCta}
+                                Get Started
                               </Link>
                             </Button>
                           </div>
@@ -126,23 +119,20 @@ export const Header = ({ dictionary }: HeaderProps) => {
         </div>
         <div className="flex w-full justify-end gap-4">
           <Button variant="ghost" className="hidden md:inline" asChild>
-            <Link href="/contact">{dictionary.web.header.contact}</Link>
+            <Link href="/contact">Contact</Link>
           </Button>
           <div className="hidden border-r md:inline" />
-          <div className="hidden md:inline">
-            <LanguageSwitcher />
-          </div>
           <div className="hidden md:inline">
             <ModeToggle />
           </div>
           <Button variant="outline" asChild className="hidden md:inline">
             <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-in`}>
-              {dictionary.web.header.signIn}
+              Sign In
             </Link>
           </Button>
           <Button asChild>
             <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-up`}>
-              {dictionary.web.header.signUp}
+              Sign Up
             </Link>
           </Button>
         </div>
