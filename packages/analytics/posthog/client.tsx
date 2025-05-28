@@ -15,11 +15,11 @@ export const PostHogProvider = (
 ) => {
   useEffect(() => {
     posthog.init(keys().NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: '/ingest',
-      ui_host: keys().NEXT_PUBLIC_POSTHOG_HOST,
-      person_profiles: 'identified_only',
+      api_host: keys().NEXT_PUBLIC_POSTHOG_HOST,
+      capture_exceptions: true,
+      debug: process.env.NODE_ENV === 'development',
       capture_pageview: false, // Disable automatic pageview capture, as we capture manually
-      capture_pageleave: true, // Overrides the `capture_pageview` setting
+      capture_pageleave: true,  // Overrides the `capture_pageview` setting
     }) as PostHog;
   }, []);
 
