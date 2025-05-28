@@ -1,13 +1,11 @@
-import { env } from '@/env';
+
 import { config, withAnalyzer } from '@repo/next-config';
-import { withLogging, withSentry } from '@repo/observability/next-config';
 import type { NextConfig } from 'next';
+import { env } from 'process'
 
-let nextConfig: NextConfig = withLogging(config);
+let nextConfig: NextConfig =config
 
-if (env.VERCEL) {
-  nextConfig = withSentry(nextConfig);
-}
+
 
 if (env.ANALYZE === 'true') {
   nextConfig = withAnalyzer(nextConfig);
