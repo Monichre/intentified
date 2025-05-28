@@ -1,0 +1,124 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+## documents
+
+Public
+
+Allowed MIME types: All types are allowed
+
+Max file size limit: No limit
+
+## Upload a file
+
+[Documentation](https://supabase.com/docs/reference/javascript/storage-from-upload)
+
+Upload a file to an existing bucket. RLS policy permissions required:
+- `buckets` table permissions: none
+- `objects` table permissions: only `insert` when you are uploading new files and `select`, `insert`, and `update` when you are upserting files.
+
+```
+const avatarFile = event.target.files[0]
+```
+
+const { data, error } = await supabase
+
+.storage
+
+.from('documents')
+
+.*upload*('folder/avatar1.png', avatarFile, {
+
+cacheControl: '3600',
+
+upsert: false
+
+})
+
+## Delete files
+
+[Documentation](https://supabase.com/docs/reference/javascript/storage-from-remove)
+
+Delete files within the bucket. RLS policy permissions required:
+- `buckets` table permissions: none
+- `objects` table permissions: `delete` and `select`
+
+```
+const { data, error } = await supabase
+```
+
+.storage
+
+.from('documents')
+
+.*remove*(['folder/avatar1.png'])
+
+## List all files
+
+[Documentation](https://supabase.com/docs/reference/javascript/storage-from-list)
+
+List all files within the bucket. RLS policy permissions required:
+- `buckets` table permissions: none
+- `objects` table permissions: `select`
+
+```
+const { data, error } = await supabase
+```
+
+.storage
+
+.from('documents')
+
+.*list*('folder', {
+
+limit: 100,
+
+offset: 0,
+
+sortBy: { column: 'name', order: 'asc' },
+
+})
+
+## Download a file
+
+[Documentation](https://supabase.com/docs/reference/javascript/storage-from-download)
+
+Downloads a file from a private bucket. For public buckets, make a request to the URL returned from getPublicUrl instead. RLS policy permissions required:
+- `buckets` table permissions: none
+- `objects` table permissions: `select`
+
+```
+const { data, error } = await supabase
+```
+
+.storage
+
+.from('documents')
+
+.*download*('folder/avatar1.png')
+
+## Retrieve public URL
+
+[Documentation](https://supabase.com/docs/reference/javascript/storage-from-getpublicurl)
+
+A simple convenience function to get the URL for an asset in a public bucket. If you do not want to use this function, you can construct the public URL by concatenating the bucket URL with the path to the asset.
+
+This function does not verify if the bucket is public. If a public URL is created for a bucket which is not public, you will not be able to download the asset.
+
+The bucket needs to be set to public, either via `updateBucket()` or by going to Storage on supabase.com/dashboard, clicking the overflow menu on a bucket and choosing "Make public"
+
+RLS policy permissions required:
+- `buckets` table permissions: none
+- `objects` table permissions: none
+
+```
+const { data } = supabase
+```
+
+.storage
+
+.from('documents')
+
+.*getPublicUrl*('folder/avatar1.png')
