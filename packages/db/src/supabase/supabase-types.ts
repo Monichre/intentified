@@ -8,6 +8,73 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
   public: {
     Tables: {
+      CSVFile: {
+        Row: {
+          id: string
+          name: string
+          url: string
+          createdAt: string
+          updatedAt: string
+          status: string
+          totalRows: number
+          validRows: number
+          invalidRows: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          url: string
+          createdAt?: string
+          updatedAt?: string
+          status?: string
+          totalRows?: number
+          validRows?: number
+          invalidRows?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          url?: string
+          createdAt?: string
+          updatedAt?: string
+          status?: string
+          totalRows?: number
+          validRows?: number
+          invalidRows?: number
+        }
+      }
+      CSVRow: {
+        Row: {
+          id: string
+          fileId: string
+          rowData: Json
+          rowIndex: number
+          isValid: boolean
+          errors?: string | null
+          createdAt: string
+          updatedAt: string
+        }
+        Insert: {
+          id?: string
+          fileId: string
+          rowData: Json
+          rowIndex: number
+          isValid?: boolean
+          errors?: string | null
+          createdAt?: string
+          updatedAt?: string
+        }
+        Update: {
+          id?: string
+          fileId?: string
+          rowData?: Json
+          rowIndex?: number
+          isValid?: boolean
+          errors?: string | null
+          createdAt?: string
+          updatedAt?: string
+        }
+      }
       doc_processor_documents: {
         Row: {
           id: string
