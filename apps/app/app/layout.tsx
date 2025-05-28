@@ -1,8 +1,8 @@
-import { env } from '@/env';
+
 import './styles.css';
 import { DesignSystemProvider } from '@repo/design-system';
 import { fonts } from '@repo/design-system/lib/fonts';
-import { Toolbar } from '@repo/feature-flags/components/toolbar';
+
 import type { ReactNode } from 'react';
 
 type RootLayoutProperties = {
@@ -14,15 +14,15 @@ const RootLayout = ({ children }: RootLayoutProperties) => (
     <body>
       <DesignSystemProvider
         privacyUrl={new URL(
-          '/legal/privacy',
-          env.NEXT_PUBLIC_WEB_URL
-        ).toString()}
-        termsUrl={new URL('/legal/terms', env.NEXT_PUBLIC_WEB_URL).toString()}
-        helpUrl={env.NEXT_PUBLIC_DOCS_URL}
+              '/legal/privacy',
+              process.env.NEXT_PUBLIC_WEB_URL
+            ).toString()}
+            termsUrl={new URL('/legal/terms', process.env.NEXT_PUBLIC_WEB_URL).toString()}
+            helpUrl={process.env.NEXT_PUBLIC_DOCS_URL}
       >
         {children}
       </DesignSystemProvider>
-      <Toolbar />
+      
     </body>
   </html>
 );

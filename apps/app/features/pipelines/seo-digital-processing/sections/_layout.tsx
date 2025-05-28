@@ -2,25 +2,23 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useFormState } from "react-dom";
+import { useFormState } from "react";
 
-import WebsiteFormSection from "@/components/sections/website-form";
-import { SEOScoreSection } from "@/components/sections/seo-score";
-import { WebVitalsSection } from "@/components/sections/web-vitals";
-import { AnalyzeWithAISection } from "@/components/sections/analyze-with-ai";
-import { OgImageSection, OgInfoFacts } from "@/components/sections/og-images";
 
-import { Logo, NewCultBadge } from "@/components/ui/logo";
-
-import { combinedUrlActions } from "@/app/actions";
-import { evaluateAll } from "@/lib/seo";
 
 import {
   CollectionPeriod,
   CoreVitalsAssessment,
   SEOData,
   WebVitals,
-} from "../../lib/types";
+} from "../lib/types";
+import { combinedUrlActions } from "@/features/pipelines/seo-digital-processing/lib/actions"
+import { evaluateAll } from "@/features/pipelines/seo-digital-processing/lib/seo"
+import { AnalyzeWithAISection } from "@/features/pipelines/seo-digital-processing/sections/analyze-with-ai"
+import { OgImageSection, OgInfoFacts } from "@/features/pipelines/seo-digital-processing/sections/og-images"
+import { SEOScoreSection } from "@/features/pipelines/seo-digital-processing/sections/seo-score"
+import { WebVitalsSection } from "@/features/pipelines/seo-digital-processing/sections/web-vitals"
+import WebsiteFormSection from "@/features/pipelines/seo-digital-processing/sections/website-form"
 
 interface ScrapeFormState {
   allSeoData: SEOData[];
@@ -71,8 +69,8 @@ export default function SectionLayout() {
     <div className=" flex flex-col w-full h-full items-center justify-center overflow-hidden">
       <header className="top-1 absolute">
         <div className="flex items-start justify-start w-full pt-3 text-base-200">
-          <Logo />
-          <h1 className="text-xl">cleanmyseo.com</h1>
+          
+          <h1 className="text-xl">Intentified Data Platform SEO Audit</h1>
         </div>
       </header>
 

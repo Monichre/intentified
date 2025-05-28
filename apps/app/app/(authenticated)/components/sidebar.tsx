@@ -68,40 +68,36 @@ const data = {
   },
   navMain: [
     {
-      title: 'Playground',
-      url: '#',
+      title: 'Dashboard',
+      url: '/',
       icon: SquareTerminalIcon,
       isActive: true,
       items: [
         {
-          title: 'History',
-          url: '#',
+          title: 'Overview',
+          url: '/',
         },
         {
-          title: 'Starred',
-          url: '#',
-        },
-        {
-          title: 'Settings',
-          url: '#',
+          title: 'Search',
+          url: '/search',
         },
       ],
     },
     {
-      title: 'Models',
+      title: 'AI Agents',
       url: '#',
       icon: BotIcon,
       items: [
         {
-          title: 'Genesis',
+          title: 'Processing',
           url: '#',
         },
         {
-          title: 'Explorer',
+          title: 'Prompting',
           url: '#',
         },
         {
-          title: 'Quantum',
+          title: 'Analysis',
           url: '#',
         },
       ],
