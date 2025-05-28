@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { setupCrawling } from "@/features/pipelines/seo/lib/crawl"
 import { evaluateAll } from "@/features/pipelines/seo/lib/seo"
 import type { SEOData, WebVitals, CollectionPeriod, CoreVitalsAssessment } from "@/features/pipelines/seo/lib/types"
-import type { convertToHttps } from "@/features/pipelines/seo/lib/utils"
+import { convertToHttps } from "@/features/pipelines/seo/lib/utils"
 import { fetchCrUXData } from "@/features/pipelines/seo/lib/web-vitals"
 
 

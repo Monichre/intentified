@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const convertToHttps = (inputUrl) => {
+export const convertToHttps = (inputUrl: string): string => {
   if (!/^https?:\/\//i.test(inputUrl)) {
     return `https://${inputUrl}`;
   }
