@@ -3,6 +3,13 @@ description: When creating or working on tickets
 globs: 
 alwaysApply: false
 ---
+---
+description: Ticket Workflow and Development Process
+globs: 
+alwaysApply: false
+---
+
+
 # Ticket Workflow and Development Process
 
 This rule documents the ticket system and development process for the QuickBooks Oracle project.

@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* Tailwind CSS v4 Theme Configuration */
+
+@theme {
+  /* Container */
+  --container-center: true;
+  --container-padding: 2rem;
+  
+  /* Screens */
+  --screen-2xl: 1400px;
+  
+  /* Border Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  
+  /* Colors */
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  
+  /* Primary */
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  /* Secondary */
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  /* Destructive */
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  
+  /* Muted */
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  /* Accent */
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  /* Popover */
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  
+  /* Card */
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  
+  /* Base Colors - Dark Theme */
+  --color-base-black: #0A0A0A;
+  --color-base-975: #121212;
+  --color-base-950: #1B1B1B;
+  --color-base-900: #242424;
+  --color-base-850: #2D2D2D;
+  --color-base-800: #363636;
+  --color-base-700: #4A4A4A;
+  --color-base-600: #5E5E5E;
+  --color-base-500: #727272;
+  --color-base-300: #9C9C9C;
+  --color-base-200: #B6B6B6;
+  --color-base-150: #D0D0D0;
+  --color-base-100: #EAEAEA;
+  --color-base-50: #F5F5F5;
+  --color-base-25: #FAFAFA;
+  --color-base-paper: #FFFFFF;
+  
+  /* Vibrant Colors */
+  --color-red: #FF1744;
+  --color-red-light: #FF616F;
+  
+  --color-orange: #FF6D00;
+  --color-orange-light: #FFA040;
+  
+  --color-yellow: #FFD600;
+  --color-yellow-light: #FFE082;
+  
+  --color-green: #00E676;
+  --color-green-light: #66FFA6;
+  
+  --color-cyan: #00B8D4;
+  --color-cyan-light: #62EFFF;
+  
+  --color-blue: #2979FF;
+  --color-blue-light: #75A7FF;
+  
+  --color-purple: #D500F9;
+  --color-purple-light: #EA80FC;
+  
+  --color-magenta: #FF4081;
+  --color-magenta-light: #FF79B0;
+  
+  --color-teal: #1DE9B6;
+  --color-teal-light: #64FFDA;
+  
+  --color-pink: #FF80AB;
+  --color-pink-light: #FFB3CD;
+  
+  --color-indigo: #3D5AFE;
+  --color-indigo-light: #7389FF;
+  
+  --color-lime: #C6FF00;
+  --color-lime-light: #EEFF41;
+  
+  --color-fuchsia: #FF00FF;
+  --color-fuchsia-light: #FF66FF;
+  
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-gauge-fadeIn: gauge_fadeIn 1s ease forwards;
+  --animate-gauge-fill: gauge_fill 1s ease forwards;
+}
+
+/* Keyframes */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+@keyframes gauge_fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes gauge_fill {
+  from { 
+    stroke-dashoffset: 332;
+    opacity: 0;
+  }
+  to { opacity: 1; }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* Custom utility classes that were in the v3 config */
+.dark {
+  color-scheme: dark;
+} 

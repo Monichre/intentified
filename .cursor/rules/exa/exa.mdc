@@ -1,0 +1,189 @@
+---
+description: Exa, enrichment, api
+globs: 
+alwaysApply: false
+---
+
+# Company Analyst & Enrichment Service Architecture
+
+This document outlines the architecture and best practices for building a company research and enrichment tool using **Next.js** and **TypeScript**, with deep integration of the **Exa neural search API** and optional third-party data sources.
+
+---
+
+## System Overview
+
+- **Frontend:** Next.js (React) dashboard UI for company search and report viewing.
+- **Backend:** Next.js API routes (App Router) for data aggregation and enrichment.
+- **Core Services:** Modular TypeScript services for Exa, Crunchbase, Clearbit, etc.
+- **Deployment:** Vercel (or similar), with API keys managed via environment variables.
+
+---
+
+## Key Components
+
+### 1. Discovery API & UI
+
+- **Purpose:** Find niche companies using semantic and phrase-based search.
+- **Implementation:**
+  - Expose `/api/discover` endpoint.
+  - Use Exa’s `searchAndContents()` with semantic queries and phrase filters.
+  - Example (TypeScript):
+
+    ```ts
+    const exa = new Exa(process.env.EXA_API_KEY);
+
+    const results = await exa.searchAndContents("innovative climate tech startup", {
+      type: 'neural',
+      numResults: 20,
+      includeText: ["GmbH"], // filter for German companies
+      text: true
+    });
+    ```
+
+- **UI:** Input for keywords/filters, returns a JSON list of companies.
+
+---
+
+### 2. Company Analysis Service
+
+- **Purpose:** Aggregate data for a given company (name, domain, or URL).
+- **Subtasks (run in parallel):**
+  - **Website Crawl:** Fetch homepage and key subpages via Exa.
+  - **Funding & Investors:** Query Crunchbase (via Exa or direct API).
+  - **Headcount & LinkedIn:** Use Exa for LinkedIn scraping or Clearbit for enrichment.
+  - **Competitors:** Use Exa’s semantic search or `findSimilar()` for related companies.
+  - **Market Trends & News:** Exa search for recent news/blogs.
+  - **Technology Stack:** Use Clearbit, BuiltWith, or Exa (e.g., StackShare, GitHub).
+
+- **Example API Handler (`app/api/company/[domain]/route.ts`):**
+
+    ```ts
+    import { NextResponse } from 'next/server';
+    import Exa from 'exa-js';
+
+    export async function GET(request: Request) {
+      const { searchParams } = new URL(request.url);
+      const domain = searchParams.get('domain');
+      if (!domain) return NextResponse.json({ error: 'domain required' }, { status: 400 });
+
+      const exa = new Exa(process.env.EXA_API_KEY);
+
+      const [siteInfo, competitors, news] = await Promise.all([
+        exa.searchAndContents(domain, { text: true }),
+        exa.searchAndContents(`companies like ${domain}`, { numResults: 5 }),
+        exa.search(`latest news about ${domain}`, { numResults: 5 })
+      ]);
+
+      let cbData = null;
+      if (process.env.CRUNCHBASE_KEY) {
+        const cbRes = await fetch(`https://api.crunchbase.com/v4/data/organizations?user_key=${process.env.CRUNCHBASE_KEY}&query=${domain}`);
+        cbData = await cbRes.json();
+      }
+
+      return NextResponse.json({ siteInfo, competitors, news, crunchbase: cbData });
+    }
+    ```
+
+---
+
+### 3. Dynamic Query Interface
+
+- **Purpose:** Allow advanced users to submit custom queries/filters.
+- **Example (`/api/query`):**
+
+    ```ts
+    const { query, include } = JSON.parse(await request.text());
+    const results = await exa.searchAndContents(query, { includeText: include, numResults: 10 });
+    return NextResponse.json(results);
+    ```
+
+- **Note:** Validate and sanitize user input (e.g., with Zod).
+
+---
+
+### 4. Third-Party API Integration
+
+- **Modular Service Layer:** Only call APIs (Crunchbase, Clearbit, etc.) if keys are present.
+- **Example (Clearbit):**
+
+    ```ts
+    async function enrichWithClearbit(domain: string) {
+      const res = await fetch(`https://company.clearbit.com/v1/domains/find?name=${domain}`, {
+        headers: { Authorization: `Bearer ${process.env.CLEARBIT_KEY}` }
+      });
+      return res.json();
+    }
+    ```
+
+- **Error Handling:** All third-party calls should fail gracefully.
+
+---
+
+### 5. UI & Delivery
+
+- **Frontend:** React components under `app/` (Next.js 13+).
+- **Example UI:**
+    - Input for company domain.
+    - Fetches `/api/company?domain=...`.
+    - Displays structured report (description, funding, investors, etc.).
+    - Optionally, export as PDF (e.g., with jsPDF or Puppeteer).
+    - Use TailwindCSS for styling.
+
+---
+
+## Data Flow & Best Practices
+
+### Asynchronous Aggregation
+
+- Use `Promise.all` or `Promise.allSettled` to run subtasks in parallel.
+- Example:
+
+    ```ts
+    const [exaData, crunchbaseData] = await Promise.allSettled([
+      exa.searchAndContents(domain, { text: true }),
+      fetchCrunchbaseProfile(domain)
+    ]);
+    const siteInfo = exaData.status === 'fulfilled' ? exaData.value : null;
+    ```
+
+- Ensure partial results are returned even if some sources fail.
+
+### Caching & Performance
+
+- Cache frequent queries (in-memory or Redis) for a configurable TTL.
+- Use Next.js ISR/SSG for static data where possible.
+- Batch Exa queries to minimize API calls.
+
+### Modularity & Type Safety
+
+- Define TypeScript interfaces for all data entities.
+- Abstract common logic (e.g., Exa search wrappers).
+- Example:
+
+    ```ts
+    interface ExaResult { title: string; url: string; highlights: string[]; }
+    async function findSimilarCompanies(url: string): Promise<ExaResult[]> {
+      const exa = new Exa(process.env.EXA_API_KEY);
+      return exa.findSimilarAndContents(url, { highlights: { numSentences: 2 }, numResults: 5 });
+    }
+    ```
+
+- Organize code: `app/` (routes), `components/` (UI), `lib/` (services), `types/` (interfaces).
+
+### API Routes vs Client Components
+
+- Place all data-fetching in server-side route handlers.
+- Only use client components for interactivity.
+- Keep API keys and secrets on the server.
+
+### Versioning & Extensibility
+
+- Version API endpoints as needed (e.g., `/api/v1/company`).
+- Write service layers to allow easy addition of new data sources.
+- Follow SOLID principles for maintainability.
+
+---
+
+## Example Code Snippets
+
+### exaService.ts (lib layer)

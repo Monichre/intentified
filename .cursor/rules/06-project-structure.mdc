@@ -1,8 +1,10 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+
+
 - **Project Root**
   - Contains configuration files: [package.json](mdc:package.json), [tsconfig.json](mdc:tsconfig.json), [README.md](mdc:README.md), [biome.json](mdc:biome.json)
   - Top-level directories:

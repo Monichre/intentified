@@ -6,21 +6,21 @@ globs: *
 ## PROJECT DOCUMENTATION & CONTEXT SYSTEM
 
 All project documentation, including coding standards, workflow guidelines, and this rules file itself, will be stored in the project root directory.  The main documentation will be in markdown format.  New versions of this file will be tracked with timestamps in filenames (e.g., `ai_coding_assistant_rules_2025-10-27.md`).  Version updates to the Prisma schema are documented in the `README.md` file within the `document-processing` directory. The `schema-extension.sql` file contains PostgreSQL-specific extensions, functions, and policies that complement the Prisma schema.  Comprehensive documentation for Prisma setup and usage, including context7 MCP, should be added to the `document-processing` directory.  This documentation should follow a step-by-step approach, including planning and pseudocode stages.  The documentation should also include details about existing database structure and the relevant files (e.g., `index.ts`, `schema.prisma`, `schema-extension.sql`).  New documentation templates were added to the `apps/intentified/src/components/onboarding/plans/` directory on 2025-05-25 to support integration of `@website-form.tsx` into `@onboarding-sequence.tsx`.  These include `WebsiteFormIntegrationPlan.md`, `WebsiteFormIntegration_PSEUDOCODE.md`, `WebsiteFormIntegrationArchitecture.md`, `WebsiteFormIntegration.md`, `QuickImplementationGuide.md`, and `ImplementationSummary.md`.  The AI assistant experienced issues saving files to the intended directory (`apps/intentified/src/components/onboarding/plans/`) on 2025-05-25, requiring further investigation into file path resolution. The AI assistant should verify the successful creation and saving of all generated documentation files.  The AI assistant should create tickets using `@ticket-workflow.mdc` for all files within the `@onboarding` directory as requested.  The AI assistant should generate tickets for documentation files such as `@QuickStartGuide.md` and `@WebsiteFormIntegrationPlan.md` as requested.  The AI assistant should create individual ticket files for each ticket generated, using the `@ticket-workflow.mdc` format and saving them to the `@tickets` directory.  The AI assistant should also create an overview file summarizing all tickets.  The AI assistant should handle ticket creation for files like `@01-Extract-Reusable-Website-URL-Input-Component.md` using `@ticket-workflow.mdc`.  The AI assistant should create documentation files such as `WebsiteUrlInput_PSEUDOCODE.md` in the `apps/intentified/src/components/onboarding/` directory as demonstrated in the interaction from 2025-05-25.  If the specified directory does not exist, the AI assistant should create it before generating files.  The AI assistant should follow a step-by-step approach when creating new components, including analysis, planning (with pseudocode), implementation, testing, and documentation.  When beginning full implementation of a ticket, the AI assistant should leverage existing documentation, including `HomePageRefactor.md`, `HomePageRefactor_PSEUDOCODE.md`, and `the-system.md` for overall structure and section/component order, `new-website-copy.md` for marketing content, and `review.md` for strategic recommendations.
+- When merging UI and animation components, the AI assistant should document the architecture in a markdown file (e.g., `ProcessFrameworkWithWorkflow.md`), including sections for overview, architecture, data flow, animation, accessibility, key modules, extensibility, and usage.
+- When merging UI and animation components, the AI assistant should save the pseudocode in a markdown file (e.g., `ProcessFrameworkWithWorkflow_PSEUDOCODE.md`).
+- When generating TypeScript type definitions, create a `enriched-company-typings.ts` file in a suitable directory (e.g., `apps/intentified/src/types/` or `packages/typescript-config/`). Document the architecture and data flow in `EnrichedCompanyTypings.md`.
 
 ## TECH STACK
 
 - **Programming Languages:**  TypeScript (Add languages as needed)
-- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx
-- **Databases:** PostgreSQL
-- **Cloud Providers:** Supabase (add providers as needed)
-- **Version Control:** Git
+- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next
 
 ## CODING STANDARDS
 
 - Code should be well-documented.
 - Follow consistent indentation (e.g., 2 spaces).
 - Use descriptive variable and function names.
-- All Prisma models should be defined in `document-processing.prisma`
+
 - When handling form input changes, ensure proper mapping between input IDs and state variables to prevent update issues. Use explicit mapping or a helper function (as demonstrated in the fix for the 2025-05-24 issue and the 2025-05-25 interaction).  The `handleInputChange` function should utilize explicit field mapping or helper functions to ensure accurate updates to application state.
 - Use `unsafeMetadata` instead of `publicMetadata` when updating user data via Clerk.
 - Ensure all components are correctly imported. Address module not found errors by verifying component existence and correct import paths (as seen in the 2025-05-25 interaction).  Prioritize relative imports within the same directory before using absolute imports.
@@ -48,6 +48,89 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Style with Tailwind/shadcn and ensure responsive layout.
 - When refactoring the `hijacking-system-feature-section.tsx` component, leverage the `@workflow.tsx` UI to create a more dynamic and visually engaging representation of the 4-step process.
 - **Timeline UI**: When implementing a timeline UI, consider using a logs-explorer style with a dark terminal-like container, staggered entry animations (using `framer-motion`), and status indicators with color-coding. The status indicators should use the following colors: Blue ([INFO]) for core process steps and Green ([LOG]) for other timeline events. The timeline in `@process-framework.tsx` should have the same animated behavior as the original `@logs-explorer.tsx`, including dynamic entry additions and continuous updates. The background should be black, and the core text content should be white or brand yellow.
+- **Directory Naming:** When creating new directories, prefer `kebab-case` for directory names (e.g., `company-map` instead of `companymap`).
+- When creating new dashboard sub-routes, ensure to follow the existing directory structure and component patterns as demonstrated by the existing `apps/intentified/src/app/dashboard` and `apps/intentified/src/features/dashboard/pages` directories and components.
+- Pipelines page should render @pipelines
+- When creating a unified user interface, use `framer-motion` for animations, including `motion.div` for animated components and `AnimatePresence` for managing component transitions.
+- When implementing a unified user interface, consider using a `Sheet` component for mobile navigation menus, with `SheetTrigger`, `SheetContent`, `SheetHeader`, and `SheetTitle` for structure and functionality.
+- When implementing a unified user interface, use `ScrollArea` for managing scrollable content within the sidebar and other areas.
+- When implementing a unified user interface, use descriptive names for pipeline IDs and ensure they are consistently used across components.
+- When implementing a unified user interface, utilize the `cn` utility for conditional class names to simplify styling.
+- When adding Competitor Intent, Social Intent, and Keyword Intent sections to the digital section of the onboarding flow:
+    - Add three new input sections to the "Digital" step of `onboarding-sequence.tsx`:
+        - **Competitors**: 5–10 competitor names and website URLs (with add/remove functionality)
+        - **Social Intent**: 5–10 social media URLs (with add/remove functionality)
+        - **Keyword Intent**: 5–10 keywords/phrases (with add/remove functionality)
+    - Inputs should be dynamic (user can add/remove fields).
+    - Data should be stored in `formData` and handled by `handleInputChange` or new handlers (`handleCompetitorIntentChange`, `handleSocialIntentChange`, `handleKeywordIntentChange`, `addCompetitorIntent`, `removeCompetitorIntent`, `addSocialIntent`, `removeSocialIntent`, `addKeywordIntent`, `removeKeywordIntent`).
+    - UI should match the style of the rest of the onboarding flow, using consistent styling (Card, Input, Button).
+    - Extend `formData` to include arrays for each new intent type (`competitorIntents`, `socialIntents`, `keywordIntents`).
+    - Add handlers for adding/removing/updating items in each array.
+    - Render each section in the "Digital" step, with mapped input fields and "Add Another" buttons.
+    - Ensure all data is passed and updated correctly.
+    - Add validation if needed (e.g., min/max items).
+    - Place new sections after Social Media Links in Digital step.
+    - On input change, update corresponding array in formData.
+    - On add, push an empty object `{ name: '', url: '' }` to the `competitors` array, and an empty string to the other arrays.
+    - On remove, splice array at index.
+    - Limit to 10 items per array.
+    - Show error if less than 5 on submit (optional).
+    - Document the new architecture, data flow, and key modules in `OnboardingDigitalIntents.md`.
+    - Save the pseudocode to `apps/intentified/src/components/onboarding/OnboardingDigitalIntents_PSEUDOCODE.md`.
+- When implementing forms with dynamic arrays (e.g., `competitorIntents`, `socialIntents`, `keywordIntents` in the onboarding flow), ensure that the `formData` state is correctly initialized with these arrays to prevent runtime errors. If the `formData` state is initialized in a parent component, confirm that the parent component initializes the arrays. If using TypeScript, enforce type safety by ensuring that the types/interfaces include these array fields. Use defensive rendering (e.g., `formData.competitorIntents ?? []`) as a fallback to avoid runtime errors only if absolutely necessary; initializing the state correctly is the preferred approach.
+- When refactoring into a single Exa service:
+    - Analyze all unique Exa search patterns and parameters.
+    - Determine which parameters are variable.
+    - Define a unified, type-safe interface for Exa search requests.
+    - Implement the Exa service as a set of named exports (no classes) in `services/exa/exa-service.ts` (or similar, following project conventions).
+    - Use descriptive types/interfaces for input and output.
+    - Add error handling and input validation.
+    - Document the service and each function.
+    - Write `ExaService.md` to explain the service, its API, and usage examples.
+    - Document the data flow and how to extend the service for new search types.
+- When integrating `CloudSyncing` and `DataFeedingIn` components into the `Hero` section:
+    - Place both components below the CTA buttons and above the stats bar.
+    - Use a responsive flex container (`flex-col md:flex-row gap-8 mt-12 mb-8`) to position the components.
+    - On desktop, show both side by side (`flex-row`).
+    - On mobile, stack vertically (`flex-col`).
+    - Ensure both are responsive and do not break the layout.
+    - Document the integration in `HeroSection.md`.
+- When merging UI and animation components:
+    - Extract the animated workflow diagram logic into a reusable component (e.g., `AnimatedWorkflowDiagram.tsx`).
+    - Create a new component to merge the animated workflow diagram, four-step process grid, animated timeline, and CTA.
+    - Implement all animation, accessibility, and responsive requirements.
+    - Document the architecture, data flow, and key modules in a markdown file (e.g., `ProcessFrameworkWithWorkflow.md`).
+    - Save the pseudocode in a markdown file (e.g., `ProcessFrameworkWithWorkflow_PSEUDOCODE.md`).
+- **Module Structure:** Prefer functional modules with named exports over class-based modules for stateless services. Favor functional and declarative programming patterns. Structure files with named exports. Use descriptive variable names with auxiliary verbs. Use dependency injection (pass dependencies as parameters). Favor iteration and modularization over code duplication. If a class-based module is considered, it should be used when you need to maintain internal state across method calls, support inheritance or polymorphism, or encapsulate private methods/fields. Functional modules are preferred for stateless, composable, and testable code; they are easier to tree-shake, mock, and extend via composition.
+- **Dependency Injection:** Use dependency injection (pass dependencies as parameters). This enhances testability, flexibility, decoupling, and adherence to SOLID principles. This makes your codebase more modular and maintainable.
+- **Stagewise Integration:** When integrating the Stagewise toolbar, ensure it is only included in development mode using `process.env.NODE_ENV === 'development'`.
+    - Next.js: Integrate the `<StagewiseToolbar>` component directly into the `layout.tsx` file, within the `html` and `body` tags.
+    - Ensure the `stagewiseConfig` object, with an empty plugins array, is defined: `const stagewiseConfig = { plugins: [] };`
+- **Async Orchestration:** When orchestrating asynchronous operations, consider using `Promise.all` or `Promise.allSettled` for parallel execution of independent tasks to improve performance.
+- **Service Modularity:** Strive for composable and isolated services. Use factories to encapsulate logic.
+- **Error Handling:** Implement graceful error handling that isolates failures and returns partial results when possible, especially when aggregating data from multiple sources.
+- **Code Organization:** Maintain a logical separation between client, API, and service layers. Use index files to provide clean and discoverable entry points.
+- **Variable Naming:** Use descriptive variable names (e.g., `mainPageContent`, `subPageContents`) for clarity.
+- **SOLID Principles:** Strive for Single Responsibility Principle (SRP) by refactoring orchestration logic to delegate to single-responsibility helpers.
+- **UI Styling:** Ensure consistent padding (`px` and `py`), margin between cards, and alignment of content across the application. When cleaning up spacing, adding padding, and improving alignment using Tailwind CSS, prioritize these classes: `px-4`, `px-6`, `py-4`, `py-6`, `items-center`, `justify-center`, and `gap-*` for spacing.
+- **Tailwind CSS v4 Configuration:** Tailwind CSS v4 introduces a CSS-first configuration approach. The configuration is done through CSS instead of JavaScript/TypeScript.
+    - Create the directory `packages/design-system/styles/tailwind-v4`.
+    - Create `theme.css` within the directory for theme customizations.
+    - Create `tailwind.config.css` within the directory for the main configuration.
+    - Update your main CSS files by replacing `@tailwind` directives with `@import "../design-system/styles/tailwind-v4/tailwind.config.css";`.
+    - Remove old config files (e.g., `tailwind.config.js` or `tailwind.config.ts`).
+    - Update PostCSS config and content paths in your build tool.
+    - Use v4-compatible versions of plugins (with the `@next` tag).
+    - Configure content paths in your build tool, not in CSS.
+    - Add custom utilities in the `@layer utilities` block in your CSS.
+- **TypeScript Type Definitions:**
+    - Types should be clean, maintainable, and follow project conventions (interfaces over types, no enums, use const maps if needed).
+    - Use descriptive names.
+    - Structure for reusability and extension.
+    - Prefer interfaces for objects, consts for discriminated unions if needed.
+    - Use PascalCase for type/interface names.
+    - Use camelCase for property names.
+    - Document each type/interface.
 
 ## WORKFLOW & RELEASE RULES
 
@@ -152,113 +235,4 @@ All project documentation, including coding standards, workflow guidelines, and 
     - **Testing:** Add/extend unit and integration tests for each section. Validate responsiveness, accessibility, and performance.
     - **Documentation:** Document the architecture, data flow, and key modules in `IntegrateMarketingContentWithWebsiteUiComponents.md`.
 - When beginning full implementation of a ticket, after reviewing the docs, and finding no `page.tsx` in the main unauthenticated directory:
-    - **Missing Landing Page:** The project is missing a clear public-facing landing page entry point (e.g., `apps/app/app/page.tsx` or `apps/app/app/(unauthenticated)/page.tsx`).
-    - **Create Landing Page:** Create a new landing page entry point at `apps/app/app/page.tsx` to serve as the public marketing landing page, following the architecture and content from the docs.
-    - **Create Modular Structure:** Create `apps/app/app/page.tsx` with the modular structure:
-       - Header
-       - Hero
-       - Features
-       - HijackingSystemFeatureSection
-       - Clients (Testimonials)
-       - CTA
-       - Footer
-    - **Create Components:** For each section, create a corresponding component in a new directory: `apps/app/app/components/` (if not already present).
-    - **Populate Components:** Populate each component with content from `new-website-copy.md` and `the-system.md`.
-    - **Ensure Compliance:** Ensure accessibility, responsiveness, and animation as per the ticket and pseudocode.
-- When scaffolding the new public marketing landing page and all modular components in `apps/app/app/`:
-    - `page.tsx` (main entry, composes all sections)
-    - `components/Header.tsx`
-    - `components/Hero.tsx`
-    - `components/Features.tsx`
-    - `components/HijackingSystemFeatureSection.tsx`
-    - `components/Clients.tsx`
-    - `components/CTA.tsx`
-    - `components/Footer.tsx`
-- Each section uses content and structure from your docs, is modular, and ready for further enhancement (animation, FAQ, trust indicators, etc.).
-- The AI assistant should test the landing page in your local environment.
-- When enhancing the landing page with animation, FAQ, trust indicators, and interactivity:
-    - **Add FAQ Section:** Create `components/FAQ.tsx`, use questions/answers from `new-website-copy.md`, and implement as an accessible, animated accordion.
-    - **Add Trust Indicators Section:** Create `components/TrustIndicators.tsx`, use badges or logos (can be placeholder for now), and implement horizontal scrolling on mobile.
-    - **Integrate New Sections:** Update `page.tsx` to include FAQ and TrustIndicators in the correct order.
-    - **Add Animations and Interactivity:**
-        - Entrance animations for each section (e.g., fade/slide in on scroll)
-        - Counter animation for metrics in Features
-        - Sequential reveal for 4-step process
-        - Hover/active states for interactive elements
-        - Smooth expand/collapse for FAQ
-    - **Accessibility:** Ensure all interactive elements are keyboard accessible and add ARIA attributes as needed.
-- When implementing animation and interactivity:
-    - **Entrance Animations:** Fade/slide-in for each main section as it enters the viewport (Intersection Observer or a lightweight animation library).
-    - **Counter Animation:** Animate the numbers in the Features section (metrics) from 0 to their target values on scroll-in.
-    - **Sequential Reveal:** Animate the 4-step process in Features so each step appears in sequence.
-    - **FAQ Animation:** Smooth expand/collapse for FAQ answers (already present, but can be enhanced for spring-like effect).
-    - **Hover/Active States:** Subtle scale or color transitions for interactive elements (buttons, cards, badges).
-    - **Accessibility:** Ensure all animations respect `prefers-reduced-motion`.
-- When implementing animations, use `framer-motion` for robust, accessible, and declarative animation (recommended for React/Next.js). Fallback to CSS transitions for simple hover/active states. Use Intersection Observer (or `framer-motion`'s `whileInView`) for entrance/counter triggers.
-- **Home Page Refactor Planning:**
-    - When picking up tickets `16-Home-Page-Refactor-Planning.md` and `17-Implement-Hijacking-System-Feature-Section.md`:
-        - **Analyze Ticket Status and Dependencies**:
-            - **Ticket 16**: No dependencies. Task: Analyze requirements, plan new home page structure, draft pseudocode.
-            - **Ticket 17**: Depends on Ticket 16. Task: Create a new modular React component for "The Hijacking System" as a feature section.
-        - **Gather Requirements**:
-            - Review `review.md` and `new-website-copy.md` for content and strategic recommendations.
-            - Define the new section/component structure for the home page.
-            - Draft pseudocode for all major sections, especially the "Hijacking System" feature section.
-            - Plan integration points and data flow for the new home page.
-        - **Planning and Pseudocode**:
-            - For Ticket 16: Document the new home page architecture, listing all modular sections/components. Draft pseudocode for each section. Save as `HomePageRefactor_PSEUDOCODE.md` in `apps/app/app/plans/`.
-            - For Ticket 17: Use the plan from Ticket 16 to implement the "Hijacking System" feature section. Draft pseudocode for the component. Save as `HijackingSystemFeatureSection_PSEUDOCODE.md` in `apps/app/app/plans/`.
-        - **Implementation (after pseudocode)**:
-            - For Ticket 17: Create the `HijackingSystemFeatureSection.tsx` component in `apps/app/app/components/`. Use all relevant copy from `new-website-copy.md`. Style as a feature section. Ensure dark mode and accessibility compliance. Test the component in isolation.
-        - **Documentation**:
-            - For both tickets, document the architecture, data flow, and key modules in corresponding `.md` files:
-                - `HomePageRefactor.md` in `apps/app/app/plans/`
-                - `HijackingSystemFeatureSection.md` in `apps/app/app/plans/`
-    - After pseudocode is completed and the user indicates "begin full implementation" for tickets `16-Home-Page-Refactor-Planning.md` and `17-Implement-Hijacking-System-Feature-Section.md`:
-        - Implement the `HijackingSystemFeatureSection.tsx` component in `apps/app/app/components/` using the provided pseudocode and architecture.
-        - Integrate and test as planned.
-- After pseudocode is completed and the user indicates "begin full implementation" for tickets `16-Home-Page-Refactor-Planning.md` and `17-Implement-Hijacking-System-Feature-Section.md`, but before the AI assistant begins, it must first:
-    - Move/Copy the following files to the correct locations under `apps/intentified/`:
-        - `HijackingSystemFeatureSection.tsx` → `apps/intentified/src/components/landing/HijackingSystemFeatureSection.tsx`
-        - `HomePageRefactor_PSEUDOCODE.md` → `apps/intentified/docs/HomePageRefactor_PSEUDOCODE.md`
-        - `HijackingSystemFeatureSection_PSEUDOCODE.md` → `apps/intentified/docs/HijackingSystemFeatureSection_PSEUDOCODE.md`
-        - `HomePageRefactor.md` → `apps/intentified/docs/HomePageRefactor.md`
-        - `HijackingSystemFeatureSection.md` → `apps/intentified/docs/HijackingSystemFeatureSection.md`
-    - Ensure the directory structure exists:
-        - `apps/intentified/src/components/landing/`
-        - `apps/intentified/docs/`
-    - Remove the mistakenly created files from `apps/app/app/` if not needed.
-- When enhancing the landing page with the `HijackingSystemFeatureSection` component, integration involves:
-    - **Importing the Component:** Bringing `HijackingSystemFeatureSection` into the main page file (usually `apps/intentified/src/app/page.tsx` or a similar entry point).
-    - **Placing It in the Page Structure:** Adding it in the correct order among other sections (e.g., after Features, before Testimonials/CTA), as planned in your architecture and pseudocode.
-    - **Passing Data/Props (if needed):** For now, the component uses static content, but in the future, you might pass props or data from a CMS.
-    - **Testing the Integration:** Ensuring the section renders correctly, is styled consistently, and works with the rest of the page (responsive, accessible, animated, etc.).
-- When the main landing page entry point (`page.tsx`) is missing:
-    - **Create Landing Page:** Create a new landing page entry point at `apps/intentified/src/app/page.tsx` to serve as the public marketing landing page, following the architecture and content from the docs.
-    - **Create Modular Structure:** Create `apps/intentified/src/app/page.tsx` with the modular structure:
-       - Header
-       - Hero
-       - Features
-       - HijackingSystemFeatureSection
-       - Clients (Testimonials)
-       - CTA
-       - Footer
-    - Create Components: For each section, create a corresponding component in a new directory: `apps/intentified/src/components/` (if not already present).
-- When scaffolding the new public marketing landing page and all modular components:
-    - The correct directory is `apps/intentified/src/app/`.
-    - `page.tsx` (main entry, composes all sections)
-    - `components/Header.tsx`
-    - `components/Hero.tsx`
-    - `components/Features.tsx`
-    - `components/HijackingSystemFeatureSection.tsx`
-    - `components/Clients.tsx`
-    - `components/CTA.tsx`
-    - `components/Footer.tsx`
-- Each section uses content and structure from your docs, is modular, and ready for further enhancement (animation, FAQ, trust indicators, etc.).
-- The AI assistant should test the landing page in your local environment.
-- When enhancing the landing page with animation, FAQ, trust indicators, and interactivity:
-    - **Add FAQ Section:** Create `components/FAQ.tsx`, use questions/answers from `new-website-copy.md`, and implement as an accessible, animated accordion.
-    - **Add Trust Indicators Section:** Create `components/TrustIndicators.tsx`, use badges or logos (can be placeholder for now), and implement horizontal scrolling on mobile.
-    - **Integrate New Sections:** Update `page.tsx` to include FAQ and TrustIndicators in the correct order.
-    - **Add Animations and Interactivity:**
-        - Entrance animations for each section (e.g., fade/slide in
+    - **Missing Landing Page:** The project is missing a clear public-facing landing page entry point (e.g., `apps/

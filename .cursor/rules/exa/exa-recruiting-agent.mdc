@@ -1,0 +1,108 @@
+---
+description: Exa, Research
+globs: 
+alwaysApply: false
+---
+@file https://docs.exa.ai/examples/exa-recruiting-agent
+
+# Exa Recruiting Agent Automation
+
+## Introduction / Problem
+
+This rule documents a repeatable pattern for automating the process of discovering, researching, and evaluating candidates using Exa search and LLMs. It is based on the [Exa Recruiting Agent tutorial](mdc:https:/docs.exa.ai/examples/exa-recruiting-agent). The approach is useful for recruiting, lead generation, or any workflow that requires enrichment and scoring of people or entities from minimal initial data (e.g., name/email).
+
+## Pattern Description
+
+### 1. Initial Candidate List
+- Start with a list of names/emails (e.g., from a CSV or manual entry).
+
+```python
+sample_data = {
+    "Name": ["Kristy Choi", "Jiaming Song", ...],
+    "Email": ["kristy@cmu.edu", "jiaming@stanford.edu", ...]
+}
+students_df = pd.DataFrame(sample_data)
+```
+
+### 2. Information Enrichment
+- Use LLM (OpenAI) to extract school from email.
+- Use Exa keyword search to find LinkedIn profiles (restrict to linkedin.com).
+- Use Exa keyword search (excluding major platforms) to find personal websites and scrape their content.
+
+```python
+def extract_school_from_email(email):
+    content = f"I'm going to give you a student's email. ... Here is their email: {email}"
+    return get_openai_response(content)
+
+def get_linkedin_from_name(name, school=''):
+    query = f"{name} {school}"
+    keyword_search = exa.search(query, num_results=1, type="keyword", include_domains=['linkedin.com'])
+    ...
+
+def exa_search_personal_website(name, school=''):
+    query = f"{name} {school}"
+    keyword_search = exa.search_and_contents(query, type="keyword", text={"include_html_tags": False}, num_results=1, exclude_domains=['linkedin.com', 'github.com', 'twitter.com'])
+    ...
+```
+
+### 3. Attribute Extraction from Website Content
+- Use LLM to extract undergrad, current role, research topics, and AI status from scraped content.
+
+```python
+def extract_undergrad_from_contents(contents):
+    ...
+def extract_current_role_from_contents(contents):
+    ...
+def extract_research_topics_from_contents(contents):
+    ...
+def extract_is_ai_from_contents(contents):
+    ...
+```
+
+### 4. Candidate Evaluation
+- Use LLM to score candidates 1-10 based on fit to your criteria.
+
+```python
+def calculate_score(info, undergrad, year, researchTopics, AI):
+    ...
+```
+
+### 5. Enrichment Loop
+- For each candidate, enrich with all the above, then sort by score.
+
+```python
+def enrich_row(row):
+    ...
+enriched_df = students_df.progress_apply(enrich_row, axis=1)
+sorted_df = enriched_df.sort_values(by='Score', ascending=False).reset_index(drop=True)
+```
+
+### 6. Finding More Candidates
+- Use Exa's `find_similar_and_contents` on top candidate homepages to discover more similar profiles.
+- Extract name/email from new profiles using LLM.
+
+```python
+def get_more_candidates(homepageURL):
+    ...
+def get_name_from_contents(contents):
+    ...
+def get_email_from_contents(contents):
+    ...
+```
+
+## Real-World Examples
+- See the full [Exa Recruiting Agent tutorial](mdc:https:/docs.exa.ai/examples/exa-recruiting-agent) for a working Colab notebook and code.
+- Example use cases: AI researcher recruiting, customer discovery, expert finding, lead generation.
+
+## Common Pitfalls / Anti-Patterns
+- Not filtering domains when searching for personal websites (leads to irrelevant results).
+- Over-relying on LLM extraction without validating outputs.
+- Not handling missing or ambiguous data (e.g., no LinkedIn found).
+- Failing to respect API rate limits or error handling for Exa/OpenAI.
+
+---
+
+**References:**
+- [Exa Recruiting Agent Documentation](mdc:https:/docs.exa.ai/examples/exa-recruiting-agent)
+- [Exa Python SDK](mdc:https:/docs.exa.ai/sdks/python-sdk-specification)
+- [OpenAI API](mdc:https:/platform.openai.com/docs/api-reference/introduction)
