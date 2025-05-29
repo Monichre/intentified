@@ -13,7 +13,7 @@ All project documentation, including coding standards, workflow guidelines, and 
 ## TECH STACK
 
 - **Programming Languages:**  TypeScript (Add languages as needed)
-- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next
+- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder
 
 ## CODING STANDARDS
 
@@ -95,6 +95,10 @@ All project documentation, including coding standards, workflow guidelines, and 
     - On mobile, stack vertically (`flex-col`).
     - Ensure both are responsive and do not break the layout.
     - Document the integration in `HeroSection.md`.
+- When the `CloudSyncing` component represents a three-step process:
+    - **Visual Flow:** Three distinct icons with unique color themes (blue -> green -> purple). Two connection lines showing data flow between steps. Sequential ripple animations that cascade through each step. Staggered delays create a natural progression (0.5s -> 1.5s -> 2.5s).
+    - **Enhanced Animations:** Each step has its own pulse animation with appropriate timing. Connection lines show colored progress bars matching the source step. The final status badge appears after all steps are animated.
+    - **New Components:** `ServerIcon` (Green server racks representing processing) and `DatabaseIcon` (Purple database cylinders representing storage). Each icon has proper shadows and styling consistent with the design system.
 - When merging UI and animation components:
     - Extract the animated workflow diagram logic into a reusable component (e.g., `AnimatedWorkflowDiagram.tsx`).
     - Create a new component to merge the animated workflow diagram, four-step process grid, animated timeline, and CTA.
@@ -131,6 +135,7 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Use PascalCase for type/interface names.
     - Use camelCase for property names.
     - Document each type/interface.
+- **Component Props:** When refactoring components, prefer strongly-typed props interfaces over `any` to improve type safety, maintainability, and clarity.
 
 ## WORKFLOW & RELEASE RULES
 
@@ -229,10 +234,4 @@ All project documentation, including coding standards, workflow guidelines, and 
         - Document the implementation in `IntegrateMarketingContentWithWebsiteUiComponents.md`.
 - When implementing ticket 15, after pseudocode is completed and the user indicates "begin full implementation":
     - **Preparation:** Audit and list all required UI components and their locations. Identify which components exist, which need enhancement, and which (if any) need to be created.
-    - **Integration Architecture:** Determine the main landing page(s) or entry point for integration (likely in `features/landing/` or `src/app/app/`).
-    - Plan the order and data flow for all sections: Hero, Metrics, Process, FeatureCards, Testimonials, FAQ, CTA, Trust Indicators.
-    - **Component-by-Component Integration:** For each section: Import the component. Pass in the correct data (from CMS/content system or static for now). Implement or enhance responsive layout, animations, accessibility, and performance optimizations.
-    - **Testing:** Add/extend unit and integration tests for each section. Validate responsiveness, accessibility, and performance.
-    - **Documentation:** Document the architecture, data flow, and key modules in `IntegrateMarketingContentWithWebsiteUiComponents.md`.
-- When beginning full implementation of a ticket, after reviewing the docs, and finding no `page.tsx` in the main unauthenticated directory:
-    - **Missing Landing Page:** The project is missing a clear public-facing landing page entry point (e.g., `apps/
+    - **Integration Architecture:** Determine the main landing page(s) or entry point for integration (likely in `
