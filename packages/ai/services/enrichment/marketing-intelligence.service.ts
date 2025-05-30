@@ -465,15 +465,38 @@ Return only the React component code, properly formatted and ready to use.
     companyProfileId: string,
     enrichmentData: BulkEnrichmentResponse,
     socialProfiles: SocialProfile[],
-    documents: CompanyDocument[]
+    documents: CompanyDocument[],
+    onProgress?: (update: {
+      step: string;
+      currentStep: number;
+      totalSteps: number;
+      message: string;
+    }) => void | Promise<void>
   ): Promise<MarketingCampaign> => {
     const startTime = Date.now();
+    const totalSteps = 4; // Brand analysis + Company data extraction + Email generation + Save to database
 
     try {
       // Step 1: Analyze brand identity
+      if (onProgress) {
+        await onProgress({
+          step: 'brand-analysis',
+          currentStep: 1,
+          totalSteps,
+          message: 'Analyzing brand identity and communication style'
+        });
+      }
       const brandAnalysis = await analyzeBrandIdentity(enrichmentData, socialProfiles, documents);
 
       // Step 2: Extract company data for template generation
+      if (onProgress) {
+        await onProgress({
+          step: 'data-extraction',
+          currentStep: 2,
+          totalSteps,
+          message: 'Extracting company information for template generation'
+        });
+      }
       const companyData = {
         websiteUrl: enrichmentData.websiteUrl,
         companyName: extractCompanyName(enrichmentData),
@@ -482,9 +505,25 @@ Return only the React component code, properly formatted and ready to use.
       };
 
       // Step 3: Generate email templates
+      if (onProgress) {
+        await onProgress({
+          step: 'email-generation',
+          currentStep: 3,
+          totalSteps,
+          message: 'Generating personalized email templates'
+        });
+      }
       const emailTemplates = await generateEmailTemplates(brandAnalysis, companyData);
 
       // Step 4: Save to database
+      if (onProgress) {
+        await onProgress({
+          step: 'saving',
+          currentStep: 4,
+          totalSteps,
+          message: 'Saving marketing campaign to database'
+        });
+      }
       const campaignId = await saveMarketingCampaign(companyProfileId, brandAnalysis, emailTemplates);
 
       const processingTime = Date.now() - startTime;
