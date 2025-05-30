@@ -2,3 +2,5 @@
 /.what-is-this.md
 # SpecStory derived-cursor-rules.mdc backup files
 /ai_rules_backups/*
+# SpecStory project identity file
+/.project.json
