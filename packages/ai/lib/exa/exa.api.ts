@@ -23,15 +23,76 @@ export const makeExaResearch = (exa: ExaService) => {
   const G = (url: string, c?: ExaSearchConfig) => exa.getContents([url], c);
 
   /* reusable generator for “${site} profile” type look-ups */
+  /**
+   * Generic profile search generator for a given domain and keyword.
+   * Enhanced to support special cases for LinkedIn, Twitter, etc.
+   * Accepts optional overrides for query and config.
+   */
+  /**
+   * Generic profile search generator for a given domain and keyword.
+   * Accepts a "profile" conditional argument to adjust query/config for special cases.
+   */
   const profile =
-    (domain: string, keyword: string) =>
-    ({ websiteUrl }: WebsiteResearchParams) =>
-      S(`${websiteUrl} ${keyword}:`, {
+    (
+      domain: string,
+      keyword: string,
+      opts?: {
+        queryOverride?: (params: WebsiteResearchParams & { profile?: string }) => string;
+        configOverride?: (params: WebsiteResearchParams & { profile?: string }) => Partial<ExaSearchConfig>;
+      }
+    ) =>
+    ({
+      websiteUrl,
+      profile,
+    }: { websiteUrl: string; profile?: string }) => {
+      // Allow query/config override to use profileType if needed
+      let query = opts?.queryOverride
+        ? opts.queryOverride({ websiteUrl, profile })
+        : `${websiteUrl} ${keyword}:`;
+
+      let config: ExaSearchConfig = {
         type: "keyword",
         numResults: 1,
         ...withDomain([domain]),
         includeText: [websiteUrl],
-      });
+        ...(opts?.configOverride ? opts.configOverride({ websiteUrl, profile }) : {}),
+      };
+
+      // Special handling for LinkedIn and Twitter, using profileType if provided
+      if (domain === "linkedin.com" && (!profile || profile === "company")) {
+        config = {
+          ...config,
+          includeText: [
+            websiteUrl,
+            "linkedin.com/company",
+            "linkedin.com/in",
+            "linkedin.com/pub",
+          ],
+          numResults: 3,
+        };
+        query = profile 
+          ? `${profile} founder LinkedIn profile:`
+          : `${profile} official LinkedIn profile:`;
+      }
+
+      if (domain === "twitter.com" && (!profile || profile === "company")) {
+        config = {
+          ...config,
+          includeText: [
+            websiteUrl,
+            "twitter.com/",
+            "twitter.com/intent",
+            "twitter.com/i",
+          ],
+          numResults: 3,
+        };
+        query = profile 
+          ? `${profile} founder Twitter profile:`
+          : `${profile} official Twitter profile:`;
+      }
+
+      return S(query, config);
+    };
 
   /* ---------------- concrete exported queries ---------------- */
   const fetchCrunchbase = profile("crunchbase.com", "crunchbase page");
@@ -106,7 +167,7 @@ export const makeExaResearch = (exa: ExaService) => {
       numResults: 1,
       livecrawl: "always",
       subpages: 4,
-      subpageTarget: ["about", "pricing", "faq", "blog"],
+      subpageTarget: ["about", "team", "products", "services", "pricing", "faq", "blog"],
       ...withDomain([websiteUrl]),
     });
 
@@ -136,33 +197,33 @@ export const makeExaResearch = (exa: ExaService) => {
       numResults: 10,
     });
 
-  const scrapeLinkedin = ({ websiteUrl }: WebsiteResearchParams) =>
-    SC(`${websiteUrl} Linkedin profile:`, {
+  const scrapeLinkedin = ({ profile, websiteUrl }: {profile: string, websiteUrl: string}) =>
+    SC(`${profile} Linkedin profile:`, {
       type: "keyword",
       text: true,
       numResults: 1,
       livecrawl: "always",
     });
 
-  const scrapeTwitterProfile = ({ username }: TwitterSearchParams) =>
-    S(`${username} Twitter bio`, {
+  const scrapeTwitterProfile = ({ profile, websiteUrl }: {profile: string, websiteUrl: string}) =>
+    S(`${profile} Twitter bio`, {
       type: "keyword",
       ...withDomain(["twitter.com"]),
       numResults: 1,
     });
 
-  const scrapeRecentTweets = ({ username }: TwitterSearchParams) => {
+  const scrapeRecentTweets = ({ profile, websiteUrl }: {profile: string, websiteUrl: string}) => {
     const now = new Date();
     const start = new Date(now.getTime() - 90 * 864e5).toISOString();
     const end = new Date(now.getTime() + 864e5).toISOString();
-    return SC(`from:${username}`, {
+    return SC(`from:${profile}`, {
       type: "keyword",
       livecrawl: "always",
       ...withDomain(["twitter.com"]),
       category: "tweet",
       startPublishedDate: start,
       endPublishedDate: end,
-      includeText: [username],
+      includeText: [profile],
     });
   };
 

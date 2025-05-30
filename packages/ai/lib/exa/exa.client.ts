@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------
  * Functional Exa client – no classes, no hidden state.
  * ------------------------------------------------------------------ */
-import Exa from 'exa-js';
-export type ExaSearchConfig = {
+import Exa, { type ContentsOptions, type FindSimilarOptions, type RegularSearchOptions } from 'exa-js';
+export type ExaSearchConfig = RegularSearchOptions & ContentsOptions & FindSimilarOptions & {
   category?: "company" | "research paper" | "news" | "pdf" | "github" | "tweet" | "personal site" | "linkedin profile" | "financial report";
   type?: "keyword" | "neural";
   text?: boolean;
@@ -32,15 +32,17 @@ export interface ExaService {
 }
 
 /* ---- minimal slices of your ./types so this compiles stand-alone ---- */
-export interface ResearchHit {
+export interface ResearchHit   {
   title: string;
   url: string;
   text?: string;
   summary?: string;
   publishedDate?: string;
 }
+export type ResearchHitResponse = ResearchHit & any
+
 export interface ResearchResponse {
-  results: ResearchHit[];
+  results: ResearchHitResponse[];
 }
 
 /* ------------------------------------------------------------------ *
@@ -50,61 +52,46 @@ export const makeExaClient = (apiKey: string) => {
   const exaInstance = new Exa(apiKey);
 
   const search = async (query: string, options?: ExaSearchConfig): Promise<ResearchResponse> => {
-    const result = await exaInstance.search(query, options as any);
+    const {results} = await exaInstance.search(query, options as any);
     return {
-      results: result.results.map((r: any) => ({
-        url: r.url,
-        title: r.title || '',
-        text: r.text,
-        summary: r.summary,
-        publishedDate: r.publishedDate
-      }))
+      results
     };
   };
 
-  const searchAndContents = async (query: string, options?: ExaSearchConfig): Promise<ResearchResponse> => {
-    const result = await exaInstance.searchAndContents(query, options as any);
+  const searchAndContents = async <T extends ContentsOptions>(query: string, options?: RegularSearchOptions & T): Promise<ResearchResponse> => {
+    const {results} = await exaInstance.searchAndContents(query, options);
+    console.log("🚀 ~ searchAndContents ~ results:", results)
     return {
-      results: result.results.map((r: any) => ({
-        url: r.url,
-        title: r.title || '',
-        text: r.text,
-        summary: r.summary,
-        publishedDate: r.publishedDate
-      }))
+      results
     };
+
+
   };
 
   const getContents = async (urls: string[], options?: ExaSearchConfig): Promise<ResearchResponse> => {
-    const result = await exaInstance.getContents(urls, options as any);
+    const {results} = await exaInstance.getContents(urls, options as any);
     return {
-      results: result.results.map((r: any) => ({
-        url: r.url,
-        title: r.title || '',
-        text: r.text,
-        summary: r.summary,
-        publishedDate: r.publishedDate
-      }))
+      results
     };
   };
 
   const findSimilar = async ({websiteUrl}: {websiteUrl: string}) => {
-    const result = await exaInstance.findSimilar(websiteUrl);
+    const {results} = await exaInstance.findSimilar(websiteUrl);
     return {
-      results: result.results.map((r: any) => ({
-        url: r.url,
-        title: r.title || '',
-      }))
+      results
     };
   }
 
-    const findSimilarContent = async ({websiteUrl}: {websiteUrl: string}) => {
-    const result = await exaInstance.findSimilarAndContents(websiteUrl);
+    const findSimilarContent = async ({websiteUrl, options}: {websiteUrl: string, options?: FindSimilarOptions}) => {
+       /**
+     * Retrieves contents of documents based on URLs.
+     * @param {string | string[] | SearchResult[]} urls - A URL or array of URLs, or an array of SearchResult objects.
+     * @param {ContentsOptions} [options] - Additional options for retrieving document contents.
+     * @returns {Promise<SearchResponse<T>>} A list of document contents for the requested URLs.
+     */
+    const {results} = await exaInstance.findSimilarAndContents(websiteUrl);
     return {
-      results: result.results.map((r: any) => ({
-        url: r.url,
-        title: r.title || '',
-      }))
+      results
     };
   }
 
