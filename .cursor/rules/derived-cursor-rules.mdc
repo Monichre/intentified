@@ -9,11 +9,13 @@ All project documentation, including coding standards, workflow guidelines, and 
 - When merging UI and animation components, the AI assistant should document the architecture in a markdown file (e.g., `ProcessFrameworkWithWorkflow.md`), including sections for overview, architecture, data flow, animation, accessibility, key modules, extensibility, and usage.
 - When merging UI and animation components, the AI assistant should save the pseudocode in a markdown file (e.g., `ProcessFrameworkWithWorkflow_PSEUDOCODE.md`).
 - When generating TypeScript type definitions, create a `enriched-company-typings.ts` file in a suitable directory (e.g., `apps/intentified/src/types/` or `packages/typescript-config/`). Document the architecture and data flow in `EnrichedCompanyTypings.md`.
+- Pseudocode for UI enhancement using 21st_magic_component_builder/refiner should be saved to `apps/intentified/src/components/onboarding/EnhanceOnboardingAndAnalyticsUI_PSEUDOCODE.md`.
+- Architecture, data flow, and key module documentation for UI enhancements should be saved to `apps/intentified/src/components/onboarding/EnhanceOnboardingAndAnalyticsUI.md`.
 
 ## TECH STACK
 
 - **Programming Languages:**  TypeScript (Add languages as needed)
-- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder
+- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder, 21st_magic_component_refiner, Radix UI Tooltip, arallax-floating, @radix-ui/react-roving-focus
 
 ## CODING STANDARDS
 
@@ -136,6 +138,34 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Use camelCase for property names.
     - Document each type/interface.
 - **Component Props:** When refactoring components, prefer strongly-typed props interfaces over `any` to improve type safety, maintainability, and clarity.
+- **UI Enhancement with 21st_magic_component_builder/refiner:** When enhancing the user interface with 21st_magic_component_builder or 21st_magic_component_refiner, the following guidelines should be followed:
+    - **Focus Areas:** `@page.tsx`, `@onboarding-sequence.tsx`, `@seo-score.tsx`, and `@analytics-report-card.tsx`.
+    - **Enhancement Goals:** Improve clarity, interactivity, and visual appeal while maintaining accessibility and responsiveness.
+    - **Design Patterns:** Utilize animated cards, progress bars, accordions, tooltips, and status badges. Use Framer Motion for entrance/exit and detail expansion.
+    - **Accessibility:** Ensure all interactive elements are keyboard accessible, use ARIA roles where appropriate, and test color contrast for all new UI elements.
+    - **Performance:** Lazy-load heavy sections and optimize animation triggers.
+- **Onboarding UI Enhancements:**
+    - **Animated Card Container:** Wrap the main onboarding content in a `motion.div` (Framer Motion) to provide a subtle entrance animation (e.g., fade-in and slight upward slide).
+    - **Animated Stepper/Progress Bar:** Add a horizontal stepper or progress bar at the top, visually indicating the current step (Welcome, Company, Goals, Digital, Analysis). Each step is a clickable/hoverable item. The active step is highlighted with an animated underline or color transition. Transitions between steps are animated (e.g., sliding underline, color fade).
+    - **Step Transitions:** Animate transitions between steps (e.g., fade out old step, fade/slide in new step) using Framer Motion’s `AnimatePresence` and `motion.div` for step content.
+    - **Contextual Tooltips:** Add tooltips to stepper items or info icons, providing brief guidance for each step using a tooltip component (e.g., Shadcn UI Tooltip or Radix UI Tooltip).
+- **Onboarding Sequence UI Enhancements:**
+    - **Animated Tabs:** Animate tab transitions (slide/fade) and highlight the current tab with an animated underline using Framer Motion for tab content transitions and underline movement.
+    - **Animated Form Feedback:** Animate input focus, validation, and feedback (e.g., border color transitions, shake on error) using CSS transitions and Framer Motion for error/success feedback.
+    - **Progress Bar for Completion:** Show a progress bar indicating overall onboarding completion. Calculate completion percentage based on filled fields/steps.
+    - **Animated Navigation Buttons:** Animate “Next” and “Previous” button transitions (e.g., subtle scale or color change on click).
+    - **Digital Step Micro-Interactions:** Animate addition/removal of competitor/keyword fields (e.g., fade/slide in/out) using Framer Motion’s `AnimatePresence` for dynamic field lists.
+    - **SEO Trigger Feedback:** Show an animated loading indicator when analyzing, and animate error/success feedback (e.g., fade in/out, color transitions).
+- When implementing new features, leverage existing UI components like `Steps` (from `apps/intentified/src/components/ui/skiper-card.tsx`) for creating steppers/progress bars.
+- When implementing contextual tooltips, use the `Tooltip`, `TooltipTrigger`, and `TooltipContent` components.
+- Use Framer Motion’s `motion.div` and `AnimatePresence` for step transitions, button feedback, and dynamic field animations.
+- Use animation patterns from `MultiStepLoader` (in `apps/intentified/src/components/ui/multi-step-loader.tsx`) for SEO analysis and asynchronous operations.
+- When refactoring the `@IntentSignalsVisualization`, consider using `arallax-floating`.
+- When using `TabsTrigger`, ensure that all `TabsTrigger` components are rendered within a `RovingFocusGroup` context, as required by Radix UI.
+- Ensure that `TabsTrigger` components are direct children of `TabsList`. If the error persists, explicitly wrap `TabsList`'s children in a `RovingFocusGroup` (from `@radix-ui/react-roving-focus`), or ensure you are using a compatible version of Radix UI.
+- On the dashboard page, the header should animate to a circular family button in the top right corner that expands on click. The navigation links should be moved into a hidden expandable menu, accessible via the circular button.
+- **Onboarding Page Structure:** The onboarding page structure is defined in `apps/intentified/src/app/dashboard/onboarding/page.tsx`.
+- **Onboarding Tabs Location:** The onboarding tabs are located in `apps/intentified/src/components/onboarding/onboarding-sequence.tsx`.
 
 ## WORKFLOW & RELEASE RULES
 
