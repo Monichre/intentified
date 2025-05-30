@@ -179,7 +179,7 @@ export const makeCompanyEnrichmentService = () => {
     // Simple direct mappings to exa.api functions
     'basic-info': (req) => wrapEnrichmentResult('basic-info', () => exaR.scrapeWebsiteUrl(req)),
     'funding': (req) => wrapEnrichmentResult('funding', () => exaR.fetchFunding(req)),
-    'linkedin': (req) => wrapEnrichmentResult('linkedin', () => exaR.scrapeLinkedin(req)),
+    'linkedin': ({profile, websiteUrl}: {profile: string, websiteUrl: string}) => wrapEnrichmentResult('linkedin', () => exaR.scrapeLinkedin({websiteUrl,  profile})),
     'founders': (req) => wrapEnrichmentResult('founders', () => exaR.fetchFounders(req)),
     'crunchbase': (req) => wrapEnrichmentResult('crunchbase', () => exaR.fetchCrunchbase(req)),
     'news': (req) => wrapEnrichmentResult('news', () => exaR.findNews(req)),
@@ -197,14 +197,20 @@ export const makeCompanyEnrichmentService = () => {
     'tracxn': (req) => wrapEnrichmentResult('tracxn', () => exaR.fetchTracxn(req)),
     'wikipedia': (req) => wrapEnrichmentResult('wikipedia', () => exaR.fetchWikipedia(req)),
     'youtube-videos': (req) => wrapEnrichmentResult('youtube-videos', () => exaR.fetchYoutubeVideos(req)),
-    'recent-tweets': (req) => {
+    'recent-tweets': ({profile, websiteUrl}: {profile: string, websiteUrl: string}) => {
       // Note: This requires username extraction from website
       return wrapEnrichmentResult('recent-tweets', () => {
-        throw new Error('Username required for Twitter operations');
+        const twitterProfile = exaR.scrapeTwitterProfile({profile, websiteUrl});
+        const recentTweets = exaR.scrapeRecentTweets({profile, websiteUrl});
+        return {
+          twitterProfile,
+          recentTweets
+        }
+
       });
     },
     'reddit': (req) => wrapEnrichmentResult('reddit', () => exaR.scrapeReddit(req)),
-    'twitter-profile': (req) => {
+    'twitter': ({profile}: {profile: string}) => {
       // Note: This requires username extraction from website
       return wrapEnrichmentResult('twitter-profile', () => {
         throw new Error('Username required for Twitter operations');
@@ -424,7 +430,7 @@ export const makeCompanyEnrichmentService = () => {
 
     // Direct access to all exa.api functions
     ...exaR,
-    
+
     // Specialized enrichment functions
     enrichCompanySummary,
     enrichCompetitors,
