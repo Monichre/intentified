@@ -44,7 +44,7 @@ yarn-error.log*
 .basehub
 
 # AI Rules
-.cursorrules
+
 .github/copilot-instructions.md
 # SpecStory explanation file
 .specstory/.what-is-this.md
