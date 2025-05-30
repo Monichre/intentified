@@ -17,21 +17,6 @@ export const enrichment = {
     const enriched = await enrichCompany(p)
 
     console.log("🚀 ~ enriched:", enriched)
-    // Write the enriched data to a JSON file in the current working directory.
-    // This is for debugging or audit purposes.
-    // Note: No import here, so use dynamic import for 'fs' and 'path'.
-    try {
-      const fs = await import('fs/promises');
-      const path = await import('path');
-      const cwd = process.cwd();
-      const fileName = `enriched-company-${Date.now()}.json`;
-      const filePath = path.join(cwd, fileName);
-      await fs.writeFile(filePath, JSON.stringify(enriched, null, 2), 'utf-8');
-      console.log(`Enriched company data written to ${filePath}`);
-    } catch (err) {
-      console.error('Failed to write enriched company data to file:', err);
-    }
-    
 
     // Fallback: convert all results to sections
     return {
