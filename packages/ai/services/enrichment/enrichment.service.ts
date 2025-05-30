@@ -11,6 +11,7 @@ import { insights } from "../../services/enrichment/insights"
 
 import { makeExaResearch } from "../../lib/exa/exa.api"
 import { makeExaClient } from "../../lib/exa/exa.client"
+import { customCaptureService } from "../../lib/capture/capture.api"
 
 
 /* ------------------------------------------------------------------ *
@@ -49,6 +50,7 @@ export const makeCompanyEnrichmentService = () => {
   const apiKey = process.env.EXA_API_KEY || "";
   const exa = makeExaClient(apiKey);
   const exaR = makeExaResearch(exa);
+  const {screenshot: captureScreenshot, pdf, content, metadata} = customCaptureService
 
   /* ------------------------------------------------------------------ *
    * Unified result wrapper for all enrichment operations              *
@@ -77,19 +79,39 @@ export const makeCompanyEnrichmentService = () => {
     }
   };
 
+
+
   /* ------------------------------------------------------------------ *
    * Specialized enrichment functions (only for complex operations)     *
    * ------------------------------------------------------------------ */
 
   const enrichCompanySummary = async (request: EnrichmentRequest): Promise<EnrichmentResult> => {
+
+      console.log("🚀 ~ returnwrapEnrichmentResult ~ webContent:", webContent)
+
     return wrapEnrichmentResult('company-summary', async () => {
       const main = await exaR.scrapeWebsiteUrl(request);
+      const screenshot = await captureScreenshot(request.websiteUrl);
+      console.log(screenshot);
+      const doc = await pdf(request.websiteUrl);
+      console.log(doc);
+      const webContent = await content(request.websiteUrl);
+      console.log(webContent);
+      const meta = await metadata(request.websiteUrl);
+      console.log(meta);
       const sub = await exaR.scrapeWebsiteSubPages(request);
-      return insights.summary({
+
+
+      const insightsSummary = await insights.summary({
         mainpage: main,
         subpages: sub,
         websiteUrl: request.websiteUrl
       });
+
+      return {
+        screenshot,
+        ...insightsSummary
+      }
     });
   };
 
@@ -206,12 +228,38 @@ export const makeCompanyEnrichmentService = () => {
     req: EnrichmentRequest,
     onProgress?: (p: EnrichmentProgress) => void
   ): Promise<BulkEnrichmentResponse> => {
+
     const startTime = Date.now();
     const requestId = req.requestId || `enrich-${Date.now()}`;
     
     // Determine which enrichment types to run
     const typesToRun = req.enrichmentTypes || ALL_ENRICHMENT_TYPES;
     const completedTypes: EnrichmentType[] = [];
+
+     // Step 1
+     const main = await exaR.scrapeWebsiteUrl(req);
+
+     console.log("🚀 ~ makeCompanyEnrichmentService ~ main:", main)
+
+     const sub = await exaR.scrapeWebsiteSubPages(req);
+
+      console.log("🚀 ~ makeCompanyEnrichmentService ~ sub:", sub)
+
+      const screenshot = await captureScreenshot(req.websiteUrl);
+      console.log(screenshot);
+
+      const doc = await pdf(req.websiteUrl);
+      console.log(doc);
+
+
+      const insightsSummary = await insights.summary({
+        mainpage: main,
+        subpages: sub,
+        websiteUrl: req.websiteUrl
+      });
+
+      console.log("🚀 ~ makeCompanyEnrichmentService ~ insightsSummary:", insightsSummary)
+
     
     // Progress reporting helper
     const reportProgress = (currentType?: EnrichmentType) => {
@@ -348,7 +396,10 @@ export const makeCompanyEnrichmentService = () => {
       successful: allResults.filter(r => r.status === 'success').length,
       failed: allResults.filter(r => r.status === 'error').length,
       skipped: allResults.filter(r => r.status === 'skipped').length,
-      totalDuration: Date.now() - startTime
+      totalDuration: Date.now() - startTime,
+      screenshot,
+      doc,
+     insightsSummary
     };
 
     // Report completion
@@ -358,6 +409,7 @@ export const makeCompanyEnrichmentService = () => {
       websiteUrl: req.websiteUrl,
       requestId,
       results: allResults,
+
       summary
     };
   };
@@ -366,9 +418,10 @@ export const makeCompanyEnrichmentService = () => {
    * Expose service interface                                           *
    * ------------------------------------------------------------------ */
   return {
+
     // Core orchestration
     enrichCompany,
-    
+
     // Direct access to all exa.api functions
     ...exaR,
     
