@@ -1,4 +1,4 @@
-import { supabaseAdminClient } from "./src/supabase/admin.client";
+import { supabaseAdminClient } from "../src/supabase/admin.client";
 
 async function verifyCompanyTables() {
   console.log("🔍 Verifying company-related database tables...\n");
