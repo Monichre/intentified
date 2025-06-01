@@ -9,7 +9,8 @@ export const EXA_CLIENT = new Exa(process.env.EXA_API_KEY);
 export const FIRECRAWAL_APP = new FirecrawlApp({ apiKey: process.env.FIRECRAWL_API_KEY });
 export const OPENAI_MODELS = {
   gpt4_1:  openai.responses('gpt-4.1'),
-  gpt3o:  openai.responses('gpt-3o'),
+  gpt3o:  openai.responses('gpt-o3'),
+  
   
 };
 

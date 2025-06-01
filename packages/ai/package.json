@@ -9,7 +9,9 @@
   "exports": {
     ".": "./index.ts",
     "./lib": "./lib/index.ts",
-    "./services": "./services/index.ts"
+    "./services": "./services/index.ts",
+    "./types": "./services/enrichment/types.ts",
+    "./agents": "./agents/index.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",

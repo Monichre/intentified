@@ -1,3 +1,4 @@
 
-export { makeCompanyEnrichmentService as default } from './enrichment';
-export { enrichment, insights } from './enrichment/insights';
+export * from './enrichment';
+export { makeCompanyEnrichmentService } from './enrichment/enrichment.service';
+export { insights } from './enrichment/insights';

@@ -1,4 +1,4 @@
-import type { EmailTemplate, BrandAnalysis } from "./marketing-intelligence.service";
+import type { EmailTemplate, BrandAnalysis } from "./marketing/marketing-intelligence.service";
 import { askAiStructuredResponse, ANTHROPIC_MODELS } from "../../lib/models";
 import { z } from "zod";
 

@@ -17,7 +17,7 @@ CREATE TABLE public.CSVRow (
   id text NOT NULL DEFAULT (gen_random_uuid())::text,
   fileId text NOT NULL,
   rowData jsonb NOT NULL,
-  rowIndex integer NOT NULL,
+  rowIndex integer NOT NULL,w
   isValid boolean NOT NULL DEFAULT true,
   errors text,
   createdAt timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,

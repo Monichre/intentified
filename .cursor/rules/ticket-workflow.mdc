@@ -1,7 +1,7 @@
 ---
-description: When creating or working on tickets
+description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 ---
 description: Ticket Workflow and Development Process

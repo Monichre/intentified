@@ -9,8 +9,8 @@ import type {
 import type { CompanySummaryResult, CompanyMindMap } from "@/lib/exa/types"
 import { insights } from "../../services/enrichment/insights"
 
-import { makeExaResearch } from "../../lib/exa/exa.api"
-import { makeExaClient } from "../../lib/exa/exa.client"
+import { makeExaResearch } from "../../agents/lib/exa-enrich-company"
+import { exaService } from "../../agents/lib/exa"
 import { customCaptureService } from "../../lib/capture/capture.api"
 
 
@@ -47,9 +47,7 @@ const ALL_ENRICHMENT_TYPES: EnrichmentType[] = [
 ];
 
 export const makeCompanyEnrichmentService = () => {
-  const apiKey = process.env.EXA_API_KEY || "";
-  const exa = makeExaClient(apiKey);
-  const exaR = makeExaResearch(exa);
+  const exaR = makeExaResearch(exaService);
   const {screenshot: captureScreenshot, pdf, content, metadata} = customCaptureService
 
   /* ------------------------------------------------------------------ *
@@ -79,7 +77,7 @@ export const makeCompanyEnrichmentService = () => {
     }
   };
 
-
+ 
 
   /* ------------------------------------------------------------------ *
    * Specialized enrichment functions (only for complex operations)     *
@@ -100,8 +98,8 @@ export const makeCompanyEnrichmentService = () => {
       const meta = await metadata(request.websiteUrl);
       console.log(meta);
       const sub = await exaR.scrapeWebsiteSubPages(request);
-
-
+ 
+      
       const insightsSummary = await insights.summary({
         mainpage: main,
         subpages: sub,
@@ -199,14 +197,15 @@ export const makeCompanyEnrichmentService = () => {
     'youtube-videos': (req) => wrapEnrichmentResult('youtube-videos', () => exaR.fetchYoutubeVideos(req)),
     'recent-tweets': ({profile, websiteUrl}: {profile: string, websiteUrl: string}) => {
       // Note: This requires username extraction from website
-      return wrapEnrichmentResult('recent-tweets', () => {
-        const twitterProfile = exaR.scrapeTwitterProfile({profile, websiteUrl});
-        const recentTweets = exaR.scrapeRecentTweets({profile, websiteUrl});
+      return wrapEnrichmentResult('recent-tweets', async () => {
+        const [twitterProfile, recentTweets] = await Promise.all([
+          exaR.scrapeTwitterProfile({profile, websiteUrl}),
+          exaR.scrapeRecentTweets({profile, websiteUrl})
+        ]);
         return {
           twitterProfile,
           recentTweets
-        }
-
+        };
       });
     },
     'reddit': (req) => wrapEnrichmentResult('reddit', () => exaR.scrapeReddit(req)),
@@ -253,11 +252,11 @@ export const makeCompanyEnrichmentService = () => {
 
       const screenshot = await captureScreenshot(req.websiteUrl);
       console.log(screenshot);
-
+ 
       const doc = await pdf(req.websiteUrl);
       console.log(doc);
 
-
+   
       const insightsSummary = await insights.summary({
         mainpage: main,
         subpages: sub,
@@ -350,7 +349,7 @@ export const makeCompanyEnrichmentService = () => {
           if (type === 'competitors') {
             // Use existing summary if available
             const summaryText = summaryData ? 
-              summaryData.sections.map(s => s.text).join(' ') : 
+              summaryData.sections.map((s: any) => s.text).join(' ') : 
               undefined;
             result = await enrichCompetitors(req, summaryText);
           } else if (type === 'mind-map') {
@@ -415,7 +414,7 @@ export const makeCompanyEnrichmentService = () => {
       websiteUrl: req.websiteUrl,
       requestId,
       results: allResults,
-
+      
       summary
     };
   };
@@ -427,10 +426,10 @@ export const makeCompanyEnrichmentService = () => {
 
     // Core orchestration
     enrichCompany,
-
+    
     // Direct access to all exa.api functions
     ...exaR,
-
+    
     // Specialized enrichment functions
     enrichCompanySummary,
     enrichCompetitors,

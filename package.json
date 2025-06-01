@@ -43,7 +43,8 @@
     "commander": "^13.1.0",
     "framer-motion": "^12.15.0",
     "motion": "^12.10.0",
-    "nuqs": "^2.4.3"
+    "nuqs": "^2.4.3",
+    "task-master-ai": "^0.15.0"
   },
   "type": "module",
   "workspaces": [

@@ -8,7 +8,7 @@ import { makeCompanyEnrichmentService } from "./enrichment.service";
 import { makeEnrichmentPersistenceService, type EnrichmentPersistenceService } from "./persistence.service";
 import { makeSocialMediaService, type SocialMediaService } from "./social-media.service";
 import { makeDocumentStorageService, type DocumentStorageService } from "./document-storage.service";
-import { makeMarketingIntelligenceService, type MarketingIntelligenceService } from "./marketing-intelligence.service";
+import { makeMarketingIntelligenceService, type MarketingIntelligenceService } from "./marketing/marketing-intelligence.service";
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 interface Database {

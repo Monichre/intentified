@@ -5,6 +5,7 @@ import {motion} from 'framer-motion'
 import {cn} from '../../lib/utils'
 import {Badge} from './badge'
 import {TrendingUp, TrendingDown, Minus, LucideIcon} from 'lucide-react'
+import {HoverController, HoverAnimated} from './hover-controller'
 
 export interface LayeredDataCardProps {
   title: string
@@ -119,66 +120,116 @@ export const LayeredDataCard: React.FC<LayeredDataCardProps> = ({
   const sizes = sizeVariants[size]
   const TrendIcon = getTrendIcon(trend)
 
+  // Animation variants for each layer
+  const backgroundLayerVariants = {
+    initial: {
+      translateZ: 0,
+      rotateY: 0,
+      rotateX: 0,
+    },
+    hover: {
+      translateZ: -20,
+      rotateY: -2,
+      rotateX: 1,
+    },
+  }
+
+  const accentLayerVariants = {
+    initial: {
+      translateZ: 0,
+      rotateY: 0,
+      rotateX: 0,
+    },
+    hover: {
+      translateZ: -10,
+      rotateY: -1,
+      rotateX: 0.5,
+    },
+  }
+
+  const contentLayerVariants = {
+    initial: {
+      translateZ: 0,
+      rotateY: 0,
+      rotateX: 0,
+    },
+    hover: {
+      translateZ: 0,
+      rotateY: 0,
+      rotateX: 0,
+    },
+  }
+
+  const highlightLayerVariants = {
+    initial: {
+      translateZ: 0,
+      rotateY: 0,
+      rotateX: 0,
+      borderColor: colors.border,
+    },
+    hover: {
+      translateZ: 10,
+      rotateY: 1,
+      rotateX: -0.5,
+      borderColor: colors.accent,
+    },
+  }
+
+  const accentDotVariants = {
+    initial: {
+      translateZ: 0,
+      scale: 1,
+    },
+    hover: {
+      translateZ: 15,
+      scale: 1.5,
+    },
+  }
+
+  // Common transition settings with different delays
+  const getTransition = (delay = 0) => ({
+    duration: 0.4,
+    ease: 'easeOut',
+    delay,
+  })
+
   return (
-    <div
+    <HoverController
       className={cn('relative cursor-pointer', sizes.container, className)}
       style={{perspective: '1000px'}}
     >
       {/* Background Layer */}
-      <motion.div
+      <HoverAnimated
         className={cn(
           'absolute inset-0 rounded-xl bg-gradient-to-br',
           colors.background,
           'backdrop-blur-sm'
         )}
-        whileHover={{
-          translateZ: -20,
-          rotateY: -2,
-          rotateX: 1,
-        }}
-        transition={{
-          duration: 0.4,
-          ease: 'easeOut',
-        }}
+        variants={backgroundLayerVariants}
+        customTransition={getTransition(0)}
         style={{transformStyle: 'preserve-3d'}}
       />
 
       {/* Accent Layer */}
-      <motion.div
+      <HoverAnimated
         className={cn(
           'absolute inset-0 rounded-xl border-2',
           colors.border,
           'bg-white/50 dark:bg-black/20'
         )}
-        whileHover={{
-          translateZ: -10,
-          rotateY: -1,
-          rotateX: 0.5,
-        }}
-        transition={{
-          duration: 0.4,
-          ease: 'easeOut',
-          delay: 0.05,
-        }}
+        variants={accentLayerVariants}
+        customTransition={getTransition(0.05)}
         style={{transformStyle: 'preserve-3d'}}
       />
 
       {/* Content Layer */}
-      <motion.div
+      <HoverAnimated
         className={cn(
           'relative z-10 flex h-full flex-col justify-between rounded-xl bg-white/80 dark:bg-black/40 backdrop-blur border border-white/20',
           sizes.padding
         )}
-        whileHover={{
-          translateZ: 0,
-          rotateY: 0,
-          rotateX: 0,
-        }}
-        transition={{
-          duration: 0.4,
-          ease: 'easeOut',
-          delay: 0.1,
-        }}
+        variants={contentLayerVariants}
+        customTransition={getTransition(0.1)}
         style={{transformStyle: 'preserve-3d'}}
       >
         {/* Header */}
@@ -230,46 +281,30 @@ export const LayeredDataCard: React.FC<LayeredDataCardProps> = ({
             </div>
           )}
         </div>
-      </motion.div>
+      </HoverAnimated>
 
       {/* Highlight Layer */}
-      <motion.div
+      <HoverAnimated
         className={cn(
           'absolute inset-0 rounded-xl border',
           colors.border,
           'bg-transparent'
         )}
-        whileHover={{
-          translateZ: 10,
-          rotateY: 1,
-          rotateX: -0.5,
-          borderColor: colors.accent,
-        }}
-        transition={{
-          duration: 0.4,
-          ease: 'easeOut',
-          delay: 0.15,
-        }}
+        variants={highlightLayerVariants}
+        customTransition={getTransition(0.15)}
         style={{transformStyle: 'preserve-3d'}}
       />
 
       {/* Floating accent dot */}
-      <motion.div
+      <HoverAnimated
         className={cn(
           'absolute top-4 right-4 h-2 w-2 rounded-full',
           colors.accent
         )}
-        whileHover={{
-          translateZ: 15,
-          scale: 1.5,
-        }}
-        transition={{
-          duration: 0.4,
-          ease: 'easeOut',
-          delay: 0.2,
-        }}
+        variants={accentDotVariants}
+        customTransition={getTransition(0.2)}
         style={{transformStyle: 'preserve-3d'}}
       />
-    </div>
+    </HoverController>
   )
 }

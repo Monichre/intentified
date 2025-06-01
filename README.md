@@ -22,26 +22,6 @@ Intentified transforms how businesses understand and respond to customer intent.
 - **Secure Authentication**: Role-based access control with Clerk authentication
 - **Supabase Integration**: Powerful database and backend services
 
-## Screenshots
-
-### Dashboard Views
-
-![Dashboard Overview](public/app-screenshots/dashboard-1.png)
-![Dashboard Analytics](public/app-screenshots/dashboard-2.png)
-![Dashboard Customers](public/app-screenshots/dashboard-3.png)
-
-### Landing Page
-
-![Landing Page](public/app-screenshots/landing.png)
-
-### Mobile Experience
-
-<div style="display: flex; justify-content: space-between;">
-  <img src="public/app-screenshots/mobile-1.png" alt="Mobile Dashboard" width="32%" />
-  <img src="public/app-screenshots/mobile-2.png" alt="Mobile Analytics" width="32%" />
-  <img src="public/app-screenshots/mobile-3.png" alt="Mobile Navigation" width="32%" />
-</div>
-
 ## Core Capabilities
 
 ### Intent Identification

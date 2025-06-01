@@ -37,20 +37,29 @@ import { cn } from '@repo/design-system/lib/utils';
 import { NotificationsTrigger } from '@repo/notifications/components/trigger';
 import {
   AnchorIcon,
-  BookOpenIcon,
+  BarChart3Icon,
   BotIcon,
   ChevronRightIcon,
+  CreditCardIcon,
+  FileTextIcon,
   FolderIcon,
   FrameIcon,
+  GaugeIcon,
+  GlobeIcon,
   LifeBuoyIcon,
   MapIcon,
   MoreHorizontalIcon,
   PieChartIcon,
+  PuzzleIcon,
+  SearchIcon,
   SendIcon,
   Settings2Icon,
   ShareIcon,
+  SignalIcon,
+  SparklesIcon,
   SquareTerminalIcon,
   Trash2Icon,
+  UsersIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
@@ -69,100 +78,91 @@ const data = {
   navMain: [
     {
       title: 'Dashboard',
-      url: '/',
-      icon: SquareTerminalIcon,
+      url: '/dashboard',
+      icon: GaugeIcon,
       isActive: true,
       items: [
         {
           title: 'Overview',
-          url: '/',
+          url: '/dashboard',
         },
         {
-          title: 'Search',
-          url: '/search',
-        },
-      ],
-    },
-    {
-      title: 'AI Agents',
-      url: '#',
-      icon: BotIcon,
-      items: [
-        {
-          title: 'Processing',
-          url: '#',
-        },
-        {
-          title: 'Prompting',
-          url: '#',
-        },
-        {
-          title: 'Analysis',
-          url: '#',
+          title: 'Analytics',
+          url: '/dashboard?tab=analytics',
         },
       ],
     },
     {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpenIcon,
+      title: 'Intent Hub',
+      url: '/dashboard?tab=intent-hub',
+      icon: SparklesIcon,
       items: [
         {
-          title: 'Introduction',
-          url: '#',
+          title: 'Signals',
+          url: '/intent-hub/signals',
         },
         {
-          title: 'Get Started',
-          url: '#',
+          title: 'AI Agents',
+          url: '/intent-hub/ai-agents',
         },
         {
-          title: 'Tutorials',
-          url: '#',
+          title: 'Content Processing',
+          url: '/intent-hub/content',
         },
         {
-          title: 'Changelog',
-          url: '#',
+          title: 'SEO Analysis',
+          url: '/intent-hub/seo',
+        },
+      ],
+    },
+    {
+      title: 'Integrations',
+      url: '/integrations',
+      icon: PuzzleIcon,
+      items: [
+        {
+          title: 'Tools',
+          url: '/integrations/tools',
+        },
+        {
+          title: 'Webhooks',
+          url: '/webhooks',
+        },
+        {
+          title: 'API',
+          url: '/integrations/api',
         },
       ],
     },
     {
       title: 'Settings',
-      url: '#',
+      url: '/settings',
       icon: Settings2Icon,
       items: [
         {
           title: 'General',
-          url: '#',
+          url: '/settings/general',
         },
         {
           title: 'Team',
-          url: '#',
+          url: '/settings/team',
         },
         {
           title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
+          url: '/settings/billing',
         },
       ],
     },
   ],
   navSecondary: [
     {
-      title: 'Webhooks',
-      url: '/webhooks',
-      icon: AnchorIcon,
-    },
-    {
       title: 'Support',
-      url: '#',
+      url: '/support',
       icon: LifeBuoyIcon,
     },
     {
       title: 'Feedback',
-      url: '#',
+      url: '/feedback',
       icon: SendIcon,
     },
   ],
@@ -202,7 +202,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
               >
                 <OrganizationSwitcher
                   hidePersonal
-                  afterSelectOrganizationUrl="/"
+                  afterSelectOrganizationUrl="/dashboard"
                 />
               </div>
             </SidebarMenuItem>

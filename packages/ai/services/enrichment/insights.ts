@@ -1,4 +1,4 @@
-import type { CompanySummaryParams, CompanySummaryResult, CompanyMapParams, CompanyMindMap } from "../../lib/exa/types"
+import type { CompanySummaryParams, CompanySummaryResult, CompanyMapParams, CompanyMindMap } from "../../agents/tools/exa/types"
 import { generateCompanySummary, generateCompanyMindMap } from "../../lib/functions"
 import { makeCompanyEnrichmentService } from "./enrichment.service"
 import type { EnrichmentRequest } from "./types"

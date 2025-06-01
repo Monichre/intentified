@@ -11,11 +11,17 @@ All project documentation, including coding standards, workflow guidelines, and 
 - When generating TypeScript type definitions, create a `enriched-company-typings.ts` file in a suitable directory (e.g., `apps/intentified/src/types/` or `packages/typescript-config/`). Document the architecture and data flow in `EnrichedCompanyTypings.md`.
 - Pseudocode for UI enhancement using 21st_magic_component_builder/refiner should be saved to `apps/intentified/src/components/onboarding/EnhanceOnboardingAndAnalyticsUI_PSEUDOCODE.md`.
 - Architecture, data flow, and key module documentation for UI enhancements should be saved to `apps/intentified/src/components/onboarding/EnhanceOnboardingAndAnalyticsUI.md`.
+- Pseudocode for updating Anthropic models should be saved as `AnthropicModels_PSEUDOCODE.md` in the same directory as `anthropic.ts`.
+- Documentation for the Anthropic models should be saved as `AnthropicModels.md` in the same directory as `anthropic.ts`.
+- Planning and implementation documentation should be kept up to date as features evolve.
+- Consider a master status table (in `@00-Overview.md` or similar) to track the progress of all planning/implementation docs.
+- Add a top-level `PIPELINES.md` or update `IMPLEMENTATION.md` in the `packages/ai` directory to describe each enrichment pipeline, its inputs/outputs, and handoff points. Use diagrams to show data flow between pipelines.
+- Expand `ai-docs/` with pipeline-specific guides and usage examples. Cross-link documentation between enrichment, brand analysis, and email generation.
 
 ## TECH STACK
 
 - **Programming Languages:**  TypeScript (Add languages as needed)
-- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder, 21st_magic_component_refiner, Radix UI Tooltip, arallax-floating, @radix-ui/react-roving-focus
+- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder, 21st_magic_component_refiner, Radix UI Tooltip, arallax-floating, @radix-ui/react-roving-focus, context7 MCP, @Vercel AI SDK UI, ai-sdk, exa-js, @mendable/firecrawl-js, React Email
 
 ## CODING STANDARDS
 
@@ -98,7 +104,7 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Ensure both are responsive and do not break the layout.
     - Document the integration in `HeroSection.md`.
 - When the `CloudSyncing` component represents a three-step process:
-    - **Visual Flow:** Three distinct icons with unique color themes (blue -> green -> purple). Two connection lines showing data flow between steps. Sequential ripple animations that cascade through each step. Staggered delays create a natural progression (0.5s -> 1.5s -> 2.5s).
+    - **Visual Flow:** Three distinct icons with unique color themes (blue -> green -> purple). Two connection lines showing data flow between steps. Sequential ripple animations that cascade through each step (0.5s -> 1.5s -> 2.5s).
     - **Enhanced Animations:** Each step has its own pulse animation with appropriate timing. Connection lines show colored progress bars matching the source step. The final status badge appears after all steps are animated.
     - **New Components:** `ServerIcon` (Green server racks representing processing) and `DatabaseIcon` (Purple database cylinders representing storage). Each icon has proper shadows and styling consistent with the design system.
 - When merging UI and animation components:
@@ -138,6 +144,10 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Use camelCase for property names.
     - Document each type/interface.
 - **Component Props:** When refactoring components, prefer strongly-typed props interfaces over `any` to improve type safety, maintainability, and clarity.
+- **Anthropic Models:**
+  - When updating Anthropic models, ensure extensibility, type safety, and compatibility with context7 MCP.
+  - Update `packages/ai/provider/model/llm/anthropic.ts` to include the latest Claude 3.7 model, Sonnet-4, and the v0 model from Vercel AI SDK UI.
+  - If the v0 model is not Anthropic-specific, consider a separate export or a unified model registry.
 - **UI Enhancement with 21st_magic_component_builder/refiner:** When enhancing the user interface with 21st_magic_component_builder or 21st_magic_component_refiner, the following guidelines should be followed:
     - **Focus Areas:** `@page.tsx`, `@onboarding-sequence.tsx`, `@seo-score.tsx`, and `@analytics-report-card.tsx`.
     - **Enhancement Goals:** Improve clarity, interactivity, and visual appeal while maintaining accessibility and responsiveness.
@@ -166,6 +176,25 @@ All project documentation, including coding standards, workflow guidelines, and 
 - On the dashboard page, the header should animate to a circular family button in the top right corner that expands on click. The navigation links should be moved into a hidden expandable menu, accessible via the circular button.
 - **Onboarding Page Structure:** The onboarding page structure is defined in `apps/intentified/src/app/dashboard/onboarding/page.tsx`.
 - **Onboarding Tabs Location:** The onboarding tabs are located in `apps/intentified/src/components/onboarding/onboarding-sequence.tsx`.
+- Each enrichment pipeline should expose a clear interface (input types, output types, error handling).
+- Downstream pipelines (e.g., email generation) should only depend on the outputs of upstream pipelines (e.g., brand analysis).
+- All enrichment and generation functions should return structured error objects on failure.
+- Partial results should be returned where possible.
+- Use Zod for all schema validation within the AI directory.
+- Use dependency injection for all services within the AI directory.
+- Prefer functional, named exports within the AI directory.
+- Ensure all required API keys are set in environment variables.
+- Supabase must be configured for storage and database access.
+- All enrichment and generation functions should return structured error objects on failure.
+- Partial results should be returned where possible.
+- Use Supabase client for all persistence.
+- Follow the schema in [intentified-data-architecture](mdc:packages/ai/ai-docs/brand-analysis-enrichment.md).
+- Enforce RLS policies in Supabase.
+- Validate all inputs and sanitize outputs.
+- Branching should be done with feature branches per pipeline or major feature.
+- Code review is required for all pull requests.
+- Tag and document each major pipeline update.
+- Use `.env` for API keys; never commit secrets.
 
 ## WORKFLOW & RELEASE RULES
 
@@ -204,24 +233,4 @@ All project documentation, including coding standards, workflow guidelines, and 
 - The AI assistant should pick up the next ticket as directed by the user (e.g., `@15-Integrate-Marketing-Content-with-Website-UI-Components.md`).
 - **Ticket Dependency Handling:** The AI assistant MUST check dependencies for any ticket before picking it up. If dependencies are not met, the AI assistant MUST pick the lowest-numbered pending ticket with dependencies met.
 - When asked to pick up a specific ticket, the AI assistant **MUST** check if all dependencies for that ticket are met. If the dependencies are not met, the AI assistant **MUST** then pick up the lowest-numbered pending ticket with all dependencies met.
-- The AI assistant should create new components in the correct directory. For example, `metrics-comparison.tsx` was created in `apps/intentified/src/features/landing/`.
-- When implementing `CustomerTestimonials` or `FAQTrustIndicators` components, ensure correct implementation by referencing the implementation from 2025-05-28.
-- When using `AnimatedNumber` component, ensure correct implementation by studying the component's interface and implementing a proper animation approach with state management.
-- The AI assistant should implement multiple tickets together if they are dependent on each other.
-- The AI assistant should use `@review.md` and `@new-website-copy.md` when refactoring the home page content.
-- **Animations:** When adding animations to the website, the AI assistant should utilize the `useScrollAnimation` and `useScrollAnimationMultiple` hooks to trigger animations when elements come into view.
-- **Performance:** The AI assistant should strive for performant animations, avoiding dependencies like Framer Motion when simpler solutions are available.
-- **Ticket Workflow:** When continuing with the next logical step in the ticket-driven workflow:
-    - **Analyze Current State:** Review the `tickets/` directory for pending tickets and `@00-Overview.md` for ticket order, dependencies, and status. Confirm the next ticket to work on (lowest-numbered pending, dependencies met).
-    - **Gather Requirements:** Read the selected ticket for technical requirements and success criteria. Review `@TODO.md` for any additional technical context. Note any required documentation or test coverage.
-    - **Plan Implementation:** Break down the ticket into modular, functional steps. Identify files to be created/modified (code, tests, docs). Plan for SOLID, functional, and declarative code.
-    - **Pseudocode:** Write detailed pseudocode for the implementation and save as `{ticket-title}_PSEUDOCODE.md`.
-    - **Implementation:** Write code, tests, and documentation as planned. Ensure all code is clean, maintainable, and follows conventions.
-    - **Documentation:** Create `{ticket-title}.md` with architecture, data flow, and key modules.
-    - **Validation:** Run all tests and linting. Mark ticket as done in `@00-Overview.md`.
-- **Ticket 15 Integration:** When working on ticket `15-Integrate-Marketing-Content-with-Website-UI-Components.md`:
-    - **Analyze Requirements:** Integrate all marketing content (headline, value prop, metrics, process, testimonials, FAQ, etc.) into UI components. Ensure responsive, animated, interactive, accessible, and performant implementation. Use existing design system and components where possible.
-    - **Component Mapping:** Map the following content sections to UI components:
-        - **HeroSection**: Headline & Value Proposition (animated background)
-        - **MetricsGrid**: Metrics Comparison (animated counters)
-        - **ProcessTimeline**:
+- The AI assistant should create new components in the correct directory. For

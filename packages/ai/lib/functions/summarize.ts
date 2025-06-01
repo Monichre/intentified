@@ -3,9 +3,9 @@
 import { generateObject } from "ai";
 import { z } from "zod";
 
-import { ANTHROPIC_MODELS, askAiStructuredResponse } from "../../lib/models"
+import { OPENAI_MODELS, askAiStructuredResponse } from "../../lib/models"
 import type { CompanySummaryParams, CompanySummaryResult } from "@/services/enrichment"
-
+const {gpt3o} = OPENAI_MODELS
 
 /* ------------------------------------------------------------------ *
  * Generic model selector – switchable for testing / staging.          *
@@ -38,7 +38,7 @@ export const generateCompanySummary = async ({
 
     const {object} = await askAiStructuredResponse({
        schema: summarySchema,
-       model: ANTHROPIC_MODELS.SONNET_37,
+       model: gpt3o,
       system: "All the output content should be in simple english. Don't use any difficult words. Keep sentences short and simple.  Use unique emojis for each heading.",
       prompt: `You are an expert at writing important points about a company.
       Here are the content from a company's website so you can understand about the company in detail.

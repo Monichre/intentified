@@ -2,8 +2,9 @@
 
 import { z } from "zod";
 
-import { ANTHROPIC_MODELS, askAiStructuredResponse } from "../../lib/models"
-import type { CompanyMindMap, CompanyMapParams } from "../../lib/exa/types"
+import {  askAiStructuredResponse, OPENAI_MODELS } from "../models"
+import type { CompanyMapParams } from "@/agents/lib/types"
+const {gpt4_1} = OPENAI_MODELS
 
 /* ------------------------------------------------------------------ *
  * Generic model selector – switchable for testing / staging.          *
@@ -44,7 +45,7 @@ export const generateCompanyMindMap = async ({
     });
 
     const {object} = await askAiStructuredResponse({
-      model: ANTHROPIC_MODELS.SONNET_37,
+      model: gpt4_1,
       schema: mindMapSchema,
       system: "Create clear, concise mind maps that help users quickly understand companies. Use simple English and focus on the most important aspects.",
       prompt: `You are an expert at creating insightful mind maps about companies.
