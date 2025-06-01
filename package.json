@@ -40,7 +40,7 @@
   "packageManager": "bun@1.2.12",
   "dependencies": {
     "@clack/prompts": "^0.10.1",
-    "commander": "^13.1.0",
+    "commander": "^14.0.0",
     "framer-motion": "^12.15.0",
     "motion": "^12.10.0",
     "nuqs": "^2.4.3",
