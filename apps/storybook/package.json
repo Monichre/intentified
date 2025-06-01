@@ -29,7 +29,7 @@
     "@repo/typescript-config": "*",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-interactions": "^8.6.12",
-    "@storybook/addon-onboarding": "^8.6.12",
+    "@storybook/addon-onboarding": "^9.0.3",
     "@storybook/addon-themes": "^8.6.12",
     "@storybook/blocks": "^8.6.12",
     "@storybook/nextjs": "^8.6.12",
