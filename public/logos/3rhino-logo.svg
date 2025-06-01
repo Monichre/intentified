@@ -1,0 +1,5 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50 60C50 60 70 60 90 60C110 60 120 70 120 85C120 100 110 110 90 110C70 110 50 110 50 110" stroke="#4A5568" stroke-width="10" stroke-linecap="round"/>
+  <path d="M50 110C50 110 70 110 90 110C110 110 150 115 150 140" stroke="#4A5568" stroke-width="10" stroke-linecap="round"/>
+  <text x="30" y="50" font-family="Arial" font-weight="bold" font-size="24" fill="#4A5568">3RHINO</text>
+</svg> 

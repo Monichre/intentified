@@ -1,0 +1,5 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="25" y="60" width="150" height="80" fill="#0046BE"/>
+  <text x="42" y="116" font-family="Arial" font-weight="bold" font-size="28" fill="white">BEST BUY</text>
+  <path d="M170 70L180 90L170 110" stroke="#FFED00" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg> 
