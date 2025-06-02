@@ -17,74 +17,34 @@ All project documentation, including coding standards, workflow guidelines, and 
 - Consider a master status table (in `@00-Overview.md` or similar) to track the progress of all planning/implementation docs.
 - Add a top-level `PIPELINES.md` or update `IMPLEMENTATION.md` in the `packages/ai` directory to describe each enrichment pipeline, its inputs/outputs, and handoff points. Use diagrams to show data flow between pipelines.
 - Expand `ai-docs/` with pipeline-specific guides and usage examples. Cross-link documentation between enrichment, brand analysis, and email generation.
-
-## TECH STACK
-
-- **Programming Languages:**  TypeScript (Add languages as needed)
-- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder, 21st_magic_component_refiner, Radix UI Tooltip, arallax-floating, @radix-ui/react-roving-focus, context7 MCP, @Vercel AI SDK UI, ai-sdk, exa-js, @mendable/firecrawl-js, React Email
-
-## CODING STANDARDS
-
-- Code should be well-documented.
-- Follow consistent indentation (e.g., 2 spaces).
-- Use descriptive variable and function names.
-
-- When handling form input changes, ensure proper mapping between input IDs and state variables to prevent update issues. Use explicit mapping or a helper function (as demonstrated in the fix for the 2025-05-24 issue and the 2025-05-25 interaction).  The `handleInputChange` function should utilize explicit field mapping or helper functions to ensure accurate updates to application state.
-- Use `unsafeMetadata` instead of `publicMetadata` when updating user data via Clerk.
-- Ensure all components are correctly imported. Address module not found errors by verifying component existence and correct import paths (as seen in the 2025-05-25 interaction).  Prioritize relative imports within the same directory before using absolute imports.
-- When adding social links to forms, ensure proper handling of input IDs, using explicit mapping or helper functions to prevent update issues.  (See example from 2025-05-25 interaction).
-- When creating new components, ensure they are appropriately styled for dark mode and follow established design system guidelines.  This includes considering color inversions as demonstrated in the 2025-05-25 interaction.
-- Checkboxes should be implemented as controlled components, linked to application state.
-- Thoroughly document the purpose and functionality of all functions, including `@combinedUrlActions()` and any functions interacting with `@route.ts`.  Clarify how form inputs are processed and handled within these functions.  The `combinedUrlActions()` function should handle form data appropriately, including validation and error handling.  The function should also clearly document its inputs, outputs, and any side effects.  The `combinedUrlActions` function should be clearly documented, including its inputs, outputs, and any side effects.  It should handle form data appropriately, including validation and error handling.
-- In Next.js 15 App Router, `params` and `searchParams` are async and must be unwrapped using `React.use()` before accessing their values.
-- Ensure consistency between form field names (e.g., "website" vs. "url") and the expected input in `@combinedUrlActions()`.
-- When importing functions, use `import { functionName } from "./utils";` instead of `import type { functionName } from "./utils";`.  This ensures that the function is imported as a function and not as a type.
-- Ensure all components are defined before use. Address "is not defined" errors by verifying component existence and correct import paths.
-- When implementing color schemes, ensure proper handling of dark mode and provide options for inversion as demonstrated in the interaction from 2025-05-25.
-- **Error Handling:**  When using image elements, ensure that an empty string is not passed to the `src` attribute.  If no image source is available, pass `null` to the `src` attribute instead.  When handling potential errors related to image sources, ensure that appropriate fallback mechanisms are in place to prevent runtime errors.  This includes checking for `null` or undefined values before attempting to access properties or render elements.
-- Investigate and resolve Next.js configuration errors related to website input handling, particularly concerning discrepancies between expected domains (e.g., liamellis.dev vs. liamellis.com) as observed in the interaction from 2025-05-25.
-- **Next.js Configuration:** The `next.config.js` file should be configured to allow all external domains for image loading via the `images.remotePatterns` setting.  This addresses issues with loading OpenGraph images from various domains.
-- **URL Processing:**  When processing URLs, ensure that no unintended domain conversion occurs (e.g., `.dev` to `.com`). Implement robust validation and logging to track URL transformations throughout the pipeline.  The `convertToHttps` function should not modify the input domain. Add logging to track the original URL, converted URL (if applicable), parsed domain, and full parsed URL to facilitate debugging.
-- **Image Handling:** When using the Next.js Image component, ensure that the `remotePatterns` configuration in `next.config.js` allows for images from all external domains.  Implement fallback mechanisms to handle cases where image sources are empty, invalid, or unavailable.  Use a controlled component for checkboxes, linking them to application state.
-- **Content Refactoring:** When refactoring content, particularly on the homepage (`@page.tsx`), use provided documents (e.g., `@review.md`, `@new-website-copy.md`) for updated copy. Ensure that key offerings like "The Hijacking System" are appropriately positioned within the overall brand identity, potentially moving them lower on the page and adjusting language to reflect this change. When refactoring the home page content on `@page.tsx`, use `@review.md` and `@new-website-copy.md` for the website copy/content. The home page should be a single page composed of modular sub-sections/components. Create a `HijackingSystemFeatureSection` component and present it as a feature section, not the main brand identity. Start with all the detailed copy from `new-website-copy.md`. Keep the current structure (Header, Hero, Features, etc.), but modify as needed. Use modular section components.
-- When implementing the `HijackingSystemFeatureSection` component:
-    - Style as a feature section, not a card or callout.
-    - Ensure dark mode and accessibility compliance.
-    - Add entrance animation using a scroll-triggered hook (e.g., `useScrollAnimation`).
-    - Add ARIA attributes for accessibility.
-    - Use static content from `new-website-copy.md` (headline, subheadline, features/steps).
-    - Style with Tailwind/shadcn and ensure responsive layout.
-- When refactoring the `hijacking-system-feature-section.tsx` component, leverage the `@workflow.tsx` UI to create a more dynamic and visually engaging representation of the 4-step process.
-- **Timeline UI**: When implementing a timeline UI, consider using a logs-explorer style with a dark terminal-like container, staggered entry animations (using `framer-motion`), and status indicators with color-coding. The status indicators should use the following colors: Blue ([INFO]) for core process steps and Green ([LOG]) for other timeline events. The timeline in `@process-framework.tsx` should have the same animated behavior as the original `@logs-explorer.tsx`, including dynamic entry additions and continuous updates. The background should be black, and the core text content should be white or brand yellow.
-- **Directory Naming:** When creating new directories, prefer `kebab-case` for directory names (e.g., `company-map` instead of `companymap`).
-- When creating new dashboard sub-routes, ensure to follow the existing directory structure and component patterns as demonstrated by the existing `apps/intentified/src/app/dashboard` and `apps/intentified/src/features/dashboard/pages` directories and components.
-- Pipelines page should render @pipelines
-- When creating a unified user interface, use `framer-motion` for animations, including `motion.div` for animated components and `AnimatePresence` for managing component transitions.
-- When implementing a unified user interface, consider using a `Sheet` component for mobile navigation menus, with `SheetTrigger`, `SheetContent`, `SheetHeader`, and `SheetTitle` for structure and functionality.
-- When implementing a unified user interface, use `ScrollArea` for managing scrollable content within the sidebar and other areas.
-- When implementing a unified user interface, use descriptive names for pipeline IDs and ensure they are consistently used across components.
-- When implementing a unified user interface, utilize the `cn` utility for conditional class names to simplify styling.
-- When adding Competitor Intent, Social Intent, and Keyword Intent sections to the digital section of the onboarding flow:
-    - Add three new input sections to the "Digital" step of `onboarding-sequence.tsx`:
-        - **Competitors**: 5–10 competitor names and website URLs (with add/remove functionality)
-        - **Social Intent**: 5–10 social media URLs (with add/remove functionality)
-        - **Keyword Intent**: 5–10 keywords/phrases (with add/remove functionality)
-    - Inputs should be dynamic (user can add/remove fields).
-    - Data should be stored in `formData` and handled by `handleInputChange` or new handlers (`handleCompetitorIntentChange`, `handleSocialIntentChange`, `handleKeywordIntentChange`, `addCompetitorIntent`, `removeCompetitorIntent`, `addSocialIntent`, `removeSocialIntent`, `addKeywordIntent`, `removeKeywordIntent`).
-    - UI should match the style of the rest of the onboarding flow, using consistent styling (Card, Input, Button).
-    - Extend `formData` to include arrays for each new intent type (`competitorIntents`, `socialIntents`, `keywordIntents`).
-    - Add handlers for adding/removing/updating items in each array.
-    - Render each section in the "Digital" step, with mapped input fields and "Add Another" buttons.
-    - Ensure all data is passed and updated correctly.
-    - Add validation if needed (e.g., min/max items).
-    - Place new sections after Social Media Links in Digital step.
-    - On input change, update corresponding array in formData.
-    - On add, push an empty object `{ name: '', url: '' }` to the `competitors` array, and an empty string to the other arrays.
-    - On remove, splice array at index.
-    - Limit to 10 items per array.
-    - Show error if less than 5 on submit (optional).
-    - Document the new architecture, data flow, and key modules in `OnboardingDigitalIntents.md`.
-    - Save the pseudocode to `apps/intentified/src/components/onboarding/OnboardingDigitalIntents_PSEUDOCODE.md`.
+- A `VISUAL_SPEC.md` file should be created to document visual specifications, including global canvas and grid, color tokens, typography scale, component inventory, layout & spacing details, z-index stack, interaction & motion cues, accessibility checks, responsive hints, and assets & iconography. This file should also include open questions.
+- Documentation for the new three-column dashboard layout should be created, including overview, architecture, key components (AppContainer, AppHeader, AppSidebar, ChatPanel), data flow, styling & design tokens, responsive behavior, accessibility features, performance considerations, integration points, future enhancements, testing strategy, and maintenance guidelines. The documentation file should be named `Three-Column Dashboard Layout Implementation.md`.
+- Pseudocode for the three-column dashboard layout should be saved in a markdown file named `Three-Column Dashboard Layout Implementation - PSEUDOCODE.md`.
+- When integrating interactive animated components into landing pages, create a new component file (e.g., `apps/intentified/src/features/landing/interactive-develop-section.tsx`) and customize it for the specific brand and messaging.
+- Create comprehensive documentation for the new component, including architecture, data flow, and key modules (e.g., `InteractiveDevelopSection.md`).
+- Create pseudocode documentation for the component, outlining the component structure, state management logic, title carousel system, animation implementation, responsive considerations, event handling flow, performance optimizations, accessibility implementation, error handling, and testing strategy (e.g., `InteractiveDevelopSection_PSEUDOCODE.md`).
+- When creating a new component, follow these implementation guidelines:
+    - Analyze the component structure and identify all required dependencies.
+    - Review the component's arguments and state.
+    - Identify any required context providers or hooks and install them.
+    - Determine what data/props will be passed to this component.
+    - Identify any specific state management requirements.
+    - Determine if there are any required assets (images, icons, etc.).
+    - Determine the expected responsive behavior.
+    - Determine the best place to use this component in the app.
+- When implementing animation sequences with active indices:
+    - The animation sequence should run regardless of whether `activeIndices` are provided.
+    - If `activeIndices` are provided, the animation should cycle through those specific indices exclusively.
+    - If `activeIndices` are not provided, the animation should cycle through all words sequentially.
+    - Use a helper function (e.g., `getCurrentWordIndex()`) to determine which word to highlight based on whether `activeIndices` are provided.
+    - Ensure the animation counter always increments, but the actual word highlighted depends on the logic in the helper function.
+    - Fix any TypeScript errors related to CSS custom properties by properly casting the style objects to `CustomCSSProperties`.
+- When unifying and modularizing AI form flow components:
+    - Modularize `@enrichment.service.ts` to provide a dedicated slice of its functionality as `analyze-competitor-landscape`.
+    - The `analyze-competitor-landscape` functionality should subscribe to a `useCompetitorAnalysisStream` hook, similar to how `@onboarding-sequence.tsx` uses `@use-enrichment-stream.ts`.
+    - Clean up the component architecture and perfect the CSS, styles, and animations for the `@ai-form-flow.tsx` component.
+    - Standardize the schema for AI form flows so that the underlying form and its inputs can always expect the same thing. Specifically, the components for the AI Onboarding Sequence, beginning on the dashboard `@page.tsx` which renders the `@ai-onboarding-integration.tsx` which renders the `@ai-onboarding-flow.tsx` where the `@ONBOARDING_STEPS` are defined, should ideally be passed as props to the `@ai-onboarding-flow.tsx` component.
+    - Refactor the UI, CSS, and animation styles of the `@business-chat-step.tsx` component.
 - When implementing forms with dynamic arrays (e.g., `competitorIntents`, `socialIntents`, `keywordIntents` in the onboarding flow), ensure that the `formData` state is correctly initialized with these arrays to prevent runtime errors. If the `formData` state is initialized in a parent component, confirm that the parent component initializes the arrays. If using TypeScript, enforce type safety by ensuring that the types/interfaces include these array fields. Use defensive rendering (e.g., `formData.competitorIntents ?? []`) as a fallback to avoid runtime errors only if absolutely necessary; initializing the state correctly is the preferred approach.
 - When refactoring into a single Exa service:
     - Analyze all unique Exa search patterns and parameters.
@@ -195,42 +155,99 @@ All project documentation, including coding standards, workflow guidelines, and 
 - Code review is required for all pull requests.
 - Tag and document each major pipeline update.
 - Use `.env` for API keys; never commit secrets.
+- When implementing new UI features based on visual specifications, adhere to the following guidelines:
+    - Utilize the three-column layout structure: `@app-header.tsx`, `@app-sidebar.tsx`, `@app-container.tsx`.
+    - Base the design on the `VISUAL_SPEC.md` file, which contains details about:
+        - Global canvas & grid
+        - Color tokens
+        - Typography scale
+        - Component inventory
+        - Layout & spacing details
+        - Z-index stack
+        - Interaction & motion cues
+        - Accessibility checks
+        - Responsive hints
+        - Assets & iconography
+        - Open questions
+    - Adhere to the specified color tokens for backgrounds, text, borders, and accents.
+    - Use the typography scale defined in `VISUAL_SPEC.md`.
+    - Implement components according to the anatomy and states described in the component inventory.
+    - Follow the layout and spacing details for desktop and mobile layouts.
+    - Manage z-index stacking as specified.
+    - Implement interaction and motion cues with the defined timings and styles.
+    - Ensure accessibility by checking text contrast ratios, using ARIA roles, and providing visible focus states.
+    - Consider the responsive hints for collapsing the sidebar and chat panel on smaller screens.
+    - Use the specified assets and iconography (e.g., Lucide icons).
+    - The sidebar should be fixed at 112px width.
+    - The chat panel should be fixed at 776px width.
+    - The main content area should have a flexible width.
+    - Implement hover transitions with 150ms ease-out on background-color.
+    - Use 2px solid `--accent-primary` with 2px offset for focus outlines.
+    - Scale buttons to 0.98 on press.
+    - Animate dropdowns with a 200ms ease-out slide down.
+    - Animate tab switches with a 200ms ease-in-out opacity fade.
+    - Use `cursor-pointer` for interactive elements and `cursor-text` for text inputs.
+- When integrating interactive animated components into landing pages:
+    - Customize the component for the specific brand and messaging. For example, when integrating the InteractiveDevelopSection, update the title to "We Deliver" and focus the cycling titles on Intentified's core offerings.
+    - Use semantic color tokens (`background`, `foreground`, `muted-foreground`, `card`, `border`) for theme compatibility.
+    - Ensure responsive design and proper spacing.
+    - Maintain keyboard navigation and screen reader support for accessibility.
+- When creating the `InteractiveDevelopSection` component:
+    - Use Intentified-specific offerings for the cycling titles (e.g., "intent-driven pipelines", "qualified lead scoring", "automated workflows", "actionable analytics", "seamless integrations").
+    - Use relevant Lucide icons for the cards (e.g., Target for Intent Signals, Trending
+- When modularizing AI form flow components:
+    - Modularize `@enrichment.service.ts` to provide a dedicated slice of its functionality as `analyze-competitor-landscape`. This should subscribe to a `useCompetitorAnalysisStream` hook in the same way that the `@onboarding-sequence.tsx` uses the `@use-enrichment-stream.ts` hook.
+    - Clean up the component architecture and perfect the CSS, styles, and animations for the underlying `@ai-form-flow.tsx` component. The components for the AI Onboarding Sequence, beginning on the dashboard `@page.tsx`, which renders the `@ai-onboarding-integration.tsx`, which renders the `@ai-onboarding-flow.tsx` where the `@ONBOARDING_STEPS` are defined, should ideally be passed as props to the `@ai-onboarding-flow.tsx` component. Standardize the respective schema so that the underlying form and its inputs can always expect the same thing.
+    - Refactor the UI, CSS, and animation styles of the `@business-chat-step.tsx` component.
+    - Create a `CompetitorAnalysisRequest` interface with properties: `websiteUrl: string`, `companyName?: string`, `industry?: string`, `focusAreas?: ('market-position' | 'strengths' | 'opportunities')[]`, `skipScreenshot?: boolean`.
+    - Create a `CompetitorAnalysisProgress` interface with properties: `requestId: string`, `currentStep: number`, `totalSteps: number`, `currentType?: string`, `message: string`, `isComplete: boolean`.
+    - Create a `CompetitorAnalysisResponse` interface with properties: `websiteUrl: string`, `requestId: string`, `company: { name: string, summary: string, positioning: string, screenshot?: string }`, `competitiveLandscape: { directCompetitors: Array<{ name: string, url: string, description: string, strengths: string[] }>, marketPosition: { rank: string, marketShare?: string, growthTrend?: string }, strengths: string[], opportunities: string[] }`, `insights: { differentiators: string[], recommendations: string[], keyTakeaways: string[] }`, `summary: { totalAnalyzed: number, successful: number, failed: number, totalDuration: number }`.
+    - Add a new function `analyzeCompetitiveLandscape` to `@enrichment.service.ts` that takes a `CompetitorAnalysisRequest` and an optional `onProgress` callback, and returns a `CompetitorAnalysisResponse`.
+    - Create a `useCompetitorAnalysisStream` hook (similar to `useEnrichmentStream`).
+    - Create a server action for competitor analysis streaming.
+    - Create a unified AI form flow component in the `apps/intentified` directory, including `AIFormFlow`, `FormStep`, and validators.
+    - Create form step configurations.
+    - Create an architecture documentation file.
+    - Refactor `ai-onboarding-flow.tsx` to use the new consolidated form flow, passing in the `FULL_ENRICHMENT_STEPS` configuration.
+    - Add the `cn` utility to the `apps/intentified` directory.
+    - Update the `apps/intentified` directory's `package.json` to include necessary dependencies like `framer-motion`.
+    - Create an example implementation for the competitor analysis flow that can be used on the landing page.
+- When using `firecrawl_scrape` to create documentation and implementation plans for Firecrawl app examples, ensure that this is done in anticipation of `@competitor-analysis.ts` and `@competitor-analysis-flow.tsx`. Specifically, create comprehensive documentation and proposed implementation plans for the following repositories:
+  - @https://github.com/mendableai/firecrawl-app-examples/tree/main/review-analyzer
+  - @https://github.com/mendableai/firecrawl-app-examples/tree/main/company-data-scraper
+  - @https://github.com/mendableai/firecrawl-app-examples/tree/main/deepseek-v3-trend-finder
+  - @https://github.com/mendableai/firecrawl-app-examples/tree/main/search-competitor-analysis
+  - @https://github.com/mendableai/firecrawl-app-examples/tree/main/search-to-report
+  - When using `firecrawl_scrape` to create documentation and implementation plans for Firecrawl app examples, this should be done in anticipation of `@competitor-analysis.ts` and `@competitor-analysis-flow.tsx`.
 
-## WORKFLOW & RELEASE RULES
+## TECH STACK
 
-- All code changes must be submitted via pull requests.
-- Pull requests must be reviewed by at least one other engineer before merging.
--  Thorough testing is required before each release.
-- The AI assistant should be used to scrape data as needed (e.g., using `firecrawl_scrape` or `firecrawl_mcp`). Results should be saved in markdown format.  If the scraping tool is blocked, the user should provide alternative access to the data (e.g., text, PDF, HTML export). The output should be saved to the specified location (e.g., `apps/intentified/content/intent-data.md`).  Batch scraping using `firecrawl_mcp` should organize results into subdirectories as specified by the user.
-- The AI assistant should extract and integrate code components as requested (e.g., extracting code to `@onboarding-sequence.tsx` and adding `@website-form.tsx` to the sequence).  The integration should allow the website URL from `@onboarding-sequence.tsx` to trigger the SEO sequence.  The integration process should follow the steps outlined in the documentation generated on 2025-05-25 for merging `@website-form.tsx` into `@onboarding-sequence.tsx`, specifically addressing state management, server action integration, navigation flow, results display, and error handling.  The AI assistant should confirm successful file creation and saving after generating documentation.
-- The AI assistant should create tickets using `@ticket-workflow.mdc` for all files within the `@onboarding` directory as requested.  This includes generating tickets for documentation files as specified by the user.  The AI assistant should break down large tasks into smaller, well-defined tickets, as demonstrated in the interaction from 2025-05-25.  The AI assistant should handle ticket creation for files such as `@01-Extract-Reusable-Website-URL-Input-Component.md` as requested. The AI assistant should generate tickets for any provided documents and place them in the `@tickets` directory.
-- The `combinedUrlActions` function is called by `@onboarding-sequence.tsx` via the `triggerSeoAnalysis` function.
-- When generating marketing content tickets, the AI assistant should follow the established format and include detailed specifications derived from the provided documentation.
-- The AI assistant should merge content from specified markdown files as requested.
-- When refactoring the home page content on `@page.tsx`, the AI assistant should use `@review.md` and `@new-website-copy.md` for the website copy/content. The AI assistant should also consider positioning "The Hijacking System" as one product or approach offered by intentified, rather than the whole brand identity. When refactoring the home page content on `@page.tsx`, the AI assistant should use `@review.md` and `@new-website-copy.md` for the website copy/content. The AI assistant should also consider positioning "The Hijacking System" as one product or approach offered by intentified, rather than the whole brand identity. The AI assistant should create a new `HijackingSystemFeatureSection` component as a feature section, not the main brand identity. The home page should remain a single page, composed of modular subcomponents/sections. All detailed copy from `new-website-copy.md` should be used initially. The current structure should be kept and modified as needed.
-- When refactoring the home page (`@page.tsx`):
-    - Create a new `HijackingSystemFeatureSection` component.
-    - Position "The Hijacking System" as one feature section, not the main brand identity.
-    - The home page should remain a single page, composed of modular subcomponents/sections.
-    - Use all detailed copy from `new-website-copy.md` initially.
-    - Keep the current structure (Header, Hero, Features, etc.) and modify as needed.
-    - Follow a modular section component pattern.
-- When refactoring the home page content on `@page.tsx` using `@review.md` and `@new-website-copy.md` and positioning "The Hijacking System" as one product or approach that Intentified offers (not the whole brand identity):
-    - Analyze the current home page structure and components. (Ticket: `01-Analyze-Current-Home-Page.md`)
-    - Document integration points and refactor requirements. (Ticket: `01-Analyze-Current-Home-Page.md`)
-    - Draft pseudocode and architecture for the new home page structure. (Ticket: `02-Plan-Home-Page-Refactor.md`)
-    - Define new and updated components, including the "Hijacking System" feature section. (Ticket: `02-Plan-Home-Page-Refactor.md`)
-    - Implement the new `HijackingSystemFeatureSection` component as a feature section, ensuring it is modular, accessible, and styled per the design system. (Ticket: `03-Create-Hijacking-System-Feature-Section.md`)
-    - Refactor the `Hero` and `Features` components to use the new copy from `@new-website-copy.md` and recommendations from `@review.md`. (Ticket: `04-Update-Hero-and-Features-Sections.md`)
-    - Update `page.tsx` to compose the new and updated components in the correct order, ensuring the "Hijacking System" is positioned as a feature, not the brand identity. (Ticket: `05-Integrate-New-Sections-Into-Home-Page.md`)
-    - Document the new architecture and component responsibilities. (Ticket: `06-Documentation-and Testing.md`)
-    - Write and run tests for the new/updated components. (Ticket: `06-Documentation-and-Testing.md`)
-    - Update or create markdown documentation as required. (Ticket: `06-Documentation-and-Testing.md`)
-    - Create an overview epic `@00-Overview.md` to summarize the refactor, list all tickets, and track their status and dependencies.
-- The AI assistant should review all content in @tickets as requested.
-- The AI assistant should determine the next steps based on the lowest-numbered pending ticket with dependencies met.
-- The AI assistant should suggest the lowest-numbered pending ticket with dependencies met.
-- The AI assistant should pick up the next ticket as directed by the user (e.g., `@15-Integrate-Marketing-Content-with-Website-UI-Components.md`).
-- **Ticket Dependency Handling:** The AI assistant MUST check dependencies for any ticket before picking it up. If dependencies are not met, the AI assistant MUST pick the lowest-numbered pending ticket with dependencies met.
-- When asked to pick up a specific ticket, the AI assistant **MUST** check if all dependencies for that ticket are met. If the dependencies are not met, the AI assistant **MUST** then pick up the lowest-numbered pending ticket with all dependencies met.
-- The AI assistant should create new components in the correct directory. For
+- **Programming Languages:**  TypeScript (Add languages as needed)
+- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder, 21st_magic_component_refiner, Radix UI Tooltip, arallax-floating, @radix-ui/react-roving-focus, context7 MCP, @Vercel AI SDK UI, ai-sdk, exa-js, @mendable/firecrawl-js, React Email, class-variance-authority, @radix-ui/react-slot, MousePointer2, Target, TrendingUp, Zap, BarChart3, Puzzle, clsx
+
+## CODING STANDARDS
+
+- Code should be well-documented.
+- Follow consistent indentation (e.g., 2 spaces).
+- Use descriptive variable and function names.
+
+- When handling form input changes, ensure proper mapping between input IDs and state variables to prevent update issues. Use explicit mapping or a helper function (as demonstrated in the fix for the 2025-05-24 issue and the 2025-05-25 interaction).  The `handleInputChange` function should utilize explicit field mapping or helper functions to ensure accurate updates to application state.
+- Use `unsafeMetadata` instead of `publicMetadata` when updating user data via Clerk.
+- Ensure all components are correctly imported. Address module not found errors by verifying component existence and correct import paths (as seen in the 2025-05-25 interaction).  Prioritize relative imports within the same directory before using absolute imports.
+- When adding social links to forms, ensure proper handling of input IDs, using explicit mapping or helper functions to prevent update issues.  (See example from 2025-05-25 interaction).
+- When creating new components, ensure they are appropriately styled for dark mode and follow established design system guidelines.  This includes considering color inversions as demonstrated in the 2025-05-25 interaction.
+- Checkboxes should be implemented as controlled components, linked to application state.
+- Thoroughly document the purpose and functionality of all functions, including `@combinedUrlActions()` and any functions interacting with `@route.ts`.  Clarify how form inputs are processed and handled within these functions.  The `combinedUrlActions()` function should handle form data appropriately, including validation and error handling.  The function should also clearly document its inputs, outputs, and any side effects.  The `combinedUrlActions` function should be clearly documented, including its inputs, outputs, and any side effects.  It should handle form data appropriately, including validation and error handling.
+- In Next.js 15 App Router, `params` and `searchParams` are async and must be unwrapped using `React.use()` before accessing their values.
+- Ensure consistency between form field names (e.g., "website" vs. "url") and the expected input in `@combinedUrlActions()`.
+- When importing functions, use `import { functionName } from "./utils";` instead of `import type { functionName } from "./utils";`.  This ensures that the function is imported as a function and not as a type.
+- Ensure all components are defined before use. Address "is not defined" errors by verifying component existence and correct import paths.
+- When implementing color schemes, ensure proper handling of dark mode and provide options for inversion as demonstrated in the interaction from 2025-05-25.
+- **Error Handling:**  When using image elements, ensure that an empty string is not passed to the `src` attribute.  If no image source is available, pass `null` to the `src` attribute instead.  When handling potential errors related to image sources, ensure that appropriate fallback mechanisms are in place to prevent runtime errors.  This includes checking for `null` or undefined values before attempting to access properties or render elements.
+- Investigate and resolve Next.js configuration errors related to website input handling, particularly concerning discrepancies between expected domains (e.g., liamellis.dev vs. liamellis.com) as observed in the interaction from 2025-05-25.
+- **Next.js Configuration:** The `next.config.js` file should be configured to allow all external domains for image loading via the `images.remotePatterns` setting.  This addresses issues with loading OpenGraph images from various domains.
+- **URL Processing:**  When processing URLs, ensure that no unintended domain conversion occurs (e.g., `.dev` to `.com`). Implement robust validation and logging to track URL transformations throughout the pipeline.  The `convertToHttps` function should not modify the input domain. Add logging to track the original URL, converted URL (if applicable), parsed domain, and full parsed URL to facilitate debugging.
+- **Image Handling:** When using the Next.js Image component, ensure that the `remotePatterns` configuration in `next.config.js` allows for images from all external domains.  Implement fallback mechanisms to handle cases where image sources are empty, invalid, or unavailable.  Use a controlled component for checkboxes, linking them to application state.
+- **Content Refactoring:** When refactoring content, particularly on the homepage (`@page.tsx`), use provided documents (e.g., `@review.md`, `@new-website-copy.md`) for updated copy. Ensure that key offerings like "The Hijacking System" are appropriately positioned within the overall brand identity, potentially moving them lower on the page and adjusting language to reflect this change. When refactoring the home page content on `@page.tsx`, use `@review.md` and `@new-website-copy.md` for the website copy/content. The home page should be a single page composed of modular sub-sections/components. Create a `HijackingSystemFeatureSection` component and present it as a feature section, not the main brand identity. Start with all the detailed copy from `new-website-copy.md`. Keep the current structure (Header, Hero, Features, etc.), but modify as needed. Use modular section components.
+- When implementing the `HijackingSystemFeatureSection` component:
+    - Style as a feature section, not a card or callout

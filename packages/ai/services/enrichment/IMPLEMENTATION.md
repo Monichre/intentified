@@ -858,3 +858,89 @@ AND created_at < NOW() - INTERVAL '30 days';
 - Comprehensive documentation and examples
 
 This implementation provides a complete, enterprise-grade company intelligence platform that scales from simple enrichment to sophisticated multi-source analytics with social media tracking and document management capabilities.
+
+flowchart TD
+    A[User Request: Company URL] --> B[Digital/SEO/General Data Profile Pipeline]
+    B -->|Profile Data, SEO, Social, News| C[Brand Analysis Enrichment Pipeline]
+    C -->|BrandAnalysis Object| D[Email Generation/Scaffolding Pipeline]
+    D --> E[Outputs: React Email, Design System, Resend Code]
+
+    subgraph "Pipeline Boundaries"
+      B
+      C
+      D
+    end
+
+    style B fill:#e0f7fa,stroke:#00796b,stroke-width:2px
+    style C fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style D fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+
+    Certainly! Here are both deliverables:
+
+---
+
+## 1. **Sample Pipeline Architecture Diagram (Mermaid)**
+
+Add this to `PIPELINES.md` or `IMPLEMENTATION.md` for visual clarity.
+
+```mermaid
+flowchart TD
+    A[User Request: Company URL] --> B[Digital/SEO/General Data Profile Pipeline]
+    B -->|Profile Data, SEO, Social, News| C[Brand Analysis Enrichment Pipeline]
+    C -->|BrandAnalysis Object| D[Email Generation/Scaffolding Pipeline]
+    D --> E[Outputs: React Email, Design System, Resend Code]
+
+    subgraph "Pipeline Boundaries"
+      B
+      C
+      D
+    end
+
+    style B fill:#e0f7fa,stroke:#00796b,stroke-width:2px
+    style C fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style D fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+```
+
+**Legend:**
+- **Blue:** Digital/SEO/General Data Profile
+- **Yellow:** Brand Analysis Enrichment
+- **Orange:** Email Generation/Scaffolding
+
+---
+
+## 2. **Actionable Checklist for Pipeline Delineation & Maturity**
+
+**A. Documentation**
+- [ ] Ensure `PIPELINES.md` exists at `packages/ai/PIPELINES.md`
+- [ ] Reference `PIPELINES.md` in `IMPLEMENTATION.md` and onboarding docs
+- [ ] Add/Update architecture diagrams (see above) in both docs
+- [ ] Cross-link all pipeline-specific guides in `ai-docs/`
+
+**B. Modular Service Contracts**
+- [ ] Review each pipeline’s exported interface (input/output types, error handling)
+- [ ] Document each pipeline’s contract in code and in `PIPELINES.md`
+- [ ] Ensure downstream pipelines only depend on upstream outputs
+
+**C. Testing**
+- [ ] Audit test coverage for each pipeline (unit/integration)
+- [ ] Add tests for pipeline handoffs (e.g., digital → brand, brand → email)
+- [ ] Add error/edge case tests for each pipeline
+
+**D. Orchestration**
+- [ ] Evaluate if a pipeline orchestration layer is needed (for dependency management, retries, progress tracking)
+- [ ] If needed, design and document the orchestration layer’s responsibilities and API
+
+**E. Team Communication**
+- [ ] Share `PIPELINES.md` and diagrams with the team
+- [ ] Schedule a review meeting to discuss pipeline boundaries and next steps
+
+---
+
+### **How to Use**
+
+- **Paste the Mermaid diagram** into your markdown documentation for a visual overview.
+- **Work through the checklist** to ensure all recommendations are implemented and tracked.
+
+---
+
+Would you like a more detailed breakdown for any specific checklist item, or a sample implementation for the orchestration layer?

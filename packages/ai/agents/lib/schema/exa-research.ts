@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Enrichment actions
-const enrichmentActions = z.enum([
+const researchActions = z.enum([
   "fetchCrunchbase",
   "fetchFinancialReport",
   "fetchFounders",
@@ -60,7 +60,7 @@ export const youtubeVideoParamsSchema = z.object({
 // Unified schema for Exa enrichment tool input
 export const exaEnrichInputSchema = z
   .object({
-    action: enrichmentActions.describe(
+    action: researchActions.describe(
       "The enrichment action to perform. Each action retrieves specific data about a company or profile."
     ),
     websiteParams: websiteResearchParamsSchema

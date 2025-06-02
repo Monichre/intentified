@@ -1,9 +1,9 @@
 import { tool } from "ai";
-import { exaEnrichInputSchema } from "../lib/schema/exa-enrich";
-import { makeExaResearch } from "../lib/exa-enrich-company";
+import { exaEnrichInputSchema } from "../lib/schema/exa-research";
+import { exaResearch as exaResearchFunction } from "../lib/exa-research";
 import { exaService } from "../lib/exa";
 
-export const exaEnrichTool = tool({
+export const exaResearchTool = tool({
   description: `
     Specialized tool for company enrichment using Exa AI.
     
@@ -37,7 +37,7 @@ export const exaEnrichTool = tool({
   execute: async (input) => {
     try {
       // Create the enrichment research functions
-      const exaResearch = makeExaResearch(exaService);
+      const exaResearch = exaResearchFunction(exaService);
       
       switch (input.action) {
         // Website-based actions

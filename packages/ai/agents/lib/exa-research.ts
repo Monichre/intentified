@@ -1,10 +1,8 @@
-import type { WebsiteResearchParams, CompetitorSearchParams, TwitterSearchParams } from "../lib/types"
-import type {
-  ExaResponse as ResearchResponse,
-  ExaService,
-} from "../lib/exa";
+import type { WebsiteResearchParams, CompetitorSearchParams, TwitterSearchParams } from "./search/types"
+
 import type { z } from "zod";
-import type { baseSearchOptionsSchema } from "../lib/schema/exa";
+import type { baseSearchOptionsSchema } from "./schema/exa";
+import type { ExaService } from "@/agents/lib/exa"
 
 type ExaSearchConfig = z.infer<typeof baseSearchOptionsSchema> & {
   text?: boolean;
@@ -25,7 +23,7 @@ const withDomain = (domains: string[]) =>
 const withoutDomain = (domains: string[]) =>
   ({ excludeDomains: domains } as ExaSearchConfig);
 
-export const makeExaResearch = (exa: ExaService) => {
+export const exaResearch = (exa: ExaService) => {
   /* shorthand wrappers that adapt to the new API */
   const S = (q: string, c?: ExaSearchConfig) => exa.search({ 
     query: q, 

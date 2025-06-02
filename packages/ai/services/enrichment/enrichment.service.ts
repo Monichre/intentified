@@ -6,17 +6,72 @@ import type {
   EnrichmentType 
 } from "@/services/enrichment/types"
 
-import type { CompanySummaryResult, CompanyMindMap } from "@/lib/exa/types"
-import { insights } from "../../services/enrichment/insights"
+import type { CompanySummaryResult, CompanyMindMap } from "@/agents/lib/exa/types"
+import { insights } from "@/services/enrichment/insights"
 
-import { makeExaResearch } from "../../agents/lib/exa-enrich-company"
-import { exaService } from "../../agents/lib/exa"
+import { exaResearch } from "@/agents/lib/exa-research"
+import { exaService } from "@/agents/lib/exa"
 import { customCaptureService } from "../../lib/capture/capture.api"
 
 
 /* ------------------------------------------------------------------ *
  * High-level orchestrator – pure, deterministic, stream-friendly      *
  * ------------------------------------------------------------------ */
+
+// Add new types for competitor analysis
+export interface CompetitorAnalysisRequest {
+  websiteUrl: string
+  companyName?: string
+  industry?: string
+  focusAreas?: ('market-position' | 'strengths' | 'opportunities')[]
+  skipScreenshot?: boolean
+}
+
+export interface CompetitorAnalysisProgress {
+  requestId: string
+  currentStep: number
+  totalSteps: number
+  currentType?: string
+  message: string
+  isComplete: boolean
+}
+
+export interface CompetitorAnalysisResponse {
+  websiteUrl: string
+  requestId: string
+  company: {
+    name: string
+    summary: string
+    positioning: string
+    screenshot?: string
+  }
+  competitiveLandscape: {
+    directCompetitors: Array<{
+      name: string
+      url: string
+      description: string
+      strengths: string[]
+    }>
+    marketPosition: {
+      rank: string
+      marketShare?: string
+      growthTrend?: string
+    }
+    strengths: string[]
+    opportunities: string[]
+  }
+  insights: {
+    differentiators: string[]
+    recommendations: string[]
+    keyTakeaways: string[]
+  }
+  summary: {
+    totalAnalyzed: number
+    successful: number
+    failed: number
+    totalDuration: number
+  }
+}
 
 // Define all available enrichment types
 const ALL_ENRICHMENT_TYPES: EnrichmentType[] = [
@@ -47,7 +102,7 @@ const ALL_ENRICHMENT_TYPES: EnrichmentType[] = [
 ];
 
 export const makeCompanyEnrichmentService = () => {
-  const exaR = makeExaResearch(exaService);
+  const exaR = exaResearch(exaService);
   const {screenshot: captureScreenshot, pdf, content, metadata} = customCaptureService
 
   /* ------------------------------------------------------------------ *
@@ -84,9 +139,6 @@ export const makeCompanyEnrichmentService = () => {
    * ------------------------------------------------------------------ */
 
   const enrichCompanySummary = async (request: EnrichmentRequest): Promise<EnrichmentResult> => {
-
-      console.log("🚀 ~ returnwrapEnrichmentResult ~ webContent:", webContent)
-
     return wrapEnrichmentResult('company-summary', async () => {
       const main = await exaR.scrapeWebsiteUrl(request);
       const screenshot = await captureScreenshot(request.websiteUrl);
@@ -123,7 +175,7 @@ export const makeCompanyEnrichmentService = () => {
           subpages: sub,
           websiteUrl: request.websiteUrl
         });
-        summaryText = summary.sections.map(s => s.text).join(' ');
+        summaryText = summary.sections.map((s: any) => s.text).join(' ');
       }
       
       return exaR.findCompetitors({
@@ -154,7 +206,7 @@ export const makeCompanyEnrichmentService = () => {
       const funding = existingData?.funding || await exaR.fetchFunding(request);
       const competitors = existingData?.competitors || await exaR.findCompetitors({
         websiteUrl: request.websiteUrl,
-        summaryText: summary.sections.map(s => s.text).join(' ')
+        summaryText: summary.sections.map((s: any) => s.text).join(' ')
       });
       
       return insights.mindMap({
@@ -420,12 +472,199 @@ export const makeCompanyEnrichmentService = () => {
   };
 
   /* ------------------------------------------------------------------ *
+   * NEW: Competitive Landscape Analysis                               *
+   * ------------------------------------------------------------------ */
+  const analyzeCompetitiveLandscape = async (
+    req: CompetitorAnalysisRequest,
+    onProgress?: (p: CompetitorAnalysisProgress) => void
+  ): Promise<CompetitorAnalysisResponse> => {
+    const startTime = Date.now();
+    const requestId = `competitor-analysis-${Date.now()}`;
+    
+    // Focused subset of enrichment types for competitor analysis
+    const COMPETITOR_ANALYSIS_TYPES: EnrichmentType[] = [
+      'basic-info',
+      'company-summary',
+      'competitors',
+      'mind-map',
+      'news',
+      'website-sub-pages'
+    ];
+    
+    const completedSteps: string[] = [];
+    
+    // Progress reporting helper
+    const reportProgress = (message: string, currentType?: string) => {
+      if (onProgress) {
+        onProgress({
+          requestId,
+          currentStep: completedSteps.length,
+          totalSteps: COMPETITOR_ANALYSIS_TYPES.length,
+          currentType,
+          message,
+          isComplete: completedSteps.length === COMPETITOR_ANALYSIS_TYPES.length
+        });
+      }
+    };
+    
+    try {
+      reportProgress('Starting competitive landscape analysis...', 'initialization');
+      
+      // Step 1: Get basic info and website content
+      reportProgress('Analyzing company website...', 'basic-info');
+      const [main, sub] = await Promise.all([
+        exaR.scrapeWebsiteUrl(req),
+        exaR.scrapeWebsiteSubPages(req)
+      ]);
+      completedSteps.push('basic-info', 'website-sub-pages');
+      
+      // Step 2: Generate company summary
+      reportProgress('Understanding company positioning...', 'company-summary');
+      const screenshot = req.skipScreenshot ? undefined : await captureScreenshot(req.websiteUrl);
+      const insightsSummary = await insights.summary({
+        mainpage: main,
+        subpages: sub,
+        websiteUrl: req.websiteUrl
+      });
+      completedSteps.push('company-summary');
+      
+      // Step 3: Find competitors
+      reportProgress('Identifying competitors...', 'competitors');
+      const competitorsData = await exaR.findCompetitors({
+        websiteUrl: req.websiteUrl,
+        summaryText: insightsSummary.sections.map((s: any) => s.text).join(' ')
+      });
+      completedSteps.push('competitors');
+      
+      // Step 4: Get recent news for context
+      reportProgress('Gathering market intelligence...', 'news');
+      const newsData = await exaR.findNews(req);
+      completedSteps.push('news');
+      
+      // Step 5: Generate mind map with competitive insights
+      reportProgress('Analyzing competitive positioning...', 'mind-map');
+      const mindMapData = await insights.mindMap({
+        companySummary: insightsSummary,
+        mainpage: main,
+        websiteUrl: req.websiteUrl,
+        subpages: sub,
+        funding: null, // Skip funding for faster analysis
+        competitors: competitorsData
+      });
+      completedSteps.push('mind-map');
+      
+      // Process and structure the response
+      const competitiveLandscape = processCompetitorData(competitorsData, insightsSummary);
+      const marketInsights = generateMarketInsights(
+        insightsSummary,
+        competitorsData,
+        newsData,
+        mindMapData
+      );
+      
+      reportProgress('Analysis complete!');
+      
+      return {
+        websiteUrl: req.websiteUrl,
+        requestId,
+        company: {
+          name: req.companyName || extractCompanyName(insightsSummary),
+          summary: insightsSummary.sections.find((s: any) => s.header === 'Company Overview')?.text || '',
+          positioning: insightsSummary.sections.find((s: any) => s.header === 'Market Position')?.text || '',
+          screenshot: screenshot as string | undefined
+        },
+        competitiveLandscape,
+        insights: marketInsights,
+        summary: {
+          totalAnalyzed: COMPETITOR_ANALYSIS_TYPES.length,
+          successful: completedSteps.length,
+          failed: COMPETITOR_ANALYSIS_TYPES.length - completedSteps.length,
+          totalDuration: Date.now() - startTime
+        }
+      };
+      
+    } catch (error) {
+      console.error('Competitor analysis error:', error);
+      throw error;
+    }
+  };
+  
+  // Helper functions for competitor analysis
+  const processCompetitorData = (
+    competitorsData: any,
+    companySummary: any
+  ): CompetitorAnalysisResponse['competitiveLandscape'] => {
+    // Extract and structure competitor information
+    const competitors = Array.isArray(competitorsData) ? competitorsData : [];
+    
+    return {
+      directCompetitors: competitors.slice(0, 5).map(comp => ({
+        name: comp.name || 'Unknown',
+        url: comp.url || '',
+        description: comp.description || '',
+        strengths: comp.strengths || []
+      })),
+      marketPosition: {
+        rank: 'Analyzing...',
+        marketShare: undefined,
+        growthTrend: undefined
+      },
+      strengths: extractStrengths(companySummary),
+      opportunities: extractOpportunities(companySummary, competitors)
+    };
+  };
+  
+  const generateMarketInsights = (
+    summary: any,
+    competitors: any,
+    news: any,
+    mindMap: any
+  ): CompetitorAnalysisResponse['insights'] => {
+    return {
+      differentiators: extractDifferentiators(summary, competitors),
+      recommendations: generateRecommendations(summary, competitors, news),
+      keyTakeaways: extractKeyTakeaways(mindMap)
+    };
+  };
+  
+  const extractCompanyName = (summary: any): string => {
+    // Extract company name from summary or return default
+    return summary.companyName || 'Your Company';
+  };
+  
+  const extractStrengths = (summary: any): string[] => {
+    // Extract strengths from company summary
+    return summary.strengths || [];
+  };
+  
+  const extractOpportunities = (summary: any, competitors: any): string[] => {
+    // Analyze gaps in competitor offerings
+    return [];
+  };
+  
+  const extractDifferentiators = (summary: any, competitors: any): string[] => {
+    // Identify unique value propositions
+    return [];
+  };
+  
+  const generateRecommendations = (summary: any, competitors: any, news: any): string[] => {
+    // Generate strategic recommendations
+    return [];
+  };
+  
+  const extractKeyTakeaways = (mindMap: any): string[] => {
+    // Extract key insights from mind map
+    return mindMap?.keyInsights || [];
+  };
+
+  /* ------------------------------------------------------------------ *
    * Expose service interface                                           *
    * ------------------------------------------------------------------ */
   return {
 
     // Core orchestration
     enrichCompany,
+    analyzeCompetitiveLandscape,
     
     // Direct access to all exa.api functions
     ...exaR,

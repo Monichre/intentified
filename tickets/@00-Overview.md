@@ -89,3 +89,11 @@ Create a cohesive and compelling marketing narrative for the Intentified platfor
 - UI components and interactive elements
 
 ---
+
+
+R CASSERLY:
+	Liam, we need to put a violator on the front page of intensified that says free competitor intent tool ! enter your competitors here but for now we could just say enter this form and send it to us and then I'll call them back with the results we don't have to have an automated process
+
+
+R CASSERLY:
+	They have to enter their email address for us to automate the counts to them. We're not giving it away free on the website they're gonna have to put in the email to get the counts and then I get a lead.
