@@ -1,8 +1,8 @@
-import type { WebsiteResearchParams, CompetitorSearchParams, TwitterSearchParams } from "./search/types"
+import type { WebsiteResearchParams, CompetitorSearchParams, TwitterSearchParams } from "../types"
 
 import type { z } from "zod";
-import type { baseSearchOptionsSchema } from "./schema/exa";
-import type { ExaService } from "@/agents/lib/exa"
+import type { baseSearchOptionsSchema } from "../schema/exa";
+import type { ExaService } from "@/agents/lib/exa/exa"
 
 type ExaSearchConfig = z.infer<typeof baseSearchOptionsSchema> & {
   text?: boolean;

@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { exaInputSchema } from "../lib/schema/exa";
-import { exaService } from "../lib/exa";
+import { exaService } from "../lib/exa/exa";
 
 export const exaTool = tool({
   description: `

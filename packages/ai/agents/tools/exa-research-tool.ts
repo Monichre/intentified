@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import { exaEnrichInputSchema } from "../lib/schema/exa-research";
-import { exaResearch as exaResearchFunction } from "../lib/exa-research";
-import { exaService } from "../lib/exa";
+import { exaResearch as exaResearchFunction } from "../lib/exa/exa-research";
+import { exaService } from "../lib/exa/exa";
 
 export const exaResearchTool = tool({
   description: `

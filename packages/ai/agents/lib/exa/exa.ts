@@ -12,7 +12,7 @@ import type {
   findSimilarOptionsSchema,
   findSimilarAndContentsOptionsSchema,
   answerOptionsSchema,
-} from './schema/exa';
+} from '../schema/exa';
 
 // Initialize Exa instance
 const exaInstance = new Exa(process.env.EXA_API_KEY);

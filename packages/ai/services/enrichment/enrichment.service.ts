@@ -3,14 +3,16 @@ import type {
   EnrichmentProgress, 
   BulkEnrichmentResponse,
   EnrichmentResult,
-  EnrichmentType 
+  EnrichmentType, 
+  CompanySummaryResult,
+  
 } from "@/services/enrichment/types"
 
-import type { CompanySummaryResult, CompanyMindMap } from "@/agents/lib/exa/types"
+
 import { insights } from "@/services/enrichment/insights"
 
-import { exaResearch } from "@/agents/lib/exa-research"
-import { exaService } from "@/agents/lib/exa"
+import { exaResearch } from "../../agents/lib/exa/exa-research"
+import { exaService } from "../../agents/lib/exa/exa"
 import { customCaptureService } from "../../lib/capture/capture.api"
 
 

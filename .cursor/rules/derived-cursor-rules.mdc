@@ -121,7 +121,7 @@ All project documentation, including coding standards, workflow guidelines, and 
     - **Contextual Tooltips:** Add tooltips to stepper items or info icons, providing brief guidance for each step using a tooltip component (e.g., Shadcn UI Tooltip or Radix UI Tooltip).
 - **Onboarding Sequence UI Enhancements:**
     - **Animated Tabs:** Animate tab transitions (slide/fade) and highlight the current tab with an animated underline using Framer Motion for tab content transitions and underline movement.
-    - **Animated Form Feedback:** Animate input focus, validation, and feedback (e.g., border color transitions, shake on error) using CSS transitions and Framer Motion for error/success feedback.
+    - **Animated Form Feedback:** Animate input focus, validation, and feedback (e.g., border color transitions, shake on error, shake on error) using CSS transitions and Framer Motion for error/success feedback.
     - **Progress Bar for Completion:** Show a progress bar indicating overall onboarding completion. Calculate completion percentage based on filled fields/steps.
     - **Animated Navigation Buttons:** Animate “Next” and “Previous” button transitions (e.g., subtle scale or color change on click).
     - **Digital Step Micro-Interactions:** Animate addition/removal of competitor/keyword fields (e.g., fade/slide in/out) using Framer Motion’s `AnimatePresence` for dynamic field lists.
@@ -132,7 +132,7 @@ All project documentation, including coding standards, workflow guidelines, and 
 - Use animation patterns from `MultiStepLoader` (in `apps/intentified/src/components/ui/multi-step-loader.tsx`) for SEO analysis and asynchronous operations.
 - When refactoring the `@IntentSignalsVisualization`, consider using `arallax-floating`.
 - When using `TabsTrigger`, ensure that all `TabsTrigger` components are rendered within a `RovingFocusGroup` context, as required by Radix UI.
-- Ensure that `TabsTrigger` components are direct children of `TabsList`. If the error persists, explicitly wrap `TabsList`'s children in a `RovingFocusGroup` (from `@radix-ui/react-roving-focus`), or ensure you are using a compatible version of Radix UI.
+- Ensure that `TabsTrigger` components are direct children of `TabsList`. If the error persists, explicitly wrap `TabsList`s children in a `RovingFocusGroup` (from `@radix-ui/react-roving-focus`), or ensure you are using a compatible version of Radix UI.
 - On the dashboard page, the header should animate to a circular family button in the top right corner that expands on click. The navigation links should be moved into a hidden expandable menu, accessible via the circular button.
 - **Onboarding Page Structure:** The onboarding page structure is defined in `apps/intentified/src/app/dashboard/onboarding/page.tsx`.
 - **Onboarding Tabs Location:** The onboarding tabs are located in `apps/intentified/src/components/onboarding/onboarding-sequence.tsx`.
@@ -189,7 +189,7 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Use `cursor-pointer` for interactive elements and `cursor-text` for text inputs.
 - When integrating interactive animated components into landing pages:
     - Customize the component for the specific brand and messaging. For example, when integrating the InteractiveDevelopSection, update the title to "We Deliver" and focus the cycling titles on Intentified's core offerings.
-    - Use semantic color tokens (`background`, `foreground`, `muted-foreground`, `card`, `border`) for theme compatibility.
+    - Use semantic color tokens (`background`, `foreground`, `muted-foreground`, `card`, ``border`) for theme compatibility.
     - Ensure responsive design and proper spacing.
     - Maintain keyboard navigation and screen reader support for accessibility.
 - When creating the `InteractiveDevelopSection` component:
@@ -199,7 +199,7 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Modularize `@enrichment.service.ts` to provide a dedicated slice of its functionality as `analyze-competitor-landscape`. This should subscribe to a `useCompetitorAnalysisStream` hook in the same way that the `@onboarding-sequence.tsx` uses the `@use-enrichment-stream.ts` hook.
     - Clean up the component architecture and perfect the CSS, styles, and animations for the underlying `@ai-form-flow.tsx` component. The components for the AI Onboarding Sequence, beginning on the dashboard `@page.tsx`, which renders the `@ai-onboarding-integration.tsx`, which renders the `@ai-onboarding-flow.tsx` where the `@ONBOARDING_STEPS` are defined, should ideally be passed as props to the `@ai-onboarding-flow.tsx` component. Standardize the respective schema so that the underlying form and its inputs can always expect the same thing.
     - Refactor the UI, CSS, and animation styles of the `@business-chat-step.tsx` component.
-    - Create a `CompetitorAnalysisRequest` interface with properties: `websiteUrl: string`, `companyName?: string`, `industry?: string`, `focusAreas?: ('market-position' | 'strengths' | 'opportunities')[]`, `skipScreenshot?: boolean`.
+    - Create a `CompetitorAnalysisRequest` interface with properties: `websiteUrl: string`, `companyName?: string`, `industry?: string`, `focusAreas?: ('market-position' | 'strengths' | 'opportunities'])[]`, `skipScreenshot?: boolean`.
     - Create a `CompetitorAnalysisProgress` interface with properties: `requestId: string`, `currentStep: number`, `totalSteps: number`, `currentType?: string`, `message: string`, `isComplete: boolean`.
     - Create a `CompetitorAnalysisResponse` interface with properties: `websiteUrl: string`, `requestId: string`, `company: { name: string, summary: string, positioning: string, screenshot?: string }`, `competitiveLandscape: { directCompetitors: Array<{ name: string, url: string, description: string, strengths: string[] }>, marketPosition: { rank: string, marketShare?: string, growthTrend?: string }, strengths: string[], opportunities: string[] }`, `insights: { differentiators: string[], recommendations: string[], keyTakeaways: string[] }`, `summary: { totalAnalyzed: number, successful: number, failed: number, totalDuration: number }`.
     - Add a new function `analyzeCompetitiveLandscape` to `@enrichment.service.ts` that takes a `CompetitorAnalysisRequest` and an optional `onProgress` callback, and returns a `CompetitorAnalysisResponse`.
@@ -219,35 +219,89 @@ All project documentation, including coding standards, workflow guidelines, and 
   - @https://github.com/mendableai/firecrawl-app-examples/tree/main/search-competitor-analysis
   - @https://github.com/mendableai/firecrawl-app-examples/tree/main/search-to-report
   - When using `firecrawl_scrape` to create documentation and implementation plans for Firecrawl app examples, this should be done in anticipation of `@competitor-analysis.ts` and `@competitor-analysis-flow.tsx`.
+- When creating a `ToolsPanel` component:
+    - The `ToolsPanel` component should be placed on the left side of the `@app-container.tsx` layout, similar to the `@ChatPanel()` component.
+    - A `ContainerContent` component should be created to house the main content of the application, providing aesthetic padding.
+- **Service Modules:** When building service modules around specific functionalities for use elsewhere in the application, follow the guidelines for **Module Structure** and **Dependency Injection**.
+    - When creating a service module, start with a detailed implementation planning document (e.g., `ScreenshotService_PSEUDOCODE.md`).
+    - The service module should be implemented as a set of named exports in a dedicated directory (e.g., `packages/ai/lib/screenshot/index.ts`).
+    - Create a comprehensive documentation file (e.g., `ScreenshotService.md`) to explain the service, its architecture, data flow, and usage examples.
+    - Provide practical integration examples (e.g., `packages/ai/lib/screenshot/usage-examples.ts`) to demonstrate how the service can be used in different parts of the application.
+    - Prioritize type safety and comprehensive error handling.
+    - Implement retry logic, batch processing, and rate limiting where appropriate.
+    - Use environment variables for configuration.
+    - Consider caching strategies for performance optimization.
+- When implementing the `Services Exploration` component in the `@intent-database.tsx` component:
+    - Ensure that all `TabsTrigger` components are rendered within a `RovingFocusGroup` context, as required by Radix UI.
+    - Ensure that `TabsTrigger` components are direct children of `TabsList`. If the error persists, explicitly wrap `TabsList`'s children in a `RovingFocusGroup` (from `@radix-ui/react-roving-focus`), or ensure you are using a compatible version of Radix UI.
+    - The `Services Exploration` component in `@intent-database.tsx` should maintain the current theme's font and typography usage to render an "Intentified" version of the existing component.
+    - Each animated card must display its corresponding icon (Activity, Users, Globe, Target) in the top-left corner.
+    - Use semantic color tokens (`bg-card`, `border-border`, `text-foreground`, `text-muted-foreground`) for proper theme compatibility.
+    - Use italic with `font-serif` for a refined look for the word "PROCESS" or similar emphasized words.
+    - Add full dark mode support across all animated elements.
+    - Apply the Intentified color scheme to icon colors (blue, green, purple, orange).
+    - Simplify the cycling titles to be more concise and impactful.
+    - Use proper font sizing and weight hierarchy.
+    - Add proper spacing between "We" and "PROCESS" with flex layout.
+    - Use percentage-based positioning for better responsiveness.
+    - Remove unnecessary cards to match the intended number of metrics.
+    - Position cards to create a natural arc effect.
+    - Manage z-index with `z-10` on the animated container.
+    - Refine hover states and transitions.
+    - Handle opacity for non-hovered cards correctly.
+    - Ensure smooth title cycling with adjusted height and transform values.
+    - Replace the clipping/translateY approach with a smooth fade transition using `AnimatePresence`.
+    - Add subtitles to each metric for more context.
+    - Use opacity and subtle y-axis movements for elegant transitions.
+    - Provide individual entrance animations for each card with staggered delays.
+    - Enhance shadow (`shadow-xl`) on active cards.
+    - When details are shown and you hover over a card, it should automatically cycle through all metrics after 2 seconds.
+    - Cards should have directional entrance animations (from left, top, bottom, right).
+- When experiencing hydration errors due to mismatched server and client-side rendering:
+    - Ensure that random values are generated deterministically, or only on the client side.
+    - For example, when using `Math.random()` for animations, use a deterministic rotation based on index for consistent server/client rendering.
+    - Use a `useState` hook to track whether the component is mounted on the client side.
+    - Return 0 or a default value during server-side rendering (SSR) to avoid hydration mismatches.
+    - Example:
+        ```typescript
+        const [isClient, setIsClient] = useState(false);
 
-## TECH STACK
+        useEffect(() => {
+          setIsClient(true);
+        }, []);
 
-- **Programming Languages:**  TypeScript (Add languages as needed)
-- **Frameworks/Libraries:** Prisma, Supabase, PostgreSQL, OpenAI API, Zod, firecrawl_scrape, firecrawl_mcp, lucide-react, next/navigation, @clerk/nextjs, @ticket-workflow.mdc, react, Card, CardContent, Button, Quote, ArrowRight, Phone, ChevronDown, ChevronUp, Shield, Award, Lock, Users, CheckCircle, Mail (add libraries as needed), framer-motion, Tailwind/shadcn, @workflow.tsx, Link, AnimatePresence, ScrollArea, Sheet, SheetContent, SheetHeader, SheetTitle (add libraries as needed), CloudSyncing, DataFeedingIn, @stagewise/toolbar-next, tailwindcss@next, @tailwindcss/postcss@next, @tailwindcss/typography@next, @tailwindcss/forms@next, @tailwindcss/container-queries@next, 21st_magic_component_builder, 21st_magic_component_refiner, Radix UI Tooltip, arallax-floating, @radix-ui/react-roving-focus, context7 MCP, @Vercel AI SDK UI, ai-sdk, exa-js, @mendable/firecrawl-js, React Email, class-variance-authority, @radix-ui/react-slot, MousePointer2, Target, TrendingUp, Zap, BarChart3, Puzzle, clsx
-
-## CODING STANDARDS
-
-- Code should be well-documented.
-- Follow consistent indentation (e.g., 2 spaces).
-- Use descriptive variable and function names.
-
-- When handling form input changes, ensure proper mapping between input IDs and state variables to prevent update issues. Use explicit mapping or a helper function (as demonstrated in the fix for the 2025-05-24 issue and the 2025-05-25 interaction).  The `handleInputChange` function should utilize explicit field mapping or helper functions to ensure accurate updates to application state.
-- Use `unsafeMetadata` instead of `publicMetadata` when updating user data via Clerk.
-- Ensure all components are correctly imported. Address module not found errors by verifying component existence and correct import paths (as seen in the 2025-05-25 interaction).  Prioritize relative imports within the same directory before using absolute imports.
-- When adding social links to forms, ensure proper handling of input IDs, using explicit mapping or helper functions to prevent update issues.  (See example from 2025-05-25 interaction).
-- When creating new components, ensure they are appropriately styled for dark mode and follow established design system guidelines.  This includes considering color inversions as demonstrated in the 2025-05-25 interaction.
-- Checkboxes should be implemented as controlled components, linked to application state.
-- Thoroughly document the purpose and functionality of all functions, including `@combinedUrlActions()` and any functions interacting with `@route.ts`.  Clarify how form inputs are processed and handled within these functions.  The `combinedUrlActions()` function should handle form data appropriately, including validation and error handling.  The function should also clearly document its inputs, outputs, and any side effects.  The `combinedUrlActions` function should be clearly documented, including its inputs, outputs, and any side effects.  It should handle form data appropriately, including validation and error handling.
-- In Next.js 15 App Router, `params` and `searchParams` are async and must be unwrapped using `React.use()` before accessing their values.
-- Ensure consistency between form field names (e.g., "website" vs. "url") and the expected input in `@combinedUrlActions()`.
-- When importing functions, use `import { functionName } from "./utils";` instead of `import type { functionName } from "./utils";`.  This ensures that the function is imported as a function and not as a type.
-- Ensure all components are defined before use. Address "is not defined" errors by verifying component existence and correct import paths.
-- When implementing color schemes, ensure proper handling of dark mode and provide options for inversion as demonstrated in the interaction from 2025-05-25.
-- **Error Handling:**  When using image elements, ensure that an empty string is not passed to the `src` attribute.  If no image source is available, pass `null` to the `src` attribute instead.  When handling potential errors related to image sources, ensure that appropriate fallback mechanisms are in place to prevent runtime errors.  This includes checking for `null` or undefined values before attempting to access properties or render elements.
-- Investigate and resolve Next.js configuration errors related to website input handling, particularly concerning discrepancies between expected domains (e.g., liamellis.dev vs. liamellis.com) as observed in the interaction from 2025-05-25.
-- **Next.js Configuration:** The `next.config.js` file should be configured to allow all external domains for image loading via the `images.remotePatterns` setting.  This addresses issues with loading OpenGraph images from various domains.
-- **URL Processing:**  When processing URLs, ensure that no unintended domain conversion occurs (e.g., `.dev` to `.com`). Implement robust validation and logging to track URL transformations throughout the pipeline.  The `convertToHttps` function should not modify the input domain. Add logging to track the original URL, converted URL (if applicable), parsed domain, and full parsed URL to facilitate debugging.
-- **Image Handling:** When using the Next.js Image component, ensure that the `remotePatterns` configuration in `next.config.js` allows for images from all external domains.  Implement fallback mechanisms to handle cases where image sources are empty, invalid, or unavailable.  Use a controlled component for checkboxes, linking them to application state.
-- **Content Refactoring:** When refactoring content, particularly on the homepage (`@page.tsx`), use provided documents (e.g., `@review.md`, `@new-website-copy.md`) for updated copy. Ensure that key offerings like "The Hijacking System" are appropriately positioned within the overall brand identity, potentially moving them lower on the page and adjusting language to reflect this change. When refactoring the home page content on `@page.tsx`, use `@review.md` and `@new-website-copy.md` for the website copy/content. The home page should be a single page composed of modular sub-sections/components. Create a `HijackingSystemFeatureSection` component and present it as a feature section, not the main brand identity. Start with all the detailed copy from `new-website-copy.md`. Keep the current structure (Header, Hero, Features, etc.), but modify as needed. Use modular section components.
-- When implementing the `HijackingSystemFeatureSection` component:
-    - Style as a feature section, not a card or callout
+        const getRotateY = (index: number) => {
+          if (!isClient) return 0; // Return 0 during SSR
+          // Create a pseudo-random but deterministic rotation based on index
+          const rotations = [-10, 8, -6, 5, -3, 7, -9, 4, -2, 6];
+          return rotations[index % rotations.length];
+        };
+        ```
+- To fully resolve CSS loading issues after fixing hydration errors:
+    - Restart the development server.
+    - Clear the Next.js cache (if the issue persists).
+    - Clear the browser cache.
+- When fixing global CSS styles not rendering:
+    - Ensure Tailwind CSS v4 is correctly configured.
+    - Remove any conflicting Tailwind CSS v3 configuration files (e.g., `tailwind.config.ts` or `tailwind.config.js`).
+    - Use `@import "tailwindcss";` in `globals.css` to import the Tailwind v4 configuration.
+    - Define custom themes using the `@theme` block in `globals.css`.
+    - Define dark mode variables within the `.dark` class selector.
+- When refactoring existing sections, such as the Data Sources Section, ensure seamless integration by:
+    - Maintaining the current project's themes and styling.
+    - Utilizing existing components and utilities (e.g., `cn` utility for conditional class names).
+    - Adapting the provided code to fit the existing layout and design system.
+    - Implementing responsive design principles to ensure compatibility across different screen sizes.
+    - Ensuring accessibility by adhering to accessibility guidelines and best practices.
+- When refactoring a section to use the `InfiniteSlider` component:
+    - Ensure seamless integration by maintaining the current project's themes and styling.
+    - Utilizing existing components and utilities (e.g., `cn` utility for conditional class names).
+    - Adapting the provided code to fit the existing layout and design system.
+    - Implementing responsive design principles to ensure compatibility across different screen sizes.
+    - Ensure accessibility by adhering to accessibility guidelines and best practices.
+- When extracting code into a new component:
+    - Extract the code into its own component file.
+    - Name the component `IntentifiedProcessCard`.
+- When creating integration sources, add icons and text.
+- When creating integration sources:
+    - **Row 1**: Data Co
