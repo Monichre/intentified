@@ -1,0 +1,328 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Certainly! Here’s a comprehensive update and documentation for `@enrichment.service.ts` focusing on `analyzeCompetitiveLandscape` and `processCompetitorData`, and an updated `CompetitorAnalysisIntegration.md` reflecting the use of streaming primitives from the Vercel AI SDK UI (not SSE).
+
+---
+
+# 1. Documentation for `@enrichment.service.ts`
+
+## Overview
+
+The enrichment service module (`enrichment.service.ts`) provides a unified, extensible interface for company enrichment and competitive analysis. The two most relevant functions for competitor analysis are:
+
+- **`analyzeCompetitiveLandscape`**: Orchestrates a multi-step, streaming competitor analysis pipeline, emitting progress and results as streamable updates.
+- **`processCompetitorData`**: Post-processes raw competitor and summary data into a structured, UI-friendly format.
+
+These functions are designed to work with the Vercel AI SDK UI’s streaming primitives (e.g., `readStreamableValue`), not with traditional Server-Sent Events (SSE).
+
+---
+
+## `analyzeCompetitiveLandscape`
+
+### Purpose
+
+Performs a comprehensive, multi-stage competitor analysis for a given company, emitting progress and results as streamable updates. Designed for real-time UI feedback.
+
+### Key Features
+
+- **Streaming Progress**: Emits granular progress updates at each analysis stage (e.g., scraping, summarizing, competitor finding, market intelligence, mind map).
+- **Parallelization**: Runs independent enrichment steps in parallel where possible.
+- **Structured Results**: Returns a rich, structured `CompetitorAnalysisResponse` object.
+- **Error Handling**: Catches and reports errors as part of the stream.
+
+### Function Signature
+
+```typescript
+async function analyzeCompetitiveLandscape(
+  req: CompetitorAnalysisRequest,
+  onProgress?: (p: CompetitorAnalysisProgress) => void
+): Promise<CompetitorAnalysisResponse>
+```
+
+#### Arguments
+
+- `req`: `CompetitorAnalysisRequest` (website URL, optional company name, industry, etc.)
+- `onProgress`: Optional callback for streaming progress updates
+
+#### Streaming Pattern
+
+- At each major step, `onProgress` is called with a `CompetitorAnalysisProgress` object.
+- The function is typically wrapped in a streamable server action, which yields these updates to the client using Vercel AI SDK’s streaming protocol (not SSE).
+
+#### Example Progress Update
+
+```typescript
+{
+  requestId: "competitor-analysis-123",
+  currentStep: 2,
+  totalSteps: 6,
+  currentType: "company-summary",
+  message: "Understanding company positioning...",
+  isComplete: false
+}
+```
+
+#### Example Result
+
+Returns a `CompetitorAnalysisResponse` object (see below).
+
+---
+
+## `processCompetitorData`
+
+### Purpose
+
+Transforms raw competitor and summary data into a normalized structure for UI consumption.
+
+### Function Signature
+
+```typescript
+function processCompetitorData(
+  competitorsData: any,
+  companySummary: any
+): CompetitorAnalysisResponse['competitiveLandscape']
+```
+
+#### Output
+
+- `directCompetitors`: Array of top competitors with name, URL, description, strengths
+- `marketPosition`: Placeholder for rank, market share, growth trend
+- `strengths`: Extracted from company summary
+- `opportunities`: Derived from summary and competitor gaps
+
+#### Example Output
+
+```typescript
+{
+  directCompetitors: [
+    { name: "Acme Inc.", url: "https://acme.com", description: "...", strengths: ["Brand", "Distribution"] },
+    // ...
+  ],
+  marketPosition: { rank: "Analyzing...", marketShare: undefined, growthTrend: undefined },
+  strengths: ["Brand", "Distribution"],
+  opportunities: ["Expand to new markets"]
+}
+```
+
+---
+
+## Data Models
+
+### `CompetitorAnalysisRequest`
+
+```typescript
+interface CompetitorAnalysisRequest {
+  websiteUrl: string;
+  companyName?: string;
+  industry?: string;
+  focusAreas?: ('market-position' | 'strengths' | 'opportunities')[];
+  skipScreenshot?: boolean;
+}
+```
+
+### `CompetitorAnalysisProgress`
+
+```typescript
+interface CompetitorAnalysisProgress {
+  requestId: string;
+  currentStep: number;
+  totalSteps: number;
+  currentType?: string;
+  message: string;
+  isComplete: boolean;
+}
+```
+
+### `CompetitorAnalysisResponse`
+
+```typescript
+interface CompetitorAnalysisResponse {
+  websiteUrl: string;
+  requestId: string;
+  company: {
+    name: string;
+    summary: string;
+    positioning: string;
+    screenshot?: string;
+  };
+  competitiveLandscape: {
+    directCompetitors: Array<{
+      name: string;
+      url: string;
+      description: string;
+      strengths: string[];
+    }>;
+    marketPosition: {
+      rank: string;
+      marketShare?: string;
+      growthTrend?: string;
+    };
+    strengths: string[];
+    opportunities: string[];
+  };
+  insights: {
+    differentiators: string[];
+    recommendations: string[];
+    keyTakeaways: string[];
+  };
+  summary: {
+    totalAnalyzed: number;
+    successful: number;
+    failed: number;
+    totalDuration: number;
+  };
+}
+```
+
+---
+
+# 2. Updated `CompetitorAnalysisIntegration.md`
+
+```markdown
+# Competitor Analysis Integration
+
+## Overview
+
+The competitor analysis feature is powered by the enrichment service’s `analyzeCompetitiveLandscape` function, which emits real-time progress and results using the Vercel AI SDK UI’s streaming primitives (not SSE). This enables responsive, granular UI updates throughout the analysis process.
+
+## Architecture
+
+### Data Flow
+
+```
+1. User Input (CompetitorAnalysisFlow)
+   ↓
+2. Server Action (streamCompetitorAnalysis)
+   ↓
+3. Enrichment Service (analyzeCompetitiveLandscape)
+   ↓
+4. Stream Progress & Results (Vercel AI SDK Streamables)
+   ↓
+5. UI Updates (useCompetitorAnalysisStream hook)
+```
+
+### Key Components
+
+#### 1. **Server Action** (`apps/intentified/src/app/actions/stream-competitor-analysis.ts`)
+- Wraps `analyzeCompetitiveLandscape` in a streamable server action
+- Uses Vercel AI SDK’s `StreamableValue`/`readStreamableValue` for streaming
+- Yields progress and result updates to the client
+
+#### 2. **React Hook** (`apps/intentified/src/hooks/use-competitor-analysis-stream.ts`)
+- Manages connection state and parses streamable updates
+- Uses `readStreamableValue` to consume the stream
+- Provides `connect` method to start analysis
+- Handles progress, results, and errors in real time
+
+#### 3. **UI Component** (`apps/intentified/src/components/ai-form-flow/competitor-analysis-flow.tsx`)
+- Uses `MultiStepForm` for user input
+- Integrates with the streaming hook
+- Displays real-time progress and final results
+
+#### 4. **Enrichment Service** (`packages/ai/services/enrichment/enrichment.service.ts`)
+- `analyzeCompetitiveLandscape` orchestrates the analysis pipeline
+- Emits progress via callback, which is streamed to the client
+- `processCompetitorData` normalizes competitor data for UI
+
+## Streaming Protocol
+
+- **Not SSE**: The system uses Vercel AI SDK UI’s streaming protocol (`StreamableValue`, `readStreamableValue`), which is more flexible and robust than traditional SSE.
+- **Progress Updates**: Emitted as objects with step, type, and message.
+- **Result Update**: Emitted as a final, structured analysis object.
+
+## Usage Example
+
+### Server Action
+
+```typescript
+import { streamableValue } from "ai/rsc";
+import { analyzeCompetitiveLandscape } from "@/services/enrichment/enrichment.service";
+
+export async function streamCompetitorAnalysis(req: CompetitorAnalysisRequest) {
+  const stream = streamableValue();
+
+  analyzeCompetitiveLandscape(req, (progress) => {
+    stream.update({ type: "progress", progress });
+  })
+    .then((result) => {
+      stream.update({ type: "result", result });
+      stream.done();
+    })
+    .catch((error) => {
+      stream.update({ type: "error", error: error.message });
+      stream.done();
+    });
+
+  return stream.value;
+}
+```
+
+### Client Hook
+
+```typescript
+import { readStreamableValue } from "ai/rsc";
+import { streamCompetitorAnalysis } from "@/app/actions/stream-competitor-analysis";
+
+export function useCompetitorAnalysisStream() {
+  // ...
+  const connect = useCallback(async (options) => {
+    const stream = await streamCompetitorAnalysis(options);
+    for await (const update of readStreamableValue(stream)) {
+      // handle progress, result, error
+    }
+  }, []);
+  // ...
+}
+```
+
+## Progress Tracking
+
+- Each analysis stage emits a progress update:
+  - Initialization
+  - Basic Info & Website Content
+  - Company Summary
+  - Competitor Identification
+  - Market Intelligence
+  - Competitive Positioning
+
+- Each update includes:
+  - `currentStep`, `totalSteps`
+  - `currentType`
+  - `message`
+  - `isComplete`
+
+## Error Handling
+
+- All errors are streamed as `{ type: "error", error: ... }` updates.
+- The client hook and UI handle these gracefully, updating state and displaying messages.
+
+## Performance
+
+- **Parallelization**: Independent enrichment steps run in parallel.
+- **Streaming**: UI receives updates as soon as they are available.
+- **Resource Cleanup**: AbortController ensures streams are cancelled on unmount.
+
+## Future Enhancements
+
+- Caching, partial results, custom enrichment selection, batch analysis, export functionality.
+
+---
+
+**Note:**  
+This integration leverages the Vercel AI SDK UI’s streaming protocol for robust, real-time feedback. It does **not** use Server-Sent Events (SSE); all streaming is handled via the SDK’s primitives (`StreamableValue`, `readStreamableValue`), which are fully compatible with React Server Components and modern Next.js patterns.
+
+```
+
+---
+
+**Summary of Key Points:**
+
+- `analyzeCompetitiveLandscape` emits progress and results via callback, designed for streaming with Vercel AI SDK UI.
+- `processCompetitorData` normalizes competitor data for UI.
+- The integration uses Vercel AI SDK UI’s streaming protocol, not SSE.
+- The documentation and integration guide in `CompetitorAnalysisIntegration.md` have been updated to reflect this architecture and usage.
+
+If you need further breakdowns, code samples, or want this split into separate files, let me know!

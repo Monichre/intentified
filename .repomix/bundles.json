@@ -1,3 +1,12 @@
 {
-  "bundles": {}
+  "bundles": {
+    "ai-876": {
+      "name": "ai",
+      "created": "2025-06-09T16:30:32.957Z",
+      "lastUsed": "2025-06-09T16:30:32.957Z",
+      "tags": [],
+      "files": [],
+      "configPath": ".repomix/config/ai-repomix.config.json"
+    }
+  }
 }

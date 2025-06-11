@@ -1,8 +1,12 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
+  "extends": "../typescript-config/nextjs.json",
   "compilerOptions": {
+    "composite": true,
     "baseUrl": "."
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "references": [
+    { "path": "../design-system" }
+  ]
 }

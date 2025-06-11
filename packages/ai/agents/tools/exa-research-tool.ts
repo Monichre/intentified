@@ -1,7 +1,29 @@
 import { tool } from "ai";
-import { exaEnrichInputSchema } from "../lib/schema/exa-research";
-import { exaResearch as exaResearchFunction } from "../lib/exa/exa-research";
-import { exaService } from "../lib/exa/exa";
+import { exaEnrichInputSchema } from "./schema/exa-research";
+import { exaResearch as exaResearchFunction } from "../../integrations/exa/exa-research";
+import { exaService } from "../../integrations/exa/exa";
+import { z } from "zod"
+
+ export const exaWebSearchTool = tool({
+  description: 'Search the web for up-to-date information',
+  parameters: z.object({
+    query: z.string().min(1).max(100).describe('The search query'),
+  }),
+  execute: async ({ query }) => {
+    const { results } = await EXA_CLIENT.searchAndContents(query, {
+      livecrawl: 'always',
+      numResults: 3,
+    });
+    return results.map(result => ({
+      title: result.title,
+      url: result.url,
+      content: result.text.slice(0, 1000), // take just the first 1000 characters
+      publishedDate: result.publishedDate,
+    }));
+  },
+});
+
+
 
 export const exaResearchTool = tool({
   description: `

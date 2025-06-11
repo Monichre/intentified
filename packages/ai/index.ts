@@ -1,4 +1,16 @@
+export { enrichCompany } from './domains/enrichment/orchestrator.service';
+export { analyzeCompetitiveLandscape } from './domains/analysis/analysis.service';
 export * from 'ai';
-export * from './lib';
+export * from './agents';
 export * from './services';
-export * from './services/enrichment';
+// export * from './services/enrichment';
+// export * from "./services/enrichment/enrichment.service";
+// export * from "./services/pure-services";
+// export * from "./services/insights";
+// export * from "./services/enrichment/types";
+// export * from "./services/persistence.service";
+// export * from "./services/enrichment/enrichment-persistence.service";
+// export * from "./services/document-storage.service";
+// export * from "./services/marketing-intelligence.service";
+// export * from "./services/react-email-generator.service";
+// export * from "./services/social-media.service";

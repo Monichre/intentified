@@ -1,6 +1,7 @@
 {
   "extends": "@repo/typescript-config/nextjs.json",
   "compilerOptions": {
+    "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
@@ -13,5 +14,5 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ]
+, "../intentified/src/components/ai-form-flow/ai-funnel-form.tsx"  ]
 }

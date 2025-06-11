@@ -1,0 +1,31 @@
+{
+  "output": {
+    "filePath": "/Users/liamellis/Desktop/intentified-platform/repomix-output.md",
+    "style": "markdown",
+    "parsableStyle": true,
+    "headerText": "",
+    "instructionFilePath": "",
+    "fileSummary": true,
+    "directoryStructure": true,
+    "removeComments": true,
+    "removeEmptyLines": true,
+    "topFilesLength": 5,
+    "showLineNumbers": false,
+    "copyToClipboard": false,
+    "includeEmptyDirectories": false,
+    "compress": true
+  },
+  "include": ["/Users/liamellis/Desktop/intentified-platform/packages/ai/*"],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": []
+  },
+  "security": {
+    "enableSecurityCheck": true
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  },
+  "cwd": "/Users/liamellis/Desktop/intentified-platform"
+}

@@ -262,21 +262,6 @@ All project documentation, including coding standards, workflow guidelines, and 
     - For example, when using `Math.random()` for animations, use a deterministic rotation based on index for consistent server/client rendering.
     - Use a `useState` hook to track whether the component is mounted on the client side.
     - Return 0 or a default value during server-side rendering (SSR) to avoid hydration mismatches.
-    - Example:
-        ```typescript
-        const [isClient, setIsClient] = useState(false);
-
-        useEffect(() => {
-          setIsClient(true);
-        }, []);
-
-        const getRotateY = (index: number) => {
-          if (!isClient) return 0; // Return 0 during SSR
-          // Create a pseudo-random but deterministic rotation based on index
-          const rotations = [-10, 8, -6, 5, -3, 7, -9, 4, -2, 6];
-          return rotations[index % rotations.length];
-        };
-        ```
 - To fully resolve CSS loading issues after fixing hydration errors:
     - Restart the development server.
     - Clear the Next.js cache (if the issue persists).
@@ -305,3 +290,7 @@ All project documentation, including coding standards, workflow guidelines, and 
 - When creating integration sources, add icons and text.
 - When creating integration sources:
     - **Row 1**: Data Co
+- When refactoring multi-step form components:
+    - Refactor `@ai-form-flow.tsx` to implement `@ai-onboard-tour.tsx` and `@multi-step-form.tsx`.
+    - Both `@competitor-analysis-flow.tsx` and `@ai-onboarding-flow.tsx` should use the `@multi-step-form.tsx` as the base component.
+    - `@multi-step-form.tsx` will likely need to be refactored and enhanced to support `@AIOnboardingFlowProps` and `@FULL_ENRICHMENT_STEPS` and to utilize the proper hooks either `@

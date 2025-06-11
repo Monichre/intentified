@@ -1,14 +1,21 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
-
+  "extends": "../typescript-config/nextjs.json",
   "compilerOptions": {
+    "composite": true,
     "baseUrl": ".",
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "skipLibCheck": true,
     "paths": {
-      "@/*": ["./*"],
       "@/agents/*": ["./agents/*"],
-      "@/services/*": ["./services/*"]
+      "@/services/*": ["./services/*"],
+      "@/provider/*": ["./provider/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.tsx", "**/**/*.ts", "services", "agents/**/*.ts", "provider/**/*.ts", "domains/enrichment"],
+  "references": [
+    // { "path": "@db" },
+    // { "path": "../design-system" }
+  ]
 }

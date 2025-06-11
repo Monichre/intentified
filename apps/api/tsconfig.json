@@ -1,17 +1,13 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
+  "extends": "../../packages/typescript-config/nextjs.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@repo/*": ["../../packages/*"]
-    }
+    "composite": true,
+    "baseUrl": "."
   },
-  "include": [
-    "next-env.d.ts",
-    "next.config.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+  "include": ["app/**/*.ts", "app/**/*.tsx", "lib/**/*.ts", "lib/**/*.tsx", "../../packages/ai/domains/seo/prompt.ts"],
+  "references": [
+    { "path": "../../packages/ai" },
+    { "path": "../../packages/db" },
+    { "path": "../../packages/design-system" }
   ]
 }

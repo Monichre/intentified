@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     // Enable latest features
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",

@@ -1,7 +1,7 @@
 import { tool } from "ai";
-import { tavilySearchSchema } from "../lib/schema/tavily";
-import { tavilySearchClient } from "../lib/tavily";
-import logger from "@/lib/utility/logger/root";
+import { tavilySearchSchema } from "./schema/tavily";
+import { tavilySearchClient } from "../../integrations/tavily";
+
 
 const TOOL_DESCRIPTION = `Tavily Search is an intelligent web search tool designed to retrieve accurate, up-to-date information across multiple domains. Key capabilities include:
 
@@ -32,14 +32,7 @@ export const tavilySearch = tool({
   description: TOOL_DESCRIPTION,
   parameters: tavilySearchSchema,
   execute: async ({ query, options }) => {
-    logger.info("Using Tavily Search tool", { query });
-
     const contentResult = await tavilySearchClient.search(query, options);
-
-    logger.info("Done using Tavily Search tool", {
-      isHasValue: contentResult ? true : false,
-    });
-
     return contentResult ?? "An error occured or search doesn't return value!";
   },
 });
