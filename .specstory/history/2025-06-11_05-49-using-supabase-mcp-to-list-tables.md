@@ -133,3 +133,98 @@ This gives you a complete overview of the database schema and structure for your
 
 ---
 
+_**User**_
+
+can you list the columns i nthe companies and company profiles tables?
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+I can extract the column details for both tables from the data I already retrieved. Here are the detailed columns for each:
+
+## `companies` Table
+
+| Column | Type | Default | Nullable | Description |
+|--------|------|---------|----------|-------------|
+| `id` | uuid | gen_random_uuid() | No | Primary key |
+| `clerk_user_id` | text | - | No | Clerk authentication user ID (unique) |
+| `name` | text | - | No | Company name |
+| `website` | text | - | Yes | Company website URL |
+| `industry` | text | - | Yes | Industry classification |
+| `size` | company_size enum | - | Yes | Company size (solo, 2-10, 11-50, 51-200, 201-500, 500+) |
+| `social_links` | jsonb | '{}' | Yes | Social media links |
+| `keywords` | text[] | '{}' | Yes | Company keywords array |
+| `competitors` | text[] | '{}' | Yes | Competitor names array |
+| `created_at` | timestamptz | now() | Yes | Record creation timestamp |
+| `updated_at` | timestamptz | now() | Yes | Last update timestamp |
+
+## `company_profiles` Table
+
+| Column | Type | Default | Nullable | Description |
+|--------|------|---------|----------|-------------|
+| `id` | uuid | gen_random_uuid() | No | Primary key |
+| `website_url` | text | - | No | Website URL (unique) |
+| `last_enriched_at` | timestamptz | - | Yes | Last enrichment timestamp |
+| `enrichment_data` | jsonb | '{}' | No | Enriched company data |
+| `social_links` | jsonb | '{}' | Yes | Social media profile links |
+| `created_at` | timestamptz | now() | Yes | Record creation timestamp |
+| `updated_at` | timestamptz | now() | Yes | Last update timestamp |
+
+## Key Relationships
+
+- **companies** → **company_enrichments** (one-to-one via company_id)
+- **companies** → **user_goals** (one-to-one via company_id)  
+- **companies** → **onboarding_progress** (one-to-one via company_id)
+- **company_profiles** → **company_social_profiles** (one-to-many)
+- **company_profiles** → **company_documents** (one-to-many)
+- **company_profiles** → **company_insights** (one-to-many)
+- **company_profiles** → **company_marketing_campaigns** (one-to-many)
+
+The `companies` table appears to be the user-created company records, while `company_profiles` seems to be for enriched/analyzed external companies based on website URLs.
+
+---
+
+_**User**_
+
+there is no user table tho is there?
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Actually, there **is** a `users` table! I did mention it briefly in my summary, but let me show you the detailed columns for the `users` table as well:
+
+## `users` Table
+
+| Column | Type | Default | Nullable | Description |
+|--------|------|---------|----------|-------------|
+| `id` | bigint | auto-increment | No | Primary key (identity) |
+| `created_at` | timestamptz | now() | No | Record creation timestamp |
+| `clerk_id` | text | - | No | Clerk authentication ID (unique) |
+| `email` | text | - | No | User email (unique) |
+| `name` | text | - | Yes | User name |
+| `role` | text | 'member' | Yes | User role |
+
+So to clarify the user-related tables:
+
+- **`users`** - Core user records with Clerk authentication
+- **`companies`** - Company records linked to users via `clerk_user_id`
+- **`user_goals`** - User goals linked to companies
+- **`onboarding_progress`** - Onboarding status linked to companies
+
+The relationship flow is:
+`users` (clerk_id) → `companies` (clerk_user_id) → `user_goals`/`onboarding_progress` (company_id)
+
+You're right to double-check - it's easy to miss in the long list of 35 tables!
+
+---
+

@@ -1,4 +1,5 @@
 {
   "specstory.derivedRules.enabled": true,
-  "specstory.showDeveloperTools": true
+  "specstory.showDeveloperTools": true,
+  "pieces.cloudCapabilities": "Local"
 }
