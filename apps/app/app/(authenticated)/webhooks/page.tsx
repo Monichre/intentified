@@ -21,6 +21,8 @@ const WebhooksPage = async () => {
         className="h-full w-full border-none"
         allow="clipboard-write"
         loading="lazy"
+        sandbox="allow-scripts allow-same-origin"
+        referrerpolicy="strict-origin-when-cross-origin"
       />
     </div>
   );
