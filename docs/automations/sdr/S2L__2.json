@@ -1,0 +1,1463 @@
+{
+  "name": "S2L #2",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": [
+            "Label_6404049094877547716"
+          ],
+          "q": "NOT from:liam@promptible.io"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -120,
+        0
+      ],
+      "id": "f7aa18ce-b206-4e24-962c-5729442b4f54",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "liam@promptible.io",
+          "mode": "list",
+          "cachedResultName": "liam@promptible.io"
+        },
+        "limit": 10,
+        "timeMax": "={{ $now.plus({ week: 3 }) }}",
+        "options": {
+          "query": "={{ $('Gmail Trigger').item.json.From }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        600,
+        0
+      ],
+      "id": "83ef0256-df49-4e81-a045-5af02b3c7f0e",
+      "name": "Google Calendar2",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "CxVx8N9cVJMdhVs7",
+          "name": "Promptible Calendar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appYfXxaBJyKtjjVd",
+          "mode": "list",
+          "cachedResultName": "S2L",
+          "cachedResultUrl": "https://airtable.com/appYfXxaBJyKtjjVd"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblF6KBJba9WFW4if",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appYfXxaBJyKtjjVd/tblF6KBJba9WFW4if"
+        },
+        "filterByFormula": "={email} = \"liam8181@icloud.com\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        340,
+        0
+      ],
+      "id": "5892f502-b31b-480c-99e5-883cd725cb43",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "SUPiyzHUbQAlU1FM",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Details:\n\nName: {{ $json.summary }}\nAttendees: {{ $json.attendees.map((a, i) => `call ${i+1}: ${JSON.stringify(a, null, 2)}`).join(\"\\n\") }}\nStart: {{ ($json.start || []).map((s, i) => `Time ${i+1}: ${s.dateTime || s.date}`).join(\" | \") }}\nEnd: {{ ($json.end || []).map((e, i) => `Time ${i+1}: ${e.dateTime || e.date}`).join(\" | \") }}\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You will decipher whether or not there are any meetings with a lead. \n\nYou will be passed a bunch of information about the meeting such as name, attendees, start date, and end date. \n\nIf there is a meeting and you see values for these please output true and if theres nothing then please output false\n\n**ONLY OUTPUT true OR false**"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "7b9159c5-0bcc-4987-8c2d-04a497e4a1c6",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cf6d897a-3a30-4d37-8ba5-3900ef01b87c",
+              "leftValue": "={{ $json.text }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        0
+      ],
+      "id": "01ea12e0-b2b2-4b19-98e9-9469e339287e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appYfXxaBJyKtjjVd",
+          "mode": "list",
+          "cachedResultName": "S2L",
+          "cachedResultUrl": "https://airtable.com/appYfXxaBJyKtjjVd"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblF6KBJba9WFW4if",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appYfXxaBJyKtjjVd/tblF6KBJba9WFW4if"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Complete": true,
+            "id": "={{ $('Airtable').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Lead Description",
+              "displayName": "Lead Description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Chain",
+              "displayName": "Email Chain",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "email 1",
+                  "value": "email 1"
+                },
+                {
+                  "name": "email 2",
+                  "value": "email 2"
+                },
+                {
+                  "name": "email 3",
+                  "value": "email 3"
+                },
+                {
+                  "name": "email 4",
+                  "value": "email 4"
+                },
+                {
+                  "name": "email answered",
+                  "value": "email answered"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Complete",
+              "displayName": "Complete",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Thread ID",
+              "displayName": "Thread ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1780,
+        -280
+      ],
+      "id": "c7481b6c-cabf-47ac-9505-57dbecc6659c",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "SUPiyzHUbQAlU1FM",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "removeLabels",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "labelIds": [
+          "Label_6404049094877547716"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2040,
+        -280
+      ],
+      "id": "c55a1513-eeec-4010-ba99-3672a7685333",
+      "name": "Gmail",
+      "webhookId": "80448636-dee0-469a-9986-b644519d4d48",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "messageId": "={{ $('Gmail2').item.json.id }}",
+        "message": "hiu",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4200,
+        -440
+      ],
+      "id": "e87f71ba-24e0-4dd7-b448-2e814e15c16c",
+      "name": "Gmail1",
+      "webhookId": "c5febe8e-a1f1-4c2a-b9d2-069f84e2a340",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        0
+      ],
+      "id": "c88c3d7f-de63-485d-9ef1-4c7e0192ff1d",
+      "name": "Gmail2",
+      "webhookId": "40a2b4b1-9362-4245-9a5c-86f61e0b87da",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "summary"
+            },
+            {
+              "fieldToAggregate": "attendees"
+            },
+            {
+              "fieldToAggregate": "start"
+            },
+            {
+              "fieldToAggregate": "end"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        820,
+        0
+      ],
+      "id": "eb3ca673-d064-4d20-9cc7-0051a17f7ceb",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        140
+      ],
+      "id": "80c73095-3fc3-41b6-a977-49b354e826ea",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5WFavvJyRs2ePVCc",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1720,
+        240
+      ],
+      "id": "5e9a2d46-2776-4eeb-88d3-ef45859cfc0a",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "5WFavvJyRs2ePVCc",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Master AI Agent').item.json.output }}",
+                    "rightValue": "pricing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3f40cf0c-1fc5-472f-a4f0-7cb8a88bbaf9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pricing"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8de69350-7032-4918-bbbf-e13a9de16df7",
+                    "leftValue": "={{ $('Master AI Agent').item.json.output }}",
+                    "rightValue": "question",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "question"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a08d1c08-6f2d-46b2-85e1-073cee4acabe",
+                    "leftValue": "={{ $('Master AI Agent').item.json.output }}",
+                    "rightValue": "use case",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "use case"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "557ab867-b784-43bd-9e2b-533d363cbccf",
+                    "leftValue": "={{ $('Master AI Agent').item.json.output }}",
+                    "rightValue": "onboarding",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "onboarding"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "35eb5a56-9941-4e6c-8794-be146f5c8fe2",
+                    "leftValue": "={{ $('Master AI Agent').item.json.output }}",
+                    "rightValue": "meeting",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "meeting"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3533e68d-a65b-4cc2-9813-6f8c74b3a4f2",
+                    "leftValue": "={{ $('Master AI Agent').item.json.output }}",
+                    "rightValue": "Miscellaneous",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "misc"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "82bb5434-d2c6-440e-8c10-4b0832a4b012",
+                    "leftValue": "={{ $('Master AI Agent').item.json.output }}",
+                    "rightValue": "no answer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "no answer"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2480,
+        -40
+      ],
+      "id": "018e61dc-bee7-407a-b6b9-a4d23df35431",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "messageId": "={{ $('Gmail2').item.json.id }}",
+        "message": "hi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4200,
+        -240
+      ],
+      "id": "02b9394c-ac4a-4692-83ee-f7c9eef206c1",
+      "name": "Gmail3",
+      "webhookId": "c5febe8e-a1f1-4c2a-b9d2-069f84e2a340",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "messageId": "={{ $('Gmail2').item.json.id }}",
+        "message": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4200,
+        -20
+      ],
+      "id": "576e9ec2-3849-497a-930d-7934c4b70071",
+      "name": "Gmail4",
+      "webhookId": "c5febe8e-a1f1-4c2a-b9d2-069f84e2a340",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "messageId": "={{ $('Gmail2').item.json.id }}",
+        "message": "hi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4200,
+        180
+      ],
+      "id": "bb42bae2-770b-4af3-95bf-e2497f0ee8ac",
+      "name": "Gmail6",
+      "webhookId": "c5febe8e-a1f1-4c2a-b9d2-069f84e2a340",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "messageId": "={{ $('Gmail2').item.json.id }}",
+        "message": "hi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4220,
+        560
+      ],
+      "id": "3bc98e86-d0b3-4174-929c-fb5ee23829ed",
+      "name": "Gmail7",
+      "webhookId": "c5febe8e-a1f1-4c2a-b9d2-069f84e2a340",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Thread history:\n{{ $('Airtable').item.json['Email Chain'] }}\n\nMost recent email: {{ $('Gmail2').item.json.text }}\n\nUse the full email thread above — including the latest message and all past context — to determine the correct AI agent route for this inquiry.\n\nCompany context: Promptible is an AI automation agency that builds custom and productized automations for sales, marketing, and operations teams. Solutions include AI outreach agents, SDR bots, lead gen systems, proposal builders, and support chat workflows — all tailored to B2B.\n\nThe following agents are available:\n\n1. **Pricing** – Use if the message asks about pricing, packages, quotes, or “how much”\n2. **FAQ** – Use if they’re asking what we do, how it works, which tools we use, or general capabilities\n3. **Use Case** – Use if the person is describing a problem or goal related to AI automation (e.g. “I need help qualifying leads with AI”)\n4. **Onboarding** – Use if they’ve booked or are ready to begin, and they’re asking about the next steps, onboarding, or process\n5. **Meeting** – Use if the person is offering a date/time or requesting a call\n6. **Misc** – Use if it’s a real inquiry that doesn’t clearly match the others\n7. **No Answer** – Use if their message is vague, unactionable, irrelevant, or something like “cool”, “ok”, “thanks”",
+        "options": {
+          "systemMessage": "=You are the master routing agent at Promptible — an AI automation agency that helps businesses streamline sales, marketing, and operations.\n\nYour job is to read the **full email thread** from Airtable, analyze the message context, and decide whether to:\n1. Route the inquiry to one of six specialized AI response agents\n2. Mark it as \"no reply needed\" if the message is meaningless or doesn't warrant a response\n\nYou must ALWAYS:\n- Read the full conversation thread stored in the “Email Thread” field\n- Reference Promptible’s Knowledge Base document for context on tools, automations, and terminology\n- Choose the most appropriate route (from 7 below)\n- Never respond directly — your job is to route only\n\nROUTE OPTIONS:\n1. **Pricing** — If the lead is asking about cost, packages, tiers, or \"how much does this cost\"\n2. **FAQ** — If they ask generic questions like “what do you guys do?”, “can this connect with X?”, “what tools do you use?”, or “how does it work?”\n3. **Use Case** — If the user explains a problem they want to solve with AI (e.g. \"I need help qualifying leads\", \"Can AI do outbound for me?\")\n4. **Onboarding** — If the user already booked or expressed interest and is asking about next steps, project scope, or timelines\n5. **Meeting** — If the user is suggesting a time for a call or asks to “book a meeting,” send to this agent (it will handle scheduling via Google Calendar)\n6. **Misc** — If the message is complex or doesn’t fit cleanly into the others but still deserves a response. This agent will read the thread and craft a thoughtful reply using the knowledge base\n7. **No Answer** — If the reply is vague (e.g. “ok”, “got it”, “cool”), off-topic, or not actionable — mark it as ‘no reply needed’\n\nYour only job is to assign ONE of these agents by returning its name under the key `route`.\n\nRespond only with the route name **in lower case only**\n\nExample: use case\n\nSecond example: Pricing"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1780,
+        40
+      ],
+      "id": "36b155c8-fcdc-42ad-9c17-039d15d8a9b8",
+      "name": "Master AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Prospect Inquiry: {{ $('Gmail2').item.json.text }}\n\nAll context needed from Promptible knowledge base: {{ $('Google Docs').item.json.content }}\n\nBased on the above inquiry, provide detailed information about Promptible's pricing models that best address the prospect's questions or concerns. Ensure the response is tailored, informative, and encourages further engagement.\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are the Pricing Agent at Promptible — an AI automation agency that offers tailored solutions for sales, marketing, and operations teams.\n\nYour role is to provide clear, concise, and friendly information about our pricing models based on the prospect's inquiries. Reference Promptible’s official pricing structures and offerings.\n\nPromptible offers three primary pricing models:\n\n1. **Pre-Built Automation Templates**: Ready-to-use automation solutions priced at **$1,000 USD** each.\n\n2. **Custom Automation Solutions**: Tailored automations developed after a comprehensive audit of the client's business processes. Pricing is determined post-audit to ensure accuracy and fairness.\n\n3. **Internal Automation Specialist Package**: A subscription-based model where Promptible works closely with clients on an ongoing basis:\n   - **1 automation/month**: $2,500 USD\n   - **2 automations/month**: $4,000 USD\n   - **3 automations/month**: $5,500 USD\n\nWhen responding:\n- Match the tone of the prospect's inquiry.\n- Provide relevant pricing information based on their expressed needs.\n- If the inquiry is about custom solutions, explain the necessity of an initial audit before providing a quote.\n- For ongoing collaboration interests, detail the subscription tiers.\n- Encourage further engagement or questions to facilitate the decision-making process.\n\nAlways ensure the information is accurate, up-to-date, and aligns with Promptible's offerings."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3720,
+        -440
+      ],
+      "id": "14873195-62a1-4e17-8999-95d6d800f4a8",
+      "name": "Pricing"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here’s the most recent message from the prospect:\n\n{{ $('Gmail2').item.json.text }}\n\nAll context needed from Promptible knowledge base: {{ $('Google Docs').item.json.content }}\n\nThey’re asking a general question about what we do, what tools we use, or how this works.\n\nWrite a clear, helpful answer that gives a high-level explanation of Promptible’s services, tools, and real-world examples. Keep it casual and confident — like a helpful founder chatting, not a salesperson.\n\nEnd with a chill, open-ended question to keep the conversation going.\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are the FAQ Agent at Promptible — a sharp, friendly AI automation agency that builds automations for sales, marketing, and ops teams using tools like n8n, Make.com, OpenAI, Airtable, and more.\n\nYou’re replying to someone who asked a general question like:  \n- “What do you guys do?”  \n- “How does this work?”  \n- “What tools do you use?”  \n- “Can this integrate with X?”  \n- “What does your system actually look like?”\n\nYour job is to give a clear, helpful, and casual answer that explains what Promptible does — without sounding generic or robotic. Use examples from the real builds in the Promptible automation library (automationlibrary.notion.site) if it helps make things more concrete.\n\nWhat we do:\n- Build custom and productized AI automations for B2B\n- Use tools like GPT-4, Make, n8n, Airtable, Supabase, Google Suite, GHL, Apify, etc.\n- Focus areas: lead gen agents, proposal automations, internal tools, AI SDRs, social content, speed-to-lead, support bots, invoicing, and CRM syncing\n- We always scope things with the client before building — every solution is tailored\n\nTone: smart, founder-style. Don’t overexplain. No fluff. Be straight-up and conversational.  \nEnd with a casual, open-ended question like “Does that sound like something you're exploring?” or “Curious what you're trying to automate right now?”"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3700,
+        -240
+      ],
+      "id": "5d4dc15c-c84c-453b-b95f-fd384df923ce",
+      "name": "Question"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here’s the latest message from the prospect:\n\n{{ $('Gmail2').item.json.text }}\n\nAll context needed from Promptible knowledge base: {{ $('Google Docs').item.json.content }}\n\nThey’re describing a problem or idea they’re trying to solve with AI or automation.\n\nWrite a short, helpful reply that explains how Promptible would solve that use case. Reference real tools or automations from the Promptible library that match what they’re asking about.\n\nKeep the tone casual, like you’re chatting as a founder who’s solved this before. End with an open-ended question to continue the convo.\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are the Use Case Agent at Promptible — a sharp, chill AI automation agency that builds custom and productized automations for B2B teams across sales, marketing, and operations.\n\nYou’re replying to someone who explained a specific challenge, goal, or workflow they’re trying to improve — usually related to AI or automation.\n\nYour job is to:\n- Show you understand what they’re trying to do\n- Explain how Promptible would approach solving that problem\n- Reference real automation types or templates from Promptible’s library that are relevant (automationlibrary.notion.site)\n- Make it sound effortless, like “yeah, we’ve built something like that before — here’s how it could work for you”\n\nPromptible builds systems like:\n- Lead gen email + LinkedIn outreach agents\n- Speed-to-lead AI responders for SMS/email\n- AI proposal generators post-meeting\n- Social content engines\n- Lead scoring + CRM sync\n- Support AI agents\n- Internal tools for data cleanup, tracking, etc.\n\nKeep it natural, don’t pitch too hard — you’re just sharing a real solution that fits their use case.  \nEnd with a chill question like “Want me to walk you through what that setup could look like?” or “Should I map out how we’d build that?”"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3700,
+        -20
+      ],
+      "id": "65057e3f-7c50-4907-8b11-48c0f4bebd8c",
+      "name": "Use Case"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here’s the most recent message from the prospect:\n\n{{ $('Gmail2').item.json.text }}\n\nAll context needed from Promptible knowledge base: {{ $('Google Docs').item.json.content }}\n\nThey seem ready to move forward and are asking about next steps or how onboarding works.\n\nWrite a short, clear reply that explains Promptible’s onboarding process — from kickoff to handoff. Mention the strategy call or audit if relevant. Keep the tone casual and helpful, like a founder guiding them through it.\n\nEnd with a soft call to action, like offering to book the kickoff call.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are the Onboarding Agent at Promptible — a founder-led AI automation company that builds custom and productized automations for sales, marketing, and operations teams.\n\nYou’re responding to someone who is either:\n- Ready to get started\n- Asking about next steps\n- Wondering how onboarding or project setup works\n- Asking “what do you need from me?” or “how do we begin?”\n\nYour job is to explain the onboarding process clearly, quickly, and in a helpful tone.\n\nPromptible’s onboarding flow usually looks like:\n1. **Kickoff call** — We scope their workflows, goals, and tech stack\n2. **Audit + plan** — We map out the automation flow and tools\n3. **Build phase** — We create, test, and validate the automation\n4. **Handoff** — We deliver the build with Loom walkthroughs + optional Slack support\n\nIf they’re doing the **retainer model**, you can mention they get a monthly strategy call and priority support. If it’s a **custom build**, mention the audit step is key before building.\n\nKeep it simple. No fluff. Just explain how we work and make it feel easy to start.  \nEnd with something like:  \n“Want to kick things off with a quick call?” or  \n“Ready to scope your first automation?”"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3700,
+        180
+      ],
+      "id": "c2f3c149-5bda-4e33-8266-29b6c3546603",
+      "name": "Onboarding"
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "messageId": "={{ $('Gmail2').item.json.id }}",
+        "message": "hi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4920,
+        240
+      ],
+      "id": "b50dd79f-38bc-42b6-8d60-08f121f8f3bb",
+      "name": "Gmail8",
+      "webhookId": "c5febe8e-a1f1-4c2a-b9d2-069f84e2a340",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here’s the latest message in the email thread:\n\n{{ $('Gmail2').item.json.text }}\n\nYour task: Decide if the user is requesting availability or confirming a time.\n\nOutput only one word: `true` or `false`.\n\n\nCurrent date and time for refrence: {{ $now }}\n\nWe only book between 11am and 5pm EDT monday to friday. please do not accept a time outside that range. offer a new time if it is and work with the user to find a workable time within the slots",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are the Meeting AI Agent for Promptible, an AI automation agency.\n\nYour job is to decide whether the user is trying to:\n- View available times (true)\n- Confirm a specific time for booking (false)\n\nYou will always return a boolean — either `true` or `false` — and nothing else.\n\nInterpret the user's latest message based on the conversation context below.\n\nReturn:\n- `true` → if the user is asking for availability, such as: “what times work?”, “are you free Tuesday?”, “can you do next week?”, “let me know your calendar”\n- `false` → if the user confirms a specific time or suggests a concrete time, like: “yes, 2pm Tuesday works”, “how about tomorrow at noon?”, “I’m good for 3pm PST”\n\nBe strict: only return `false` if they clearly confirmed or proposed a real time.\nDo not explain your reasoning. Only return the value."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3700,
+        380
+      ],
+      "id": "3d61472d-9ed6-46c3-a9f0-7322357611e8",
+      "name": "Meeting"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here’s the latest message from the prospect:\n\n{{ $('Gmail2').item.json.text }}\n\nAll context needed from Promptible knowledge base: {{ $('Google Docs').item.json.content }}\n\n\nThe message doesn’t clearly ask about pricing, tech, onboarding, or booking — but it’s not spam or a “no response” either.\n\nWrite a short, helpful response based on what they said. Use the Promptible knowledge base or automation examples if it helps clarify. Keep it human, clear, and move the conversation forward.\n\nEnd with a friendly, open-ended question that encourages them to reply.\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are the Miscellaneous Agent at Promptible — an AI automation agency that builds custom and productized systems for sales, ops, and marketing teams.\n\nYou’re handling an inbound message that doesn’t clearly fall into the pricing, FAQ, use case, onboarding, or meeting categories — but it still needs a human, thoughtful reply.\n\nYour job is to:\n- Read the entire message and thread\n- Understand what they’re trying to communicate\n- Reply with a helpful response that either clarifies, answers, or moves the conversation forward\n\nExamples of what this might cover:\n- Someone asking for a deck, doc, or demo\n- A request that’s partially vague but promising\n- Someone referencing a past convo without much detail\n- A casual “what’s your availability?” that isn’t quite a booking request yet\n- Any other message that’s meaningful but unclear\n\nUse the Promptible knowledge base to add value when possible — for example, mention relevant tools or workflows, offer to hop on a call, or share a public link (e.g. promptible.io or automationlibrary.notion.site) if it helps.\n\nYour tone should still feel like a helpful founder. Be calm, confident, and make it easy for them to respond.\n\nDon’t overthink it — your job is just to move the convo forward naturally.\n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3700,
+        560
+      ],
+      "id": "09a915a3-0524-4151-93d1-75294ca29cec",
+      "name": "Misc"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3740,
+        820
+      ],
+      "id": "3d0ba407-fb72-41fb-af83-c68e4924ab31",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "=https://docs.google.com/document/d/18wXNd28f_Regxuo51TPtgv8ADBd47rpCB3B3R4wX3mk/edit?tab=t.0"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2220,
+        40
+      ],
+      "id": "55ea518b-fc36-4934-b3ec-385a6fdd8e08",
+      "name": "Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "RONLvmgKez6l8F7t",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2480,
+        780
+      ],
+      "id": "8088cc86-b211-43e7-964c-afee363d3417",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "5WFavvJyRs2ePVCc",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "liam@promptible.io",
+          "mode": "list",
+          "cachedResultName": "liam@promptible.io"
+        },
+        "timeMax": "={{ $now.plus(3, 'day') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        4600,
+        240
+      ],
+      "id": "8cabae2e-fe5c-49cf-9a7d-a5ae9a2eabf0",
+      "name": "Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "CxVx8N9cVJMdhVs7",
+          "name": "Promptible Calendar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bf67844a-84dc-4a24-9eab-6d71be87bf5d",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4220,
+        380
+      ],
+      "id": "372ea27a-dea7-4f14-a262-a5d67e7c8381",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "liam@promptible.io",
+          "mode": "list",
+          "cachedResultName": "liam@promptible.io"
+        },
+        "end": "={{ $now.plus(15, 'min') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        4600,
+        500
+      ],
+      "id": "0980dec0-3357-4917-93ef-0a711a076b0c",
+      "name": "Google Calendar1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "CxVx8N9cVJMdhVs7",
+          "name": "Promptible Calendar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail2').item.json.threadId }}",
+        "messageId": "={{ $('Gmail2').item.json.id }}",
+        "message": "hi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4940,
+        500
+      ],
+      "id": "fd83aa61-08ec-4e7f-a465-777804c4bed9",
+      "name": "Gmail5",
+      "webhookId": "07e52a58-f75e-4ad1-81a8-b9813fbbed86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hzI6J8LqzlFtl33K",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Gmail Trigger": [
+      {
+        "json": {
+          "id": "196f55e4d85c2075",
+          "threadId": "196f55e4d85c2075",
+          "snippet": "Hi Liam, I&#39;m seriously impressed by how you&#39;ve made AI implementation tangible for B2B teams - that 73% automation rate with ProjectHub shows you&#39;re delivering real results, not just AI",
+          "payload": {
+            "mimeType": "text/plain"
+          },
+          "sizeEstimate": 1368,
+          "historyId": "344563",
+          "internalDate": "1747873320000",
+          "labels": [
+            {
+              "id": "SENT",
+              "name": "SENT"
+            },
+            {
+              "id": "Label_6404049094877547716",
+              "name": "AI Agent"
+            }
+          ],
+          "To": "liam8181@icloud.com",
+          "Bcc": "hqPx6HPrYcpZOTKTwZKA@application.truflow.ai",
+          "Subject": "Let's Automate Promptible",
+          "From": "liam@promptible.io"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar2": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Master AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail1": {
+      "main": [
+        []
+      ]
+    },
+    "Gmail2": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Master AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Pricing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Question",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Use Case",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Onboarding",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Meeting",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Misc",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Master AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Google Docs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pricing": {
+      "main": [
+        [
+          {
+            "node": "Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Question": {
+      "main": [
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Use Case": {
+      "main": [
+        [
+          {
+            "node": "Gmail4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Onboarding": {
+      "main": [
+        [
+          {
+            "node": "Gmail6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meeting": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Misc": {
+      "main": [
+        [
+          {
+            "node": "Gmail7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Pricing",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Question",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Use Case",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Onboarding",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Meeting",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Misc",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "main": [
+        [
+          {
+            "node": "Gmail8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Calendar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar1": {
+      "main": [
+        [
+          {
+            "node": "Gmail5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6e953666-de53-4108-8e2b-e1a2a9c853ac",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "35125b6d3d211f50c0ce4d00caebe9fff602321321c2d0430f5c1c94deed3a30"
+  },
+  "id": "SJVcx7m1LrMdjHFY",
+  "tags": []
+}

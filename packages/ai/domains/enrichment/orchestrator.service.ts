@@ -3,16 +3,19 @@ import type {
   EnrichmentProgress,
   BulkEnrichmentResponse,
   EnrichmentType,
-  CompanySummaryResult
+  
 } from '../../core/schemas/enrichment.schema';
 import { ALL_ENRICHMENT_TYPES } from '../../core/schemas/enrichment.schema';
-import { enrichCompetitors, enrichCompanySummary, enrichMindMap } from './enrichment.service';
+
 import { takeScreenshot } from '../../integrations/screenshot';
 import { exaResearch } from '../../integrations/exa/exa-research';
 import { exaService } from '../../integrations/exa';
+import { makeCompanyEnrichmentService } from './enrichment.service';
+import type { CompanySummaryResult } from 'integrations/types'
 
 // Only for orchestrator awareness
 const exaR = exaResearch(exaService);
+const enrichmentService = makeCompanyEnrichmentService();
 
 /**
  * Main enrichment pipeline orchestrator, calling respective phase/logic.
@@ -57,9 +60,9 @@ export const enrichCompany = async (
     const independentPromises = independentTypes.map(async (type) => {
       // Use mappings or direct logic as appropriate
       let fn;
-      if (type === 'company-summary') fn = enrichCompanySummary;
-      else if (type === 'competitors') fn = enrichCompetitors;
-      else if (type === 'mind-map') fn = enrichMindMap;
+      if (type === 'company-summary') fn = enrichmentService.enrichCompanySummary;
+      else if (type === 'competitors') fn = enrichmentService.enrichCompetitors;
+      else if (type === 'mind-map') fn = enrichmentService.enrichMindMap;
       else fn = undefined;
       // fallback to simple API otherwise (for now)
       if (!fn && exaR[type]) fn = (req: any) => exaR[type](req);
@@ -95,10 +98,10 @@ export const enrichCompany = async (
         let result;
         if (type === 'competitors') {
           const summaryText = summaryData ? summaryData.sections.map((s: any) => s.text).join(' ') : undefined;
-          result = await enrichCompetitors(req, summaryText);
+          result = await enrichmentService.enrichCompetitors(req, summaryText);
         } else if (type === 'mind-map') {
           const competitorsResult = allResults.find(r => r.type === 'competitors' && r.status === 'success');
-          result = await enrichMindMap(req, {
+          result = await enrichmentService.enrichMindMap(req, {
             summary: summaryData,
             funding: fundingData,
             competitors: competitorsResult?.data
