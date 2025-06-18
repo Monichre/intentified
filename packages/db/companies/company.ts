@@ -1,5 +1,23 @@
 import { supabaseAdminClient } from "../src/supabase/admin.client";
-import { CompanyEnrichmentData } from "@/features/pipelines/seo-digital-processing/lib/actions";
+
+// Define types locally instead of importing from app-specific paths
+export interface CompanyEnrichmentData {
+  description?: string;
+  category?: string;
+  summary?: any;
+  funding?: {
+    status?: string;
+    totalFunding?: number;
+  };
+  linkedIn?: {
+    url?: string;
+    employeeCount?: number;
+    followers?: number;
+  };
+  founders?: any[];
+  competitors?: string[];
+  companyIntelligence?: any;
+}
 
 export type CompanySize = 'solo' | '2-10' | '11-50' | '51-200' | '201-500' | '500+';
 

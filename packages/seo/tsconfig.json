@@ -7,11 +7,9 @@
     "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
+    "jsx": "react-jsx",
     "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist", "tsconfig.tsbuildinfo"],
-  "references": [
-    { "path": "../design-system" }
-  ]
+  "exclude": ["node_modules", "dist", "tsconfig.tsbuildinfo"]
 }

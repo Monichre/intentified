@@ -15,7 +15,6 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "composite": true,
     "paths": {
       "@/*": ["apps/intentified/src/*"],
       "@ai/*": ["packages/ai/*"],
