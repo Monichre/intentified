@@ -874,7 +874,95 @@ fix @workflowNodes
 
 _**Assistant**_
 
+```diff
+      type: "logic",
+      title: "LISTEN",
+-     subtitle: "Trillions of Signals",
+-     icon: Eye,
+-     color: "bg-blue-500",
+-     description:
+-       "We monitor 50 billion URLs daily across 270 million US consumers, tracking real-time buying behavior from:",
+-     features: [
+-       "Competitor websites",
+-       "Social media engagement",
+-       "Search queries",
+-       "Review sites",
+-       "Industry publications",
+-     ],
+-     metrics: {
+-       urls: 50,
+-       consumers: 270,
+-     },
++     value: "Trillions of Signals",
+      x: 50,
+      y: 200,
+```
 
+```diff
+      type: "input",
+      title: "DISCOVER",
+-     subtitle: "Extreme Precision",
+-     icon: Search,
+-     color: "bg-green-500",
+-     description:
+-       "Our AI identifies prospects actively researching solutions like yours:",
+-     features: [
+-       "Which competitors they're visiting",
+-       "What products they're comparing",
+-       "When they're ready to buy",
+-       "Full contact details (name, email, phone)",
+-     ],
+-     metrics: {},
++     value: "Extreme Precision",
+      x: 300,
+      y: 100,
+```
+
+```diff
+      type: "input",
+      title: "CREATE",
+-     subtitle: "Automated Excellence",
+-     icon: Zap,
+-     color: "bg-purple-500",
+-     description: "Personalized campaigns created in real-time:",
+-     features: [
+-       "Dynamic content based on intent signals",
+-       "Industry-specific messaging",
+-       "Behavior-triggered sequences",
+-       "Multi-channel coordination",
+-     ],
+-     metrics: {},
++     value: "Automated Excellence",
+      x: 300,
+      y: 250,
+```
+
+```diff
+      type: "input",
+      title: "SEND",
+-     subtitle: "Speed to Lead",
+-     icon: Send,
+-     color: "bg-orange-500",
+-     description: "Reach prospects while they're still shopping:",
+-     features: [
+-       "Near real-time email delivery (5 minutes or less)",
+-       "8 different ISPs for maximum deliverability",
+-       "Automated text follow-up for hot leads",
+-       "Direct appointment scheduling",
+-     ],
+-     metrics: {},
++     value: "Speed to Lead",
+      x: 300,
+      y: 400,
+```
+
+---
+
+The `workflowNodes` array is now fixed to only include properties defined in the `WorkflowNode` interface: `id`, `type`, `title`, `value`, `x`, and `y`. All extra properties (`subtitle`, `icon`, `color`, `description`, `features`, `metrics`) have been removed.
+
+You can now safely use this array with the `AnimatedWorkflowDiagram` component without TypeScript errors or linter issues.
+
+If you want to display richer node content in the future, you can extend the `WorkflowNode` type and update the diagram component accordingly. Let me know if you want to proceed with further enhancements or integration!
 
 ---
 

@@ -108,11 +108,311 @@ I'll extract the data sources section into a separate component file. Let me cre
 
 ---
 
+```diff
+- 
++ "use client";
++ 
++ import { FC } from "react";
++ import {
++   Share2,
++   Users,
++   FileText,
++   Network,
++   Brain,
++   Calendar,
++   MessageSquare,
++   BookOpen,
++   Building2,
++   Search,
++   MonitorDot,
++   Mail,
++   Database,
++ } from "lucide-react";
++ import { cn } from "@/utils/utils";
++ import { InfiniteSlider } from "@/components/ui/infinite-slider";
++ 
++ const IntegrationCard = ({
++   children,
++   className,
++   borderClassName,
++   isCenter = false,
++ }: {
++   children: React.ReactNode;
++   className?: string;
++   borderClassName?: string;
++   isCenter?: boolean;
++ }) => {
++   return (
++     <div
++       className={cn(
++         borderClassName,
++         "border-border/70 rounded-full border backdrop-blur-sm",
++       )}
++     >
++       <div
++         className={cn(
++           "bg-background relative z-20 flex size-12 rounded-full",
++           className,
++           isCenter && "size-16",
++         )}
++       >
++         <div className={cn("m-auto size-fit *:size-5", isCenter && "*:size-8")}>
++           {children}
++         </div>
++       </div>
++     </div>
++   );
++ };
++ 
++ const dataSourcesWithIcons = [
++   { name: "Data Co-ops", icon: Share2 },
++   { name: "Social Networks", icon: Users },
++   { name: "Publishers", icon: FileText },
++   { name: "Technology Platforms", icon: Network },
++   { name: "Research Firms", icon: Brain },
++   { name: "Event Companies", icon: Calendar },
++   { name: "Review Sites", icon: MessageSquare },
++   { name: "Publishing Networks", icon: BookOpen },
++   { name: "Job Postings", icon: Building2 },
++   { name: "Search Results", icon: Search },
++   { name: "Your Website", icon: MonitorDot },
++   { name: "Email Engagement", icon: Mail },
++ ];
++ 
++ export const IntentDataSources: FC = () => {
++   return (
++     <div className="mb-16">
++       <div className="py-24 md:py-32">
++         <div className="mx-auto max-w-5xl px-6">
++           <div className="group relative mx-auto max-w-[22rem] items-center justify-between space-y-6 bg-black/25 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] sm:max-w-md">
++             <div
++               role="presentation"
++               className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:32px_32px] opacity-50"
++             />
++ 
++             {/* First row: Data Co-ops • Social Networks • Publishers • Technology Platforms */}
++             <div>
++               <InfiniteSlider gap={24} speed={20} speedOnHover={10}>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Share2 className="h-5 w-5 text-blue-600" />
++                   <span className="text-sm font-medium">Data Co-ops</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Users className="h-5 w-5 text-green-600" />
++                   <span className="text-sm font-medium">Social Networks</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <FileText className="h-5 w-5 text-purple-600" />
++                   <span className="text-sm font-medium">Publishers</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Network className="h-5 w-5 text-orange-600" />
++                   <span className="text-sm font-medium">
++                     Technology Platforms
++                   </span>
++                 </div>
++               </InfiniteSlider>
++             </div>
++ 
++             {/* Second row: Research Firms • Event Companies • Review Sites • Publishing Networks */}
++             <div>
++               <InfiniteSlider gap={24} speed={20} speedOnHover={10} reverse>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Brain className="h-5 w-5 text-pink-600" />
++                   <span className="text-sm font-medium">Research Firms</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Calendar className="h-5 w-5 text-cyan-600" />
++                   <span className="text-sm font-medium">Event Companies</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <MessageSquare className="h-5 w-5 text-red-600" />
++                   <span className="text-sm font-medium">Review Sites</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <BookOpen className="h-5 w-5 text-indigo-600" />
++                   <span className="text-sm font-medium">
++                     Publishing Networks
++                   </span>
++                 </div>
++               </InfiniteSlider>
++             </div>
++ 
++             {/* Third row: Job Postings • Search Results • Your Website • Email Engagement */}
++             <div>
++               <InfiniteSlider gap={24} speed={20} speedOnHover={10}>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Building2 className="h-5 w-5 text-amber-600" />
++                   <span className="text-sm font-medium">Job Postings</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Search className="h-5 w-5 text-emerald-600" />
++                   <span className="text-sm font-medium">Search Results</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <MonitorDot className="h-5 w-5 text-violet-600" />
++                   <span className="text-sm font-medium">Your Website</span>
++                 </div>
++                 <div className="border-border/70 bg-background flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm">
++                   <Mail className="h-5 w-5 text-teal-600" />
++                   <span className="text-sm font-medium">Email Engagement</span>
++                 </div>
++               </InfiniteSlider>
++             </div>
++ 
++             {/* Centered database icon */}
++             <div className="absolute inset-0 m-auto flex size-fit justify-center gap-2">
++               <IntegrationCard
++                 borderClassName="shadow-black-950/10 shadow-xl border-white/25"
++                 className="size-16 bg-white/25 shadow-xl shadow-white/15 backdrop-blur-md backdrop-grayscale"
++                 isCenter={true}
++               >
++                 <Database className="text-primary" />
++               </IntegrationCard>
++             </div>
++           </div>
++ 
++           <div className="mx-auto mt-12 max-w-lg space-y-6 text-center">
++             <h2 className="text-3xl font-semibold text-balance md:text-4xl">
++               Where Our Intent Signals Come From
++             </h2>
++             <p className="text-muted-foreground">
++               We aggregate data from multiple trusted sources to provide
++               comprehensive intent insights across your entire market.
++             </p>
++             <div className="text-muted-foreground flex flex-wrap justify-center gap-2 text-sm">
++               {dataSourcesWithIcons.map((source, index) => (
++                 <span key={index} className="flex items-center gap-1">
++                   <source.icon className="h-4 w-4" />
++                   {source.name}
++                   {index < dataSourcesWithIcons.length - 1 && (
++                     <span className="ml-2">•</span>
++                   )}
++                 </span>
++               ))}
++             </div>
++           </div>
++         </div>
++       </div>
++     </div>
++   );
++ };
++ 
++ export default IntentDataSources;
++ 
+```
+
+---
+
+
+
+---
+
+Now let me update the original file to remove the extracted code and import the new component:
+
+---
+
 
 
 ---
 
 
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/features/landing/intent-database.tsx
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/features/landing/intent-database.tsx
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Perfect! I've successfully extracted the data sources section into a separate component file called `IntentDataSources`. Here's what I did:
+
+1. **Created a new file** `apps/intentified/src/features/landing/intent-data-sources.tsx` containing:
+   - The `IntegrationCard` component
+   - The `dataSourcesWithIcons` array
+   - All three rows of integration sources with their icons and text
+   - The centered database icon
+   - The title and description text
+
+2. **Updated the original file** `apps/intentified/src/features/landing/intent-database.tsx`:
+   - Imported the new `IntentDataSources` component
+   - Replaced the entire data sources section with `<IntentDataSources />`
+   - Removed all unused imports (icons and components that were moved to the new file)
+   - Cleaned up import statements to only include what's actually used
+
+The component now properly displays all three rows of integration sources with both icons and text labels as you requested:
+- **Row 1**: Data Co-ops • Social Networks • Publishers • Technology Platforms
+- **Row 2**: Research Firms • Event Companies • Review Sites • Publishing Networks  
+- **Row 3**: Job Postings • Search Results • Your Website • Email Engagement
+
+The refactoring maintains all the original functionality while making the code more modular and maintainable.
 
 ---
 

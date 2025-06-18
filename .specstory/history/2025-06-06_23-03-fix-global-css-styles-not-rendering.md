@@ -375,3 +375,231 @@ refactor the "Where Our Intent Signals Come From" section in @intent-database.ts
 
 ---
 
+_**Assistant**_
+
+
+
+---
+
+I'll refactor the "Where Our Intent Signals Come From" section to use the Integrations UI pattern. Let me update the component:
+
+---
+
+```diff
+    Target,
+    Brain,
++   Share2,
++   Building2,
++   FileText,
++   Network,
++   BookOpen,
++   Calendar,
++   MessageSquare,
++   Search,
++   MonitorDot,
++   Mail,
++   Link,
+  } from "lucide-react";
+  import { cn } from "@/utils/utils";
+```
+
+---
+
+
+
+---
+
+```diff
+    }
+  }
++ 
++ const IntegrationCard = ({
++   children,
++   className,
++   borderClassName,
++ }: {
++   children: React.ReactNode;
++   className?: string;
++   borderClassName?: string;
++ }) => {
++   return (
++     <div
++       className={cn(
++         "bg-background relative flex size-20 rounded-xl dark:bg-transparent",
++         className,
++       )}
++     >
++       <div
++         role="presentation"
++         className={cn(
++           "absolute inset-0 rounded-xl border border-black/20 dark:border-white/25",
++           borderClassName,
++         )}
++       />
++       <div className="relative z-20 m-auto size-fit *:size-8">{children}</div>
++     </div>
++   );
++ };
+  
+  export const IntentDatabase: FC = () => {
+```
+
+---
+
+
+
+---
+
+```diff
+    "Email Engagement",
+  ];
++ 
++ const dataSourcesWithIcons = [
++   { name: "Data Co-ops", icon: Share2 },
++   { name: "Social Networks", icon: Users },
++   { name: "Publishers", icon: FileText },
++   { name: "Technology Platforms", icon: Network },
++   { name: "Research Firms", icon: Brain },
++   { name: "Event Companies", icon: Calendar },
++   { name: "Review Sites", icon: MessageSquare },
++   { name: "Publishing Networks", icon: BookOpen },
++   { name: "Job Postings", icon: Building2 },
++   { name: "Search Results", icon: Search },
++   { name: "Your Website", icon: MonitorDot },
++   { name: "Email Engagement", icon: Mail },
++ ];
+  
+  const identityResolutionSteps = [
+```
+
+```diff
+            </h3>
+            <div className="mx-auto flex max-w-4xl flex-wrap justify-center gap-3">
+-             {dataSources.map((source, index) => (
++             {dataSourcesWithIcons.map((source, index) => (
+                <Badge
+                  key={index}
+                  variant="secondary"
+                  className="hover:bg-primary hover:text-primary-foreground cursor-default px-4 py-2 text-sm transition-colors"
+                >
+-                 {source}
++                 {source.name}
+                </Badge>
+              ))}
+```
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+```diff
+  } from "@/components/ui/card";
+  import { Badge } from "@/components/ui/badge";
++ import { Button } from "@/components/ui/button";
+  import { AnimatePresence, motion } from "framer-motion";
+  import { MousePointer2 } from "lucide-react";
+```
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+I've successfully refactored the "Where Our Intent Signals Come From" section to use the Integrations UI pattern. Here's what I've implemented:
+
+## Changes Made:
+
+1. **Added IntegrationCard Component**: Created a reusable card component with hover effects and customizable styling
+
+2. **Icon Mapping**: Created a mapping of data sources to appropriate Lucide icons:
+   - Data Co-ops → Share2
+   - Social Networks → Users
+   - Publishers → FileText
+   - Technology Platforms → Network
+   - Research Firms → Brain
+   - Event Companies → Calendar
+   - Review Sites → MessageSquare
+   - Publishing Networks → BookOpen
+   - Job Postings → Building2
+   - Search Results → Search
+   - Your Website → MonitorDot
+   - Email Engagement → Mail
+
+3. **Grid Layout**: Arranged the integration cards in a visually appealing grid:
+   - 4 cards in the first row
+   - 4 cards in the second row (with Database icon in the center)
+   - 3 cards in the third row
+   - 2 cards in the fourth row
+
+4. **Visual Enhancements**:
+   - Added radial gradient background effect
+   - Implemented hover scale effects on cards
+   - Used different colors for each icon
+   - Added special styling to the central Database icon
+   - Included a text list of all sources below the grid
+
+5. **Added CTA Button**: Included a "Learn More About Our Data Sources" button for user engagement
+
+The new design is more modern, interactive, and visually consistent with the Integrations UI pattern while maintaining all the original data source information.
+
+---
+

@@ -185,3 +185,402 @@ I'll integrate the stagewise toolbar into the Intentified app. Let me first find
 
 ---
 
+Read file: apps/intentified/src/app/layout.tsx
+
+---
+
+
+
+---
+
+I see that the stagewise toolbar is already properly integrated in your layout.tsx file! However, I notice you have linter errors in your `intent-database.tsx` file that are unrelated to stagewise. Let me fix those missing imports:
+
+---
+
+```diff
+  import { Button } from "@/components/ui/button";
+  import { AnimatePresence, motion } from "framer-motion";
+- import { MousePointer2 } from "lucide-react";
+- 
+- import { AnimatedNumber } from "@/components/ui/animated-number";
+- import { IdentityResolutionEngine } from "./identity-resolution-engine";
+- import { IntentDataSources } from "./intent-data-sources";
+  import {
++   MousePointer2,
+    Database,
+    Users,
+```
+
+```diff
+    CheckCircle,
+    Target,
++   Share2,
++   FileText,
++   Network,
++   Brain,
++   Calendar,
++   MessageSquare,
++   BookOpen,
++   Building2,
++   Search,
++   MonitorDot,
++   Mail,
+  } from "lucide-react";
++ 
++ import { AnimatedNumber } from "@/components/ui/animated-number";
++ import { IdentityResolutionEngine } from "./identity-resolution-engine";
++ import { IntentDataSources } from "./intent-data-sources";
+  import { cn } from "@/utils/utils";
+  import { capitalize } from "@/utils/capitalize";
+```
+
+---
+
+
+
+---
+
+<details>
+            <summary>Grep search for "InfiniteSlider" • **6** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L19 | `import { InfiniteSlider } from "@/components/ui/infinite-slider";` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L82 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L101 | `</InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L106 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10} reverse>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L125 | `</InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L130 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L147 | `</InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/ui/infinite-slider.tsx` | L6 | `export type InfiniteSliderProps = {` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/ui/infinite-slider.tsx` | L16 | `export function InfiniteSlider({` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/ui/infinite-slider.tsx` | L24 | `}: InfiniteSliderProps) {` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L228 | `42 import { InfiniteSlider } from "@/components/ui/infinite-slider";` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L845 | `455                   <InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L929 | `479                   <InfiniteSlider gap={24} speed={20} speedOnHover={10} reverse>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1013 | `503                   <InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L13 | `import { InfiniteSlider } from '@/components/motion-primitives/infinite-slider'` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L25 | `<InfiniteSlider` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L47 | `</InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L51 | `<InfiniteSlider` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L74 | `</InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L77 | `<InfiniteSlider` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L99 | `</InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L149 | `+ import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L189 | `+                   <InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L208 | `+                   </InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L213 | `+                   <InfiniteSlider gap={24} speed={20} speedOnHover={10} reverse>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L232 | `+                   </InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L237 | `+                   <InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L256 | `+                   </InfiniteSlider>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L344 | `Let me check if the `InfiniteSlider` component exists:` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L349 | `<summary>Searched codebase "InfiniteSlider" • **0** results</summary>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L424 | `<summary>Grep search for "InfiniteSlider" • **2** files</summary>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L428 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L40 | `import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L429 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L486 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L430 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L505 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L431 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L510 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10} reverse>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L432 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L529 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L433 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L534 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L434 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L553 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L435 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L40 | `import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L436 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L486 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L437 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L505 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L438 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L510 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10} reverse>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L439 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L529 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L440 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L534 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L441 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L553 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L542 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L40 | `import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L544 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L486 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L545 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L505 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L547 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L510 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10} reverse>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L548 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L529 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L550 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L534 | `<InfiniteSlider gap={24} speed={20} speedOnHover={10}>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L551 | `| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-database.tsx` | L553 | `</InfiniteSlider>` |` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L561 | `Let me create the InfiniteSlider component:` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.cursor/rules/derived-cursor-rules.mdc` | L295 | `- When refactoring a section to use the `InfiniteSlider` component:` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/ui/infinite-slider.tsx` | L6 | `export type InfiniteSliderProps = {` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/ui/infinite-slider.tsx` | L16 | `export function InfiniteSlider({` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/ui/infinite-slider.tsx` | L24 | `}: InfiniteSliderProps) {` |
+
+</details>
+
+---
+
+
+
+---
+
+```diff
+  import { IdentityResolutionEngine } from "./identity-resolution-engine";
+  import { IntentDataSources } from "./intent-data-sources";
++ import { InfiniteSlider } from "@/components/ui/infinite-slider";
+  import { cn } from "@/utils/utils";
+  import { capitalize } from "@/utils/capitalize";
+```
+
+```diff
+    { text: "70% Identity Resolution", subtext: "industry-leading accuracy" },
+  ];
++ 
++ const dataSourcesWithIcons = [
++   { name: "Data Co-ops", icon: Share2 },
++   { name: "Social Networks", icon: Users },
++   { name: "Publishers", icon: FileText },
++   { name: "Technology Platforms", icon: Network },
++   { name: "Research Firms", icon: Brain },
++   { name: "Event Companies", icon: Calendar },
++   { name: "Review Sites", icon: MessageSquare },
++   { name: "Publishing Networks", icon: BookOpen },
++   { name: "Job Postings", icon: Building2 },
++   { name: "Search Results", icon: Search },
++   { name: "Your Website", icon: MonitorDot },
++   { name: "Email Engagement", icon: Mail },
++ ];
+  
+  const StatusIndicator = () => {
+```
+
+---
+
+
+
+---
+
+<details>
+            <summary>Grep search for "IntegrationCard" • **6** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L13 | `<IntegrationCard position="left-top">` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L15 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L16 | `<IntegrationCard position="left-middle">` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L18 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L19 | `<IntegrationCard position="left-bottom">` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L21 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L25 | `<IntegrationCard` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L29 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L37 | `<IntegrationCard position="right-top">` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L39 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L40 | `<IntegrationCard position="right-middle">` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L42 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L43 | `<IntegrationCard position="right-bottom">` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L45 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-4.tsx` | L65 | `const IntegrationCard = ({ children, className, position, isCenter = false }: { children: React.ReactNode; className?: string; position?: 'left-top' | 'left-middle' | 'left-bottom' | 'right-top' | 'right-mi` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L16 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L18 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L19 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L21 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L24 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L26 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L27 | `<IntegrationCard` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L31 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L32 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L34 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L38 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L40 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L42 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L44 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/integrations-one.tsx` | L64 | `const IntegrationCard = ({ children, className, borderClassName }: { children: React.ReactNode; className?: string; borderClassName?: string }) => {` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L21 | `const IntegrationCard = ({` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L152 | `<IntegrationCard` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/src/features/landing/intent-data-sources.tsx` | L158 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-14-organize-integration-sources-with-icons.md` | L58 | `You're absolutely right! I need to add the text labels alongside the icons. Let me update each IntegrationCard to include both the icon and text.` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L851 | `456                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L863 | `459                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L875 | `462                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L887 | `465                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L899 | `468                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L911 | `471                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L935 | `480                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L947 | `483                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L959 | `486                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L971 | `489                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L983 | `492                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L995 | `495                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1019 | `504                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1031 | `507                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1043 | `510                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1055 | `513                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1067 | `516                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1079 | `519                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_01-12-extract-identity-resolution-engine-component.md` | L1099 | `527                   <IntegrationCard` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L29 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L31 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L32 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L34 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L35 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L37 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L38 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L40 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L41 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L43 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L44 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L46 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L56 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L58 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L59 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L61 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L62 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L64 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L65 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L67 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L68 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L70 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L71 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L73 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L81 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L83 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L84 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L86 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L87 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L89 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L90 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L92 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L93 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L95 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L96 | `<IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L98 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L102 | `<IntegrationCard` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L106 | `</IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L126 | `const IntegrationCard = ({ children, className, isCenter = false }: { children: React.ReactNode; className?: string; position?: 'left-top' | 'left-middle' | 'left-bottom' | 'right-top' | 'right-middle' | 'r` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L190 | `+                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L192 | `+                     </IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L193 | `+                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L195 | `+                     </IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L196 | `+                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L198 | `+                     </IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L199 | `+                     <IntegrationCard>` |
+| `file:///Users/liamellis/Desktop/intentified-platform/.specstory/history/2025-06-07_00-34-refactor-integrations-section-with-new-code.md` | L201 | `+                     </IntegrationCard>` |
+
+</details>
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/features/landing/intent-data-sources.tsx
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/features/landing/intent-database.tsx
+
+---
+
+
+
+---
+
+```diff
+  import {
+    MousePointer2,
++   Database,
+    Users,
+    Globe,
+    Activity,
++   ArrowRight,
++   CheckCircle,
+    Target,
+-   Share,
++   Share2,
++   FileText,
+    Network,
+    Brain,
+```
+
+```diff
+    MonitorDot,
+    Mail,
+-   Book,
+  } from "lucide-react";
+  
+```
+
+```diff
+  
+  const dataSourcesWithIcons = [
+-   { name: "Data Co-ops", icon: Share },
++   { name: "Data Co-ops", icon: Share2 },
+    { name: "Social Networks", icon: Users },
+-   { name: "Publishers", icon: Book },
++   { name: "Publishers", icon: FileText },
+    { name: "Technology Platforms", icon: Network },
+    { name: "Research Firms", icon: Brain },
+```
+
+```diff
+    { name: "Email Engagement", icon: Mail },
+  ];
++ 
++ const IntegrationCard = ({
++   children,
++   className,
++   borderClassName,
++   isCenter = false,
++ }: {
++   children: React.ReactNode;
++   className?: string;
++   borderClassName?: string;
++   isCenter?: boolean;
++ }) => {
++   return (
++     <div
++       className={cn(
++         borderClassName,
++         "border-border/70 rounded-full border backdrop-blur-sm",
++       )}
++     >
++       <div
++         className={cn(
++           "bg-background relative z-20 flex size-12 rounded-full",
++           className,
++           isCenter && "size-16",
++         )}
++       >
++         <div className={cn("m-auto size-fit *:size-5", isCenter && "*:size-8")}>
++           {children}
++         </div>
++       </div>
++     </div>
++   );
++ };
+  
+  const StatusIndicator = () => {
+```
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/features/landing/intent-database.tsx
+
+---
+
+
+
+---
+
+Looking at the current file, I see that it's already been cleaned up and is now properly delegating the data sources section to the `IntentDataSources` component. The stagewise toolbar is correctly integrated in your layout.tsx file.
+
+Let me verify there are no remaining linter errors:
+
+---
+
+```bash
+cd /Users/liamellis/Desktop/intentified-platform && bun run --filter intentified typecheck
+```
+
+```
+apps/    node_modules/    packages/    plan/    scripts/    tickets/    turbo/
+```
+
+---
+

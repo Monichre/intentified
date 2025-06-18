@@ -285,7 +285,61 @@ Thank you for clarifying. Here’s how we’ll align the implementation with you
 ## 2. **Current State**
 
 - The file now exports a pure function (`decideProceedOrInquire`) and a Zod schema for the output.
-- There is a tool wrapper, but
+- There is a tool wrapper, but you do not want this for now.
+- The workflow is not registered as a tool in the agent registry (which is correct per your clarification).
+
+---
+
+## 3. **Action Plan**
+
+- **Keep:**  
+  - The pure workflow function (`decideProceedOrInquire`) and its Zod schema.
+  - The function signature and error handling as implemented.
+- **Remove/Ignore:**  
+  - Any tool registration or tool wrapper for this workflow.
+  - Any exports from `tools/index.ts` or similar for this workflow.
+- **Document:**  
+  - In the workflow file, add a clear comment that this is a workflow/service, not a tool.
+  - In the schema file, clarify that this is for workflow output validation.
+
+---
+
+## 4. **Documentation & Usage Example**
+
+- **In `intelligence-enrichment.ts`:**
+  - Add a JSDoc comment at the top:  
+    `/** Intelligence Enrichment Workflow: Pure service for proceed/inquire decision. Not an agent tool. */`
+- **In the schema file:**  
+  - Add a comment:  
+    `// Used for output validation in the intelligence enrichment workflow.`
+
+- **Usage Example (in another workflow or orchestrator):**
+  ```typescript
+  import { decideProceedOrInquire } from "@/agents/workflow/intelligence-enrichment";
+
+  const result = await decideProceedOrInquire({
+    model: "gemini-1.5-pro-exp-0827",
+    messages: [...],
+    scope: "current"
+  });
+  // result.decision === "proceed" | "inquire"
+  ```
+
+---
+
+## 5. **Next Steps**
+
+- Remove the tool wrapper file if it was created.
+- Ensure the workflow is not exported as a tool.
+- Add/clarify documentation as above.
+
+---
+
+**Would you like me to:**
+- Remove the tool wrapper file and update documentation/comments as described?
+- Or do you want to keep the tool wrapper for possible future use, but not register it?
+
+Let me know if you want the tool wrapper deleted or just left unregistered.
 
 ---
 

@@ -150,3 +150,19 @@ _**Assistant**_
 
 ---
 
+The Exa service refactor is complete:
+
+### What’s done:
+- **Pseudocode**: Saved to `services/exa/exa-service_PSEUDOCODE.md` outlining the unified service structure and SOLID approach.
+- **Implementation**: Created `services/exa/exa-service.ts` with a single, functional Exa service. All business-specific search functions are named exports, each delegating to a shared internal function.
+- **Documentation**: Added `services/exa/ExaService.md` describing the service, its API, architecture, and extension guidelines.
+
+**Next steps:**
+- Update your Exa SDK import path in `exa-service.ts` as needed.
+- Replace all direct Exa usage in your codebase with calls to this new service.
+- Extend the service by adding new named exports for additional search types as your needs evolve.
+
+Let me know if you want integration examples, test scaffolding, or further adjustments!
+
+---
+

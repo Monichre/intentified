@@ -580,7 +580,144 @@ implement the plan
 
 _**Assistant**_
 
+I'll implement the detailed pseudocode plan for refactoring the enrichment service with improved async orchestration, error handling, and modularity.
 
+---
+
+```diff
+    'funding',
+    'competitors',
+-   'mind-map'
++   'mind-map',
++   'linkedin',
++   'founders',
++   'crunchbase',
++   'news'
+  ];
+  
+```
+
+```diff
+      const startTime = Date.now();
+      try {
+-       const main = await exaR.scrapeWebsiteUrl(request);
+-       const sub = await exaR.scrapeWebsiteSubPages(request);
++       const mainPageContent = await exaR.scrapeWebsiteUrl(request);
++       const subPageContents = await exaR.scrapeWebsiteSubPages(request);
+        const summary = await insights.summary({
+-         mainpage: main,
+-         subpages: sub,
++         mainpage: mainPageContent,
++         subpages: subPageContents,
+          websiteUrl: request.websiteUrl
+        });
+```
+
+```diff
+        if (!summaryText) {
+          // If no summary provided, generate it first
+-         const main = await exaR.scrapeWebsiteUrl(request);
+-         const sub = await exaR.scrapeWebsiteSubPages(request);
++         const mainPageContent = await exaR.scrapeWebsiteUrl(request);
++         const subPageContents = await exaR.scrapeWebsiteSubPages(request);
+          const summary = await insights.summary({
+-           mainpage: main,
+-           subpages: sub,
++           mainpage: mainPageContent,
++           subpages: subPageContents,
+            websiteUrl: request.websiteUrl
+          });
+```
+
+```diff
+      try {
+        // Gather required data if not provided
+-       const main = await exaR.scrapeWebsiteUrl(request);
+-       const sub = await exaR.scrapeWebsiteSubPages(request);
++       const mainPageContent = await exaR.scrapeWebsiteUrl(request);
++       const subPageContents = await exaR.scrapeWebsiteSubPages(request);
+        
+        const summary = existingData?.summary || await insights.summary({
+-         mainpage: main,
+-         subpages: sub,
++         mainpage: mainPageContent,
++         subpages: subPageContents,
+          websiteUrl: request.websiteUrl
+        });
+```
+
+```diff
+        const mindMap = await insights.mindMap({
+          companySummary: summary,
+-         mainpage: main,
++         mainpage: mainPageContent,
+          websiteUrl: request.websiteUrl,
+-         subpages: sub,
++         subpages: subPageContents,
+          funding,
+          competitors
+```
+
+```diff
+      'news': enrichNews,
+      // Add placeholders for remaining unimplemented types
+-     'social-media': async (req) => ({ type: 'social-media', status: 'skipped' }),
+-     'financial-report': async (req) => ({ type: 'financial-report', status: 'skipped' }),
+-     'github-url': async (req) => ({ type: 'github-url', status: 'skipped' }),
+-     'pitchbook': async (req) => ({ type: 'pitchbook', status: 'skipped' }),
+-     'tiktok': async (req) => ({ type: 'tiktok', status: 'skipped' }),
+-     'tracxn': async (req) => ({ type: 'tracxn', status: 'skipped' }),
+-     'wikipedia': async (req) => ({ type: 'wikipedia', status: 'skipped' }),
+-     'youtube-videos': async (req) => ({ type: 'youtube-videos', status: 'skipped' }),
+-     'recent-tweets': async (req) => ({ type: 'recent-tweets', status: 'skipped' }),
+-     'reddit': async (req) => ({ type: 'reddit', status: 'skipped' }),
+-     'twitter-profile': async (req) => ({ type: 'twitter-profile', status: 'skipped' }),
+-     'website-sub-pages': async (req) => ({ type: 'website-sub-pages', status: 'skipped' }),
+-     'website-url': async (req) => ({ type: 'website-url', status: 'skipped' }),
+-     'youtube-video-details': async (req) => ({ type: 'youtube-video-details', status: 'skipped' })
++     'social-media': async (req) => ({ type: 'social-media', status: 'skipped' as const }),
++     'financial-report': async (req) => ({ type: 'financial-report', status: 'skipped' as const }),
++     'github-url': async (req) => ({ type: 'github-url', status: 'skipped' as const }),
++     'pitchbook': async (req) => ({ type: 'pitchbook', status: 'skipped' as const }),
++     'tiktok': async (req) => ({ type: 'tiktok', status: 'skipped' as const }),
++     'tracxn': async (req) => ({ type: 'tracxn', status: 'skipped' as const }),
++     'wikipedia': async (req) => ({ type: 'wikipedia', status: 'skipped' as const }),
++     'youtube-videos': async (req) => ({ type: 'youtube-videos', status: 'skipped' as const }),
++     'recent-tweets': async (req) => ({ type: 'recent-tweets', status: 'skipped' as const }),
++     'reddit': async (req) => ({ type: 'reddit', status: 'skipped' as const }),
++     'twitter-profile': async (req) => ({ type: 'twitter-profile', status: 'skipped' as const }),
++     'website-sub-pages': async (req) => ({ type: 'website-sub-pages', status: 'skipped' as const }),
++     'website-url': async (req) => ({ type: 'website-url', status: 'skipped' as const }),
++     'youtube-video-details': async (req) => ({ type: 'youtube-video-details', status: 'skipped' as const })
+    };
+  
+```
+
+```diff
+            allResults.push({
+              type: independentTypes[index],
+-             status: 'error' as const,
++             status: 'error',
+              error: result.reason?.message || 'Unknown error'
+            });
+```
+
+```diff
+            allResults.push({
+              type: dependentTypes[index],
+-             status: 'error' as const,
++             status: 'error',
+              error: result.reason?.message || 'Unknown error'
+            });
+```
+
+---
+
+Now let's create the documentation file for the refactored enrichment service:
+
+---
+
+Tool write_file not found.
 
 ---
 

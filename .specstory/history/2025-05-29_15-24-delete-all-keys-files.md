@@ -133,7 +133,110 @@ proceed
 
 _**Assistant**_
 
+```diff
+  import { Card, CardContent } from "@/components/ui/card";
+  import { BackgroundDots } from "@/components/background"
++ import { Badge } from "@/components/ui/badge";
++ import { Folder, VerificationProgress } from "lucide-react";
++ import { ProcessingIndicator } from "@/components/processing-indicator";
+  
+  export interface WorkflowNode {
+```
 
+```diff
+  }
+  
+- // const pathLength1 = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+- // const pathLength2 = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+- // const pathLength3 = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+- // const pathLength4 = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+- // const pathLength5 = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+- 
+- // // Combine them into an array
+- // const pathLengths = useMemo(() => {
+- //   return [pathLength1, pathLength2, pathLength3, pathLength4, pathLength5]
+- // }, [pathLength1, pathLength2, pathLength3, pathLength4, pathLength5])
+- 
+- // // Helper to get node by ID
+- // const getNodeById = (id: string) => nodes.find((node) => node.id === id)
+- 
+- // // Create SVG path between nodes
+- // const createPath = (startX: number, startY: number, endX: number, endY: number) => {
+- //   const midX = (startX + endX) / 2
+- //   return `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`
+- // }
+- 
+- // // Handle node selection
+- // const handleNodeClick = (nodeId: string) => {
+- //   setSelectedNode(nodeId === selectedNode ? null : nodeId)
+- 
+- //   if (nodeId === selectedNode) {
+- //     // Deselect node
+- //     setHighlightedConnections([])
+- //   } else {
+- //     // Highlight connections for this node
+- //     const relatedConnections = connections
+- //       .filter((conn) => conn.from === nodeId || conn.to === nodeId)
+- //       .map((conn) => conn.id)
+- 
+- //     setHighlightedConnections(relatedConnections)
+- //   }
+- 
+- //   // Call external handler if provided
+- //   if (onNodeSelect) {
+- //     onNodeSelect(nodeId)
+- //   }
+- // }
+- const DetailsCard = ({title, subtitle, description, details, features}: any) => {
++ // DetailsCardProps interface for type safety
++ export interface DetailsCardProps {
++   title: string;
++   subtitle: string;
++   description: string;
++   details: Array<{ icon: React.ElementType | null; text: string }>;
++   features: string[];
++   credibilityScore?: number;
++   classification: string;
++   classificationColors: Record<string, string>;
++   sourceVerified: boolean;
++   timestamp: string;
++ }
++ 
++ const DetailsCard = ({
++   title,
++   subtitle,
++   description,
++   details,
++   features,
++   credibilityScore,
++   classification,
++   classificationColors,
++   sourceVerified,
++   timestamp,
++ }: DetailsCardProps) => {
+    return (
+      <Card className="relative overflow-hidden border border-neutral-800/50 bg-black/20 backdrop-blur-sm">
+```
+
+---
+
+
+
+---
+
+
+
+---
+
+The `DetailsCard` component has been refactored to use a strongly-typed `DetailsCardProps` interface, replacing the previous use of `any`. The interface is defined at the top of the file, and the component signature and destructuring have been updated accordingly.
+
+**Documentation and pseudocode have been created:**
+- `DetailsCard_PSEUDOCODE.md` — step-by-step pseudocode for the refactor
+- `DetailsCard.md` — schema, usage, rationale, and data flow documentation
+
+**Next steps:**
+- Update all usages of `DetailsCard` to ensure they conform to the new interface (if any are present).
+- Let me know if you want to proceed with updating usages, or if you need further adjustments!
 
 ---
 

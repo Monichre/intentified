@@ -833,6 +833,297 @@ I'll fix the WorldMap integration in the hijack-hero.tsx section. First, let me 
 
 ---
 
+```diff
+  import { useRef } from "react";
+  import { motion } from "framer-motion";
+- import DottedMap from "dotted-map";
+  import Image from "next/image";
+  import { useTheme } from "next-themes";
+```
+
+```diff
+    lineColor?: string;
+  }
++ 
++ // Custom dotted map implementation
++ class DottedMapImpl {
++   private height: number;
++   private width: number;
++   private grid: string;
++ 
++   constructor({
++     height,
++     grid = "diagonal",
++   }: {
++     height: number;
++     grid?: string;
++   }) {
++     this.height = height;
++     this.width = height * 2; // Assuming 2:1 aspect ratio for world map
++     this.grid = grid;
++   }
++ 
++   getSVG({
++     radius,
++     color,
++     shape,
++     backgroundColor,
++   }: {
++     radius: number;
++     color: string;
++     shape: string;
++     backgroundColor: string;
++   }) {
++     const dots = [];
++     const dotsPerRow = Math.floor(this.width / 4);
++     const dotsPerCol = Math.floor(this.height / 4);
++ 
++     for (let i = 0; i < dotsPerCol; i++) {
++       for (let j = 0; j < dotsPerRow; j++) {
++         // Create diagonal pattern
++         if (this.grid === "diagonal" && (i + j) % 2 === 0) {
++           dots.push({
++             x: (j / dotsPerRow) * this.width,
++             y: (i / dotsPerCol) * this.height,
++           });
++         } else if (this.grid !== "diagonal") {
++           dots.push({
++             x: (j / dotsPerRow) * this.width,
++             y: (i / dotsPerCol) * this.height,
++           });
++         }
++       }
++     }
++ 
++     const svgString = `
++       <svg width="${this.width}" height="${this.height}" viewBox="0 0 ${this.width} ${this.height}" xmlns="http://www.w3.org/2000/svg">
++         <rect width="${this.width}" height="${this.height}" fill="${backgroundColor}" />
++         ${dots
++           .map(
++             (dot) =>
++               `<circle cx="${dot.x}" cy="${dot.y}" r="${radius}" fill="${color}" />`,
++           )
++           .join("")}
++       </svg>
++     `;
++ 
++     return svgString;
++   }
++ }
+  
+  export function WorldMap({ dots = [], lineColor = "#0ea5e9" }: MapProps) {
+    const svgRef = useRef<SVGSVGElement>(null);
+-   const map = new DottedMap({ height: 100, grid: "diagonal" });
++   const map = new DottedMapImpl({ height: 100, grid: "diagonal" });
+  
+    const { theme } = useTheme();
+```
+
+```diff
+  
+    return (
+-     <div className="relative aspect-[1/1] h-full w-full bg-transparent">
++     <div className="relative aspect-[2/1] w-full rounded-lg bg-white font-sans dark:bg-black">
+        <Image
+          src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
+          className="pointer-events-none h-full w-full [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] select-none"
+          alt="world map"
+-         height="1056"
++         height="495"
+          width="1056"
+          draggable={false}
+```
+
+---
+
+
+
+---
+
+Now let me update the hijack-hero.tsx to properly integrate the WorldMap component:
+
+---
+
+```diff
+    ];
+  
+-   // Simple dotted map implementation based on world-map.tsx
+-   const Map = () => {
+-     // Create a simple grid of dots for the map visualization
+-     const dots = [];
+-     const rows = 25;
+-     const cols = 50;
+- 
+-     for (let i = 0; i < rows; i++) {
+-       for (let j = 0; j < cols; j++) {
+-         // Create a diagonal pattern
+-         if ((i + j) % 2 === 0) {
+-           dots.push({
+-             x: (j / cols) * 120,
+-             y: (i / rows) * 60,
+-           });
+-         }
+-       }
+-     }
+- 
+-     return (
+-       <svg viewBox="0 0 120 60" className="h-full w-full">
+-         {dots.map((dot, index) => (
+-           <circle
+-             key={index}
+-             cx={dot.x}
+-             cy={dot.y}
+-             r={0.15}
+-             fill="currentColor"
+-             className="opacity-40"
+-           />
+-         ))}
+-       </svg>
+-     );
+-   };
++   // Competitor tracking dots for the world map
++   const competitorDots = [
++     {
++       start: { lat: 40.7128, lng: -74.006 }, // New York
++       end: { lat: 37.7749, lng: -122.4194 }, // San Francisco
++     },
++     {
++       start: { lat: 51.5074, lng: -0.1278 }, // London
++       end: { lat: 40.7128, lng: -74.006 }, // New York
++     },
++     {
++       start: { lat: 35.6762, lng: 139.6503 }, // Tokyo
++       end: { lat: 37.7749, lng: -122.4194 }, // San Francisco
++     },
++   ];
+  
+    const MonitoringChart = () => {
+```
+
+```diff
+      <section className="px-4 py-16 md:py-32">
+        <div className="mx-auto grid max-w-5xl border md:grid-cols-2">
+-         <div className="relative h-full w-full">
+-           <div className="p-6 sm:p-12">
++         <div className="relative h-full w-full overflow-hidden">
++           <div className="relative z-20 p-6 sm:p-12">
+              <span className="text-muted-foreground flex items-center gap-2">
+                <Eye className="size-4" />
+```
+
+```diff
+              </p>
+            </div>
+-           <div
+-             className="absolute inset-0 top-0 left-0 z-[1] h-full w-full"
+-             style={{
+-               background:
+-                 "radial-gradient(circle, transparent 0%, var(--background) 75%)",
+-             }}
+-           >
+-             <WorldMap />
+- 
+-             {/* <WorldMap /> */}
++ 
++           {/* World Map Background */}
++           <div className="absolute inset-0 flex items-center justify-center opacity-30">
++             <WorldMap dots={competitorDots} lineColor="#ef4444" />
+            </div>
+-           <div className="absolute inset-0 z-10 m-auto size-fit">
+-             <div className="bg-background dark:bg-muted relative z-[1] flex size-fit w-fit items-center gap-2 rounded-md border px-3 py-1 text-xs font-medium shadow-md shadow-zinc-950/5">
++ 
++           {/* Notification Badge */}
++           <div className="absolute right-6 bottom-6 left-6 z-20">
++             <div className="bg-background dark:bg-muted flex items-center gap-2 rounded-md border px-3 py-2 text-xs font-medium shadow-md">
+                <span className="text-lg">🎯</span> Visitor from competitor site
+                detected
+              </div>
+-             <div className="bg-background absolute inset-2 -bottom-2 mx-auto rounded-md border px-3 py-4 text-xs font-medium shadow-md shadow-zinc-950/5 dark:bg-zinc-900"></div>
+            </div>
+          </div>
++ 
+          <div className="overflow-hidden border-t bg-transparent p-6 sm:p-12 md:border-0 md:border-l">
+            <div className="relative z-10">
+```
+
+---
+
+
+
+---
+
+Now let me update the WorldMap component to support transparent backgrounds and better integrate with the hijack-hero section:
+
+---
+
+```diff
+    }>;
+    lineColor?: string;
++   transparentBackground?: boolean;
+  }
+  
+```
+
+```diff
+      const svgString = `
+        <svg width="${this.width}" height="${this.height}" viewBox="0 0 ${this.width} ${this.height}" xmlns="http://www.w3.org/2000/svg">
+-         <rect width="${this.width}" height="${this.height}" fill="${backgroundColor}" />
++         ${backgroundColor !== "transparent" ? `<rect width="${this.width}" height="${this.height}" fill="${backgroundColor}" />` : ""}
+          ${dots
+            .map(
+```
+
+```diff
+  }
+  
+- export function WorldMap({ dots = [], lineColor = "#0ea5e9" }: MapProps) {
++ export function WorldMap({
++   dots = [],
++   lineColor = "#0ea5e9",
++   transparentBackground = false,
++ }: MapProps) {
+    const svgRef = useRef<SVGSVGElement>(null);
+    const map = new DottedMapImpl({ height: 100, grid: "diagonal" });
+```
+
+```diff
+      color: theme === "dark" ? "#FFFFFF40" : "#00000040",
+      shape: "circle",
+-     backgroundColor: theme === "dark" ? "black" : "white",
++     backgroundColor: transparentBackground
++       ? "transparent"
++       : theme === "dark"
++         ? "black"
++         : "white",
+    });
+  
+```
+
+```diff
+  
+    return (
+-     <div className="relative aspect-[2/1] w-full rounded-lg bg-white font-sans dark:bg-black">
++     <div
++       className={`relative aspect-[2/1] w-full font-sans ${transparentBackground ? "" : "rounded-lg bg-white dark:bg-black"}`}
++     >
+        <Image
+          src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
+```
+
+---
+
+
+
+---
+
+Now let me update the hijack-hero.tsx to use the transparent background option:
+
+---
+
+
+
+---
+
 
 
 ---

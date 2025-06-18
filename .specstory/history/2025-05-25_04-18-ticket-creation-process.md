@@ -639,11 +639,762 @@ Now I'll create each individual ticket file:
 
 ---
 
-
+```diff
+- 
++ # Ticket 01: Extract Reusable Website URL Input Component
++ 
++ **Status**: ⏳ pending  
++ **Story Points**: 3  
++ **Dependencies**: None  
++ **Assignee**: TBD  
++ 
++ ## Description
++ 
++ Extract the sophisticated URL input logic from `website-form.tsx` into a reusable component that can be integrated into the onboarding sequence. This component will maintain all the advanced validation, UX features, and input handling while being adaptable for different contexts.
++ 
++ ## Business Value
++ 
++ Creates a reusable component that provides consistent URL input experience across the application, reducing code duplication and improving maintainability.
++ 
++ ## Acceptance Criteria
++ 
++ - [ ] Create `WebsiteUrlInput` component in `apps/intentified/src/components/onboarding/website-url-input.tsx`
++ - [ ] Component includes Zod schema validation for URL format
++ - [ ] Auto-prepends "https://" and manages cursor position correctly
++ - [ ] Provides real-time validation feedback with error messages
++ - [ ] Supports controlled component pattern with `value` and `onChange` props
++ - [ ] Includes `onValidUrl` callback for when a valid URL is entered
++ - [ ] Maintains loading states and visual feedback
++ - [ ] Preserves existing animations and UX from original component
++ - [ ] Component is fully typed with TypeScript interfaces
++ - [ ] Includes proper accessibility attributes
++ 
++ ## Implementation Notes
++ 
++ - Extract URL validation logic from `website-form.tsx` lines 11-14
++ - Preserve the sophisticated input handling logic from lines 38-52
++ - Maintain the animation and visual feedback patterns
++ - Use the existing `CultInput` component for consistency
++ - Implement proper ref forwarding for cursor management
++ 
++ ## Technical Specifications
++ 
++ ### Component Interface
++ 
++ ```typescript
++ interface WebsiteUrlInputProps {
++   value: string;
++   onChange: (url: string) => void;
++   onValidUrl?: (url: string) => void;
++   className?: string;
++   disabled?: boolean;
++   placeholder?: string;
++ }
++ ```
++ 
++ ### Key Features to Preserve
++ 
++ 1. **URL Validation**: Zod schema with regex pattern validation
++ 2. **Auto-prepend**: Automatically adds "https://" prefix
++ 3. **Cursor Management**: Prevents typing before the protocol
++ 4. **Real-time Feedback**: Shows validation errors as user types
++ 5. **Animations**: Smooth transitions for error states
++ 
++ ## Testing Requirements
++ 
++ - Unit tests for URL validation logic
++ - Tests for cursor position management
++ - Tests for controlled component behavior
++ - Visual regression tests for animations
++ - Accessibility tests for screen readers
++ 
++ ## Definition of Done
++ 
++ - [ ] Component created and properly exported
++ - [ ] All tests pass with ≥90% coverage
++ - [ ] TypeScript compilation succeeds
++ - [ ] Component follows existing design system patterns
++ - [ ] Documentation added to component file
++ - [ ] No ESLint/Biome errors
++ 
++ ## References
++ 
++ - Source: [website-form.tsx](../apps/intentified/src/features/pipelines/seo-digital-processing/website-form.tsx)
++ - Guide: [QuickStartGuide.md](../apps/intentified/src/components/onboarding/QuickStartGuide.md)
++ - Design System: `@repo/design-system/components/ui/input`
++ 
++ ## Notes
++ 
++ This component will be used in Ticket 04 to replace the simple URL input in the Digital onboarding step.
++ 
+```
 
 ---
 
+```diff
+- 
++ # Ticket 02: Add SEO Analysis State Management to Onboarding Parent
++ 
++ **Status**: ⏳ pending  
++ **Story Points**: 2  
++ **Dependencies**: None  
++ **Assignee**: TBD  
++ 
++ ## Description
++ 
++ Add comprehensive state management for SEO analysis to the onboarding page component, including loading states, results storage, and error handling. This provides the foundation for triggering and displaying SEO analysis results.
++ 
++ ## Business Value
++ 
++ Enables the onboarding flow to provide immediate value through SEO analysis, improving user engagement and demonstrating product capabilities during the initial experience.
++ 
++ ## Acceptance Criteria
++ 
++ - [ ] Add `seoAnalysisState` state to `apps/intentified/src/app/dashboard/onboarding/page.tsx`
++ - [ ] State includes `status`, `results`, and `error` properties with proper typing
++ - [ ] Implement `triggerSeoAnalysis` function that calls `combinedUrlActions`
++ - [ ] Function handles loading, success, and error states appropriately
++ - [ ] Add proper error handling with user-friendly error messages
++ - [ ] Pass new state and functions to `OnboardingSequence` component
++ - [ ] Import required actions from SEO pipeline
++ - [ ] Maintain backward compatibility with existing onboarding flow
++ - [ ] Add proper TypeScript interfaces for all new state
++ 
++ ## Implementation Notes
++ 
++ - Follow the exact implementation from QuickStartGuide.md Step 1
++ - Import `combinedUrlActions` from the correct path
++ - Use FormData to pass URL to the action
++ - Implement proper async/await error handling
++ - Status should be union type: `'idle' | 'loading' | 'success' | 'error'`
++ 
++ ## Technical Specifications
++ 
++ ### State Interface
++ 
++ ```typescript
++ interface SeoAnalysisState {
++   status: 'idle' | 'loading' | 'success' | 'error';
++   results: any | null;
++   error: string | null;
++ }
++ ```
++ 
++ ### Implementation Pattern
++ 
++ ```typescript
++ const [seoAnalysisState, setSeoAnalysisState] = useState<SeoAnalysisState>({
++   status: 'idle',
++   results: null,
++   error: null,
++ });
++ 
++ const triggerSeoAnalysis = async (url: string): Promise<boolean> => {
++   setSeoAnalysisState({ status: 'loading', results: null, error: null });
++   
++   const formData = new FormData();
++   formData.append('url', url);
++   
++   try {
++     const results = await combinedUrlActions(null, formData);
++     setSeoAnalysisState({ status: 'success', results, error: null });
++     return true;
++   } catch (error: any) {
++     setSeoAnalysisState({ 
++       status: 'error', 
++       results: null, 
++       error: error.message || 'Failed to analyze website' 
++     });
++     return false;
++   }
++ };
++ ```
++ 
++ ## Testing Requirements
++ 
++ - Unit tests for `triggerSeoAnalysis` function
++ - Tests for error handling scenarios
++ - Tests for state transitions
++ - Mock testing for `combinedUrlActions`
++ 
++ ## Definition of Done
++ 
++ - [ ] State management implemented and working
++ - [ ] Function properly handles all scenarios
++ - [ ] TypeScript types are correct
++ - [ ] Error handling is comprehensive
++ - [ ] Tests pass with ≥90% coverage
++ - [ ] No regressions in existing onboarding flow
++ 
++ ## References
++ 
++ - Implementation Guide: [QuickStartGuide.md](../apps/intentified/src/components/onboarding/QuickStartGuide.md) - Step 1
++ - Target File: [page.tsx](../apps/intentified/src/app/dashboard/onboarding/page.tsx)
++ - SEO Actions: `features/dashboard/pipelines/seo-digital-processing/lib/actions`
++ 
++ ## Dependencies for Other Tickets
++ 
++ This ticket provides the state management foundation that will be used by:
++ 
++ - Ticket 05: Implement SEO Analysis Results Display
++ - Ticket 06: Update Onboarding Completion Logic
++ 
++ ## Notes
++ 
++ The `triggerSeoAnalysis` function should return a boolean to indicate success/failure for use in navigation logic.
++ 
+```
 
+---
+
+```diff
+- 
++ # Ticket 03: Update OnboardingSequence Props and Interface
++ 
++ **Status**: ⏳ pending  
++ **Story Points**: 1  
++ **Dependencies**: None  
++ **Assignee**: TBD  
++ 
++ ## Description
++ 
++ Update the `OnboardingSequence` component interface and imports to support SEO analysis functionality. This ticket focuses on the component contract and required imports without changing the UI.
++ 
++ ## Business Value
++ 
++ Establishes the proper component interface for SEO analysis integration, ensuring type safety and proper data flow between parent and child components.
++ 
++ ## Acceptance Criteria
++ 
++ - [ ] Update `OnboardingSequenceProps` interface with SEO-related props
++ - [ ] Add `seoAnalysisState` prop with proper typing
++ - [ ] Add `triggerSeoAnalysis` function prop
++ - [ ] Import required SEO analysis components
++ - [ ] Import `evaluateAll` function from SEO lib
++ - [ ] Maintain backward compatibility with existing props
++ - [ ] Update component destructuring to include new props
++ - [ ] Add proper TypeScript types for all SEO analysis data
++ 
++ ## Implementation Notes
++ 
++ - Follow interface updates from QuickStartGuide.md Step 2.1
++ - Add imports from Step 2.2
++ - Ensure all import paths are correct for the codebase structure
++ - Use proper typing for `triggerSeoAnalysis` return type (Promise<boolean>)
++ 
++ ## Technical Specifications
++ 
++ ### Updated Props Interface
++ 
++ ```typescript
++ interface OnboardingSequenceProps {
++   // ... existing props
++   currentStep: string;
++   setCurrentStep: (step: string) => void;
++   formData: {
++     companyName: string;
++     companySize: string;
++     industry: string;
++     website: string;
++     socialLinks: {
++       twitter: string;
++       instagram: string;
++       linkedin: string;
++       facebook: string;
++     };
++     goals: string[];
++   };
++   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
++   handleGoalChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
++   completeOnboarding: () => Promise<void>;
++   loading: boolean;
++   
++   // New SEO-related props
++   seoAnalysisState: {
++     status: 'idle' | 'loading' | 'success' | 'error';
++     results: any;
++     error: string | null;
++   };
++   triggerSeoAnalysis: (url: string) => Promise<boolean>;
++ }
++ ```
++ 
++ ### Required Imports
++ 
++ ```typescript
++ import { SEOScoreSection } from "@/features/dashboard/pipelines/seo-digital-processing/seo-score";
++ import { WebVitalsSection } from "@/features/dashboard/pipelines/seo-digital-processing/web-vitals";
++ import { OgImageSection } from "@/features/dashboard/pipelines/seo-digital-processing/og-images";
++ import { AnalyzeWithAISection } from "@/features/dashboard/pipelines/seo-digital-processing/analyze-with-ai";
++ import { evaluateAll } from "@/features/dashboard/pipelines/seo-digital-processing/lib/seo";
++ ```
++ 
++ ## Testing Requirements
++ 
++ - Type checking tests
++ - Prop validation tests
++ - Import resolution verification
++ - Component compilation tests
++ 
++ ## Definition of Done
++ 
++ - [ ] Interface updated with new props
++ - [ ] All imports added and verified
++ - [ ] Component destructuring updated
++ - [ ] TypeScript compilation succeeds
++ - [ ] No breaking changes to existing functionality
++ - [ ] Import paths are correct for the codebase structure
++ 
++ ## References
++ 
++ - Implementation Guide: [QuickStartGuide.md](../apps/intentified/src/components/onboarding/QuickStartGuide.md) - Steps 2.1-2.2
++ - Target File: [onboarding-sequence.tsx](../apps/intentified/src/components/onboarding/onboarding-sequence.tsx)
++ - SEO Components: `features/dashboard/pipelines/seo-digital-processing/`
++ 
++ ## Dependencies for Other Tickets
++ 
++ This ticket provides the interface foundation that will be used by:
++ 
++ - Ticket 05: Implement SEO Analysis Results Display
++ 
++ ## Notes
++ 
++ This ticket only updates the component interface and imports. No UI changes should be made - those will be handled in subsequent tickets. The focus is on ensuring proper typing and import structure.
++ 
+```
+
+---
+
+```diff
+- 
++ # Ticket 04: Integrate WebsiteUrlInput into Digital Onboarding Step
++ 
++ **Status**: ⏳ pending  
++ **Story Points**: 2  
++ **Dependencies**: Ticket 01  
++ **Assignee**: TBD  
++ 
++ ## Description
++ 
++ Replace the basic website URL input in the Digital onboarding step with the new `WebsiteUrlInput` component, providing enhanced validation and user experience.
++ 
++ ## Business Value
++ 
++ Improves user experience during onboarding by providing sophisticated URL validation, better visual feedback, and preparation for SEO analysis trigger.
++ 
++ ## Acceptance Criteria
++ 
++ - [ ] Replace simple input field in Digital tab with `WebsiteUrlInput` component
++ - [ ] Connect component to existing `formData.website` state
++ - [ ] Implement proper `handleInputChange` integration
++ - [ ] Add real-time validation feedback
++ - [ ] Update button behavior to trigger SEO analysis
++ - [ ] Button should be disabled for invalid URLs or during loading
++ - [ ] Show appropriate loading state during SEO analysis
++ - [ ] Maintain existing styling and layout consistency
++ - [ ] Handle edge cases (empty input, invalid URLs)
++ 
++ ## Implementation Notes
++ 
++ - Use the `WebsiteUrlInput` component created in Ticket 01
++ - Update the Digital tab content in `onboarding-sequence.tsx`
++ - Follow button update pattern from QuickStartGuide.md Step 2.3
++ - Ensure proper integration with existing form state management
++ - Maintain the existing card layout and styling
++ 
++ ## Technical Specifications
++ 
++ ### Digital Tab Button Implementation
++ 
++ ```typescript
++ <Button 
++   onClick={async () => {
++     if (formData.website && formData.website !== "https://") {
++       const success = await triggerSeoAnalysis(formData.website);
++       if (success) {
++         setCurrentStep("seo");
++       }
++     } else {
++       alert("Please enter a valid website URL");
++     }
++   }}
++   disabled={
++     !formData.website || 
++     formData.website === "https://" || 
++     seoAnalysisState.status === 'loading'
++   }
++ >
++   {seoAnalysisState.status === 'loading' ? "Analyzing..." : "Analyze Website"}
++ </Button>
++ ```
++ 
++ ### Component Integration
++ 
++ ```typescript
++ import { WebsiteUrlInput } from "./website-url-input";
++ 
++ // In Digital tab content
++ <WebsiteUrlInput
++   value={formData.website}
++   onChange={(url) => handleInputChange({ 
++     target: { id: 'website', value: url } 
++   } as React.ChangeEvent<HTMLInputElement>)}
++   onValidUrl={(url) => {
++     // Optional: auto-trigger analysis on valid URL
++   }}
++   placeholder="https://example.com"
++ />
++ ```
++ 
++ ## Testing Requirements
++ 
++ - Integration tests with form state
++ - UI tests for validation feedback
++ - Tests for button state management
++ - Accessibility tests
++ - Tests for loading states
++ 
++ ## Definition of Done
++ 
++ - [ ] WebsiteUrlInput component integrated successfully
++ - [ ] Form state management works correctly
++ - [ ] Button behavior matches specifications
++ - [ ] Loading states display properly
++ - [ ] Validation feedback is clear and helpful
++ - [ ] No regressions in existing onboarding flow
++ - [ ] All tests pass
++ 
++ ## References
++ 
++ - Implementation Guide: [QuickStartGuide.md](../apps/intentified/src/components/onboarding/QuickStartGuide.md) - Step 2.3
++ - Component Source: Ticket 01 - WebsiteUrlInput component
++ - Target File: [onboarding-sequence.tsx](../apps/intentified/src/components/onboarding/onboarding-sequence.tsx)
++ 
++ ## Risk Considerations
++ 
++ 1. **State Integration**: Ensure proper integration with existing form state
++ 2. **Loading States**: Handle concurrent loading states properly
++ 3. **Validation Feedback**: Maintain clear user feedback throughout the process
++ 
++ ## Dependencies for Other Tickets
++ 
++ This ticket provides the UI foundation that will be used by:
++ 
++ - Ticket 07: Add Comprehensive Error Handling and Edge Cases
++ 
++ ## Notes
++ 
++ The button should trigger SEO analysis and navigate to the SEO tab on success. Consider adding a confirmation or preview before triggering the analysis for better UX.
++ 
+```
+
+---
+
+```diff
+- 
++ # Ticket 05: Implement SEO Analysis Results Display
++ 
++ **Status**: ⏳ pending  
++ **Story Points**: 3  
++ **Dependencies**: Tickets 02, 03  
++ **Assignee**: TBD  
++ 
++ ## Description
++ 
++ Implement the complete SEO Analysis tab content with loading states, error handling, and results display using existing SEO pipeline components.
++ 
++ ## Business Value
++ 
++ Provides immediate value to users during onboarding by showing comprehensive SEO analysis results, demonstrating product capabilities and encouraging engagement.
++ 
++ ## Acceptance Criteria
++ 
++ - [ ] Replace empty SEO tab content with comprehensive results display
++ - [ ] Show loading spinner and message during analysis
++ - [ ] Display error states with retry functionality
++ - [ ] Render SEO results using existing pipeline components
++ - [ ] Include SEOScoreSection, WebVitalsSection, OgImageSection, and AnalyzeWithAISection
++ - [ ] Show appropriate message when no analysis has been run
++ - [ ] Add "Try Again" button for failed analyses
++ - [ ] Include website URL in the header when available
++ - [ ] Maintain proper spacing and layout consistency
++ - [ ] Handle all possible state combinations gracefully
++ 
++ ## Implementation Notes
++ 
++ - Follow exact implementation from QuickStartGuide.md Step 2.4
++ - Use conditional rendering based on `seoAnalysisState.status`
++ - Import and use existing SEO pipeline components
++ - Ensure proper error boundary implementation
++ - Add proper loading indicators with good UX
++ 
++ ## Technical Specifications
++ 
++ ### SEO Tab Content Implementation
++ 
++ ```typescript
++ <TabsContent value="seo">
++   <Card>
++     <CardHeader>
++       <CardTitle>SEO Analysis Results</CardTitle>
++       {formData.website && formData.website !== "https://" && (
++         <CardDescription>
++           Analysis for: {formData.website}
++         </CardDescription>
++       )}
++     </CardHeader>
++     <CardContent>
++       {seoAnalysisState.status === 'loading' && (
++         <div className="flex items-center justify-center py-12">
++           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
++           <span className="ml-2">Analyzing your website...</span>
++         </div>
++       )}
++       
++       {seoAnalysisState.status === 'error' && (
++         <div className="rounded-lg border border-red-500 p-4">
++           <p className="text-red-500">Analysis failed: {seoAnalysisState.error}</p>
++           <Button 
++             onClick={() => triggerSeoAnalysis(formData.website)}
++             className="mt-2"
++             variant="outline"
++           >
++             Try Again
++           </Button>
++         </div>
++       )}
++       
++       {seoAnalysisState.status === 'success' && seoAnalysisState.results && (
++         <div className="space-y-6">
++           {seoAnalysisState.results.seoFeedback && (
++             <SEOScoreSection seoFeedback={seoAnalysisState.results.seoFeedback} />
++           )}
++           {seoAnalysisState.results.rawWebVitals && (
++             <WebVitalsSection vitals={seoAnalysisState.results.rawWebVitals} />
++           )}
++           {seoAnalysisState.results.ogImageData && (
++             <OgImageSection ogData={seoAnalysisState.results.ogImageData} />
++           )}
++           <AnalyzeWithAISection seoData={seoAnalysisState.results} />
++         </div>
++       )}
++       
++       {seoAnalysisState.status === 'idle' && (
++         <div className="text-center py-12">
++           <p className="text-muted-foreground">
++             Enter a website URL in the previous step to analyze its SEO performance.
++           </p>
++         </div>
++       )}
++     </CardContent>
++     <CardFooter className="flex justify-between">
++       <Button variant="outline" onClick={() => setCurrentStep("digital")}>
++         Back
++       </Button>
++       <Button onClick={completeOnboarding} disabled={loading}>
++         {loading ? "Saving..." : "Complete Setup"}
++       </Button>
++     </CardFooter>
++   </Card>
++ </TabsContent>
++ ```
++ 
++ ### Component Usage
++ 
++ The following SEO components should be used to display results:
++ 
++ 1. **SEOScoreSection**: Displays overall SEO score and recommendations
++ 2. **WebVitalsSection**: Shows Core Web Vitals performance metrics
++ 3. **OgImageSection**: Displays Open Graph image and metadata
++ 4. **AnalyzeWithAISection**: Provides AI-powered insights and recommendations
++ 
++ ## Testing Requirements
++ 
++ - Tests for all state scenarios (idle, loading, success, error)
++ - Tests for component rendering with different data
++ - Error handling tests
++ - Loading state tests
++ - Retry functionality tests
++ 
++ ## Definition of Done
++ 
++ - [ ] All state scenarios render correctly
++ - [ ] SEO components display results properly
++ - [ ] Loading states provide good UX
++ - [ ] Error handling is comprehensive
++ - [ ] Retry functionality works
++ - [ ] Navigation between tabs works
++ - [ ] All tests pass
++ 
++ ## References
++ 
++ - Implementation Guide: [QuickStartGuide.md](../apps/intentified/src/components/onboarding/QuickStartGuide.md) - Step 2.4
++ - SEO Components: `features/dashboard/pipelines/seo-digital-processing/`
++ - Target File: [onboarding-sequence.tsx](../apps/intentified/src/components/onboarding/onboarding-sequence.tsx)
++ 
++ ## Risk Considerations
++ 
++ 1. **Component Dependencies**: Ensure all SEO components are accessible
++ 2. **Data Structure**: Handle variations in SEO analysis result structure
++ 3. **Performance**: Large result sets should not impact UI performance
++ 4. **Error Boundaries**: Prevent component failures from breaking the entire flow
++ 
++ ## Dependencies for Other Tickets
++ 
++ This ticket provides the results display foundation that will be used by:
++ 
++ - Ticket 07: Add Comprehensive Error Handling and Edge Cases
++ 
++ ## Notes
++ 
++ Consider adding a loading skeleton for better perceived performance. The retry functionality should preserve the user's position in the onboarding flow.
++ 
+```
+
+---
+
+```diff
+- 
++ # Ticket 06: Update Onboarding Completion Logic
++ 
++ **Status**: ⏳ pending  
++ **Story Points**: 1  
++ **Dependencies**: Ticket 02  
++ **Assignee**: TBD  
++ 
++ ## Description
++ 
++ Update the `completeOnboarding` function to save SEO analysis status and results to user metadata, providing valuable context for future user interactions.
++ 
++ ## Business Value
++ 
++ Enables the platform to track user onboarding progress and SEO analysis completion, allowing for personalized experiences and better user support.
++ 
++ ## Acceptance Criteria
++ 
++ - [ ] Update `completeOnboarding` function in onboarding page component
++ - [ ] Save `seoAnalysisCompleted` boolean to user metadata
++ - [ ] Save `seoAnalysisTimestamp` when analysis was successful
++ - [ ] Include `onboardingCompletedAt` timestamp
++ - [ ] Maintain all existing user metadata fields
++ - [ ] Use `unsafeMetadata` instead of `publicMetadata`
++ - [ ] Handle potential errors during user update
++ - [ ] Preserve existing redirect behavior to dashboard
++ - [ ] Add proper error logging
++ 
++ ## Implementation Notes
++ 
++ - Follow implementation from QuickStartGuide.md Step 3
++ - Use Clerk's `user.update()` method
++ - Ensure proper error handling around user metadata update
++ - Maintain existing loading state management
++ 
++ ## Technical Specifications
++ 
++ ### Updated completeOnboarding Function
++ 
++ ```typescript
++ const completeOnboarding = async () => {
++   try {
++     setLoading(true);
++ 
++     await user?.update({
++       unsafeMetadata: {
++         ...user.unsafeMetadata,
++         onboardingCompleted: true,
++         companyData: {
++           name: formData.companyName,
++           size: formData.companySize,
++           industry: formData.industry,
++           website: formData.website,
++           socialLinks: formData.socialLinks,
++         },
++         goals: formData.goals,
++         seoAnalysisCompleted: seoAnalysisState.status === 'success',
++         seoAnalysisTimestamp: seoAnalysisState.status === 'success' 
++           ? new Date().toISOString() 
++           : null,
++         onboardingCompletedAt: new Date().toISOString(),
++       },
++     });
++ 
++     router.push("/dashboard");
++   } catch (error) {
++     console.error("Error completing onboarding:", error);
++     // Consider adding user-facing error handling here
++   } finally {
++     setLoading(false);
++   }
++ };
++ ```
++ 
++ ### Metadata Structure
++ 
++ The following fields will be added to user metadata:
++ 
++ ```typescript
++ interface OnboardingMetadata {
++   onboardingCompleted: boolean;
++   companyData: {
++     name: string;
++     size: string;
++     industry: string;
++     website: string;
++     socialLinks: {
++       twitter: string;
++       instagram: string;
++       linkedin: string;
++       facebook: string;
++     };
++   };
++   goals: string[];
++   seoAnalysisCompleted: boolean;
++   seoAnalysisTimestamp: string | null;
++   onboardingCompletedAt: string;
++ }
++ ```
++ 
++ ## Testing Requirements
++ 
++ - Tests for metadata saving
++ - Tests for error scenarios
++ - Tests for timestamp generation
++ - Tests for backward compatibility
++ - Tests for navigation after completion
++ 
++ ## Definition of Done
++ 
++ - [ ] Function saves all required metadata
++ - [ ] Error handling is comprehensive
++ - [ ] Timestamps are generated correctly
++ - [ ] Navigation still works as expected
++ - [ ] No regressions in existing functionality
++ - [ ] All tests pass
++ 
++ ## References
++ 
++ - Implementation Guide: [QuickStartGuide.md](../apps/intentified/src/components/onboarding/QuickStartGuide.md) - Step 3
++ - Target File: [page.tsx](../apps/intentified/src/app/dashboard/onboarding/page.tsx)
++ - Clerk Documentation: User metadata management
++ 
++ ## Risk Considerations
++ 
++ 1. **Metadata Size**: Ensure metadata doesn't exceed Clerk limits
++ 2. **Error Handling**: Don't block completion if metadata save fails
++ 3. **Migration**: Handle existing users with partial metadata
++ 4. **Privacy**: Ensure sensitive data isn't exposed in metadata
++ 
++ ## Dependencies for Other Tickets
++ 
++ This ticket completes the core functionality and supports:
++ 
++ - Ticket 08: Add Integration and E2E Tests (testing completion flow)
++ 
++ ## Notes
++ 
++ Consider adding a fallback mechanism if user metadata update fails - the user should still be able to complete onboarding and access the dashboard. The SEO analysis data can be tracked through other means if necessary.
++ 
+```
 
 ---
 

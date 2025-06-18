@@ -405,11 +405,143 @@ Let's update the documentation to reflect the removal of currentIntegrations:
 
 ---
 
-
+```diff
+- 
++ # Onboarding Digital Presence Module Documentation
++ 
++ ## Overview
++ 
++ This module handles the collection of digital presence information during the onboarding process, including website URL and social media links.
++ 
++ ## Architecture
++ 
++ ### Component Structure
++ 
++ ```
++ OnboardingPage (page.tsx)
++ └── OnboardingSequence (onboarding-sequence.tsx)
++     └── Digital Tab
++         ├── Website URL Input
++         └── Social Media Links
++             ├── Twitter
++             ├── Instagram  
++             ├── LinkedIn
++             └── Facebook
++ ```
++ 
++ ### Data Flow
++ 
++ 1. **State Management**
++    - Parent component (`OnboardingPage`) maintains the form state
++    - Includes `socialLinks` object for social media URLs
++    - State is passed down to `OnboardingSequence` via props
++ 
++ 2. **Input Handling**
++    - `handleInputChange` function processes all form inputs
++    - Special handling for social links (prefixed with `social-`)
++ 
++ 3. **Data Persistence**
++    - On completion, data is saved to Clerk's `unsafeMetadata`
++    - Includes all company data and social links
++ 
++ ## Key Components
++ 
++ ### Digital Tab Features
++ 
++ - **Website URL Input**: Standard URL input with validation
++ - **Social Media Links**: Optional fields with platform-specific icons
++ - **Responsive Layout**: 2-column grid on desktop, stacked on mobile
++ - **Visual Feedback**: Icons for each platform for better UX
++ 
++ ### Form Validation
++ 
++ - URL inputs use `type="url"` for browser validation
++ - Social links are optional
++ - Website URL can be validated before proceeding
++ 
++ ## Integration Notes
++ 
++ ### Previous WebsiteFormSection Integration
++ 
++ The original `WebsiteFormSection` was a full-screen component with its own animations and dark mode. For the card-based UI:
++ 
++ - Removed full-screen layout and animations
++ - Integrated form fields directly into the card structure
++ - Maintained consistent styling with other onboarding steps
++ 
++ ### Future Enhancements
++ 
++ 1. Add URL validation logic from `WebsiteFormSection`
++ 2. Implement real-time validation for social media URLs
++ 3. Add ability to verify/preview social media profiles
++ 4. Integrate with SEO analysis pipeline for immediate feedback
++ 
++ ## Usage Example
++ 
++ ```typescript
++ const [formData, setFormData] = useState({
++   companyName: "",
++   companySize: "",
++   industry: "",
++   website: "",
++   socialLinks: {
++     twitter: "",
++     instagram: "",
++     linkedin: "",
++     facebook: ""
++   },
++   goals: [] as string[]
++ });
++ ```
++ 
++ ## API Integration Points
++ 
++ When the onboarding is completed:
++ 
++ 1. User metadata is updated via Clerk
++ 2. Data structure includes:
++    - Company information
++    - Website URL
++    - Social media links
++    - Business goals
++ 
++ This data can then be used for:
++ 
++ - SEO analysis
++ - Social media monitoring
++ - Lead generation
++ - Customer journey mapping
++ 
+```
 
 ---
 
 
+
+---
+
+Perfect! I've successfully removed the "Current Integrations" field from your onboarding form. Here's what was done:
+
+1. **Removed the UI element** from the Company tab in `onboarding-sequence.tsx`
+   - Removed the select dropdown and its label
+   - Removed the helper text about multi-select
+
+2. **Updated the TypeScript interface** in `onboarding-sequence.tsx`
+   - Removed `currentIntegrations` from the `OnboardingSequenceProps` interface
+
+3. **Updated the state and logic** in `page.tsx`
+   - Removed `currentIntegrations` from the `formData` state initialization
+   - Removed the special handling for `current-integrations` in `handleInputChange`
+   - Removed `integrations` from the metadata saved in `completeOnboarding`
+
+4. **Updated the documentation** to reflect these changes
+
+The onboarding form now focuses on collecting:
+- Company information (name, size, industry)
+- Digital presence (website URL and social media links)
+- Business goals
+
+All the changes have been applied and the form should work correctly without the Current Integrations field.
 
 ---
 

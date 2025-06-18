@@ -334,7 +334,80 @@ src/components/ui/tabs.tsx (48:5) @ TabsTrigger
 
 _**Assistant**_
 
+The error `RovingFocusGroupItem must be used within RovingFocusGroup` is still being thrown at the `TabsTrigger` line, even after wrapping the children of `TabsList` in a `RovingFocusGroup`. This suggests one of the following:
 
+1. **Double RovingFocusGroup**: Radix Tabs already manages focus context internally, and adding an extra `RovingFocusGroup` may cause a conflict.
+2. **Incorrect Children Structure**: The `TabsTrigger` components may not be direct children of `TabsList` in your usage, or the children prop is not being passed as expected.
+3. **Version Mismatch**: There may be a version mismatch between `@radix-ui/react-tabs` and `@radix-ui/react-roving-focus`.
+
+---
+
+## Step-by-Step Debug Plan
+
+### 1. **Check Usage in OnboardingSequence**
+- Ensure that all `TabsTrigger` components are direct children of `TabsList` (not wrapped in fragments, divs, or other elements).
+
+### 2. **Remove Extra RovingFocusGroup**
+- Since Radix Tabs already uses `RovingFocusGroup` internally, **remove the manual wrapping** from `TabsList` and revert to the original implementation.
+
+### 3. **Check for Fragments or Extra Wrappers**
+- In your usage (e.g., in `onboarding-sequence.tsx`), make sure you are not wrapping `TabsTrigger` in a fragment (`<>...</>`) or any other element inside `TabsList`.
+
+### 4. **Check Radix UI Package Versions**
+- Ensure all Radix UI packages are on compatible versions.
+
+---
+
+## Pseudocode for the Fix
+
+```markdown
+# TabsComponentFix_PSEUDOCODE (Update)
+
+1. Remove manual RovingFocusGroup from TabsList.
+2. Ensure TabsTrigger is a direct child of TabsList in all usages.
+3. Check for fragments or extra wrappers in TabsList children.
+4. Verify Radix UI package versions are compatible.
+5. Test for error resolution.
+```
+
+---
+
+## Next Step
+
+**I will revert the manual RovingFocusGroup from `TabsList` and provide guidance for correct usage.**
+
+---
+
+```diff
+  import * as React from "react";
+  import * as TabsPrimitive from "@radix-ui/react-tabs";
+- import { RovingFocusGroup } from "@radix-ui/react-roving-focus";
+  
+  import { cn } from "@/lib/utils";
+```
+
+```diff
+        {...props}
+      >
+-       <RovingFocusGroup orientation="horizontal" loop>
+        {children}
+-       </RovingFocusGroup>
+      </TabsPrimitive.List>
+    );
+```
+
+---
+
+The manual `RovingFocusGroup` wrapper has been removed from `TabsList`. This restores the original, correct usage—Radix Tabs manages focus context internally, and adding another `RovingFocusGroup` causes conflicts.
+
+**Next steps:**
+1. **Ensure all `TabsTrigger` components are direct children of `TabsList`** in your usage (no fragments or extra wrappers).
+2. **Test your onboarding flow and other Tabs usages**—the error should now be resolved.
+3. If the error persists, check for:
+   - Fragments or extra wrappers around `TabsTrigger` in your usage.
+   - Version mismatches between Radix UI packages.
+
+If you still see the error, please share the relevant usage code (the part where you render `TabsList` and `TabsTrigger`), and I’ll help you debug further.
 
 ---
 

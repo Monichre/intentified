@@ -331,3 +331,14 @@ _**Assistant**_
 
 ---
 
+```tsx
+<h2 className="text-5xl leading-none font-bold tracking-tight text-white">
+  {capitalize(TITLES[currentIndexTitle - 1].text)}
+</h2>
+<p className="mt-1 text-5xl font-semibold tracking-wider text-white uppercase">
+  {TITLES[currentIndexTitle - 1].subtext.toUpperCase()}
+</p>
+```
+
+---
+

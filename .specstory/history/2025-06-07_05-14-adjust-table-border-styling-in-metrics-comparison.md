@@ -678,3 +678,47 @@ _**Assistant**_
 
 ---
 
+I'll help you make the background transparent for the ProcessFrameworkWorkflow component. Let me find and update it:
+
+---
+
+Read file: apps/intentified/src/features/landing/process-framework-workflow.tsx
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/components/intentified-signal-sourcing-pipeline.tsx
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/components/ui/radial-orbital-timeline.tsx
+
+---
+
+
+
+---
+
+Now I can fix the background. The `bg-black` is in the RadialOrbitalTimeline component. I'll change it to `bg-transparent`:
+
+---
+
+
+
+---
+
+
+
+---
+
+Done! I've changed the background from `bg-black` to `bg-transparent` in the RadialOrbitalTimeline component. This will make the background transparent as requested, allowing any background from parent components (like the GridBackgroundWithBlur from the landing page) to show through.
+
+---
+

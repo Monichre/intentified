@@ -168,7 +168,83 @@ give me a diagram. but isnt @triggerSeoAnalysis being called by combinedUrlActio
 
 _**Assistant**_
 
+Let's clarify the flow and then provide a diagram.
 
+---
+
+## **Step-by-Step Data Flow**
+
+### 1. **User Interaction**
+- User fills out the onboarding form in the UI (`OnboardingSequence` component).
+- When the user clicks "Analyze Website" in the "Digital Presence" step, the following happens:
+
+### 2. **triggerSeoAnalysis**
+- The `onClick` handler for the "Analyze Website" button calls `triggerSeoAnalysis(formData.website)`.
+
+### 3. **triggerSeoAnalysis Implementation**
+- This function is defined in `OnboardingPage` (`page.tsx`), and it:
+  - Sets loading state.
+  - Creates a `FormData` object with the website URL.
+  - Calls `combinedUrlActions(null, formData)` (directly, as a function import, **not** via HTTP).
+
+### 4. **combinedUrlActions**
+- This is a server action (imported from `lib/actions`).
+- It:
+  - Validates the URL.
+  - Runs SEO and performance crawling in parallel.
+  - Processes and returns the results.
+
+### 5. **Result Handling**
+- The result is used to update the onboarding state/UI.
+
+---
+
+## **Key Point**
+
+- **`triggerSeoAnalysis` is called by the UI (user action).**
+- **`triggerSeoAnalysis` calls `combinedUrlActions` directly (as a function, not via API route).**
+- **`combinedUrlActions` is not called by anything else in this flow.**
+- **The API route (`/api/ai-analyze/route.ts`) is not involved in this onboarding flow.**
+
+---
+
+## **Diagram**
+
+```mermaid
+flowchart TD
+    A[User clicks "Analyze Website" button] --> B[triggerSeoAnalysis(formData.website)]
+    B --> C[Create FormData with website URL]
+    C --> D[Call combinedUrlActions(null, formData)]
+    D --> E[SEO & Performance Crawling (crawlSeoDataSubAction, perfDataSubAction)]
+    E --> F[Process Results (evaluateAll, extract OpenGraph, etc.)]
+    F --> G[Return combined result to triggerSeoAnalysis]
+    G --> H[Update UI state (seoAnalysisState, onboarding step)]
+```
+
+---
+
+## **Summary Table**
+
+| Function/Component         | Called By                | Calls/Triggers                |
+|---------------------------|--------------------------|-------------------------------|
+| `OnboardingSequence`      | Rendered by page         | Calls `triggerSeoAnalysis`    |
+| `triggerSeoAnalysis`      | OnboardingSequence (UI)  | Calls `combinedUrlActions`    |
+| `combinedUrlActions`      | triggerSeoAnalysis       | SEO/perf crawling, returns result |
+| `/api/ai-analyze/route.ts`| (Not called in this flow)| (Unused in onboarding flow)   |
+
+---
+
+## **Conclusion**
+
+- **`triggerSeoAnalysis` is called by the UI.**
+- **`combinedUrlActions` is called by `triggerSeoAnalysis`.**
+- **No part of this onboarding flow calls the `/api/ai-analyze` API route.**
+
+If you want to use the API route instead, you would need to make a `fetch` request to `/api/ai-analyze` from your client or server code.
+
+---
+
+**Let me know if you want a diagram for a different flow, or if you want to see how to refactor to use the API route!**
 
 ---
 

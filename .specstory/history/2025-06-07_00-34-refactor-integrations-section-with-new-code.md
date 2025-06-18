@@ -579,3 +579,150 @@ _**Assistant**_
 
 ---
 
+Looking at the `infinite-slider.tsx` file, I can see it's already implemented in the correct location at `apps/intentified/src/components/ui/infinite-slider.tsx`. 
+
+However, there's a mismatch in the import path. In the `intent-database.tsx` file, we're importing from:
+```typescript
+import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
+```
+
+But the actual file is located at:
+```typescript
+apps/intentified/src/components/ui/infinite-slider.tsx
+```
+
+Let me fix the import path:
+
+---
+
+```diff
+  import { capitalize } from "@/utils/capitalize";
+  import { GridBackgroundWithBlur } from "@/components/backgrounds/grid-backgrounds/grid-background-with-blur";
+- import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
++ import { InfiniteSlider } from "@/components/ui/infinite-slider";
+  
+  const databaseMetrics = [
+```
+
+---
+
+
+
+---
+
+Let me verify that the required dependencies are installed:
+
+---
+
+<details>
+            <summary>Grep search for "react-use-measure" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/package.json` | L99 | `"react-use-measure": "^2.1.7",` |
+
+</details>
+
+---
+
+
+
+---
+
+<details>
+            <summary>Searched codebase "lib/utils" • **10** results</summary>
+        
+| File |
+|------|
+| `undefined` |
+| `undefined` |
+| `undefined` |
+| `undefined` |
+| `undefined` |
+| `undefined` |
+| `undefined` |
+| `undefined` |
+| `undefined` |
+| `undefined` |
+
+</details>
+
+---
+
+
+
+---
+
+Let me also verify that the `IntegrationCard` component in `intent-database.tsx` is properly configured to work with the `InfiniteSlider`. Looking at the code, I see that the `IntegrationCard` component needed to be adjusted slightly. Let me update it to ensure it renders properly:
+
+---
+
+```diff
+    className,
+    borderClassName,
+-   isCenter,
++   isCenter = false,
+  }: {
+    children: React.ReactNode;
+```
+
+```diff
+      <div
+        className={cn(
+-         "relative flex size-16 rounded-xl bg-transparent transition-all duration-300 hover:scale-110",
+-         className,
+-         isCenter && "scale-110",
++         borderClassName,
++         "border-border/70 rounded-full border backdrop-blur-sm",
+        )}
+      >
+        <div
+-         role="presentation"
+          className={cn(
+-           "absolute inset-0 rounded-xl border border-1 border-white/25 transition-all duration-300 hover:border-white/40",
+-           borderClassName,
++           "bg-background relative z-20 flex size-12 rounded-full",
++           className,
++           isCenter && "size-16",
+          )}
+-       />
+-       <div className="relative z-20 m-auto size-fit *:size-4">{children}</div>
++       >
++         <div className={cn("m-auto size-fit *:size-5", isCenter && "*:size-8")}>
++           {children}
++         </div>
++       </div>
+      </div>
+    );
+```
+
+---
+
+
+
+---
+
+Perfect! I've successfully:
+
+1. **Fixed the import path** - Changed from `@/components/motion-primitives/infinite-slider` to `@/components/ui/infinite-slider` to match the actual file location.
+
+2. **Verified dependencies** - Confirmed that `react-use-measure` is installed in the project's package.json.
+
+3. **Updated the IntegrationCard component** - Refactored it to work better with the InfiniteSlider:
+   - Simplified the structure with a single container
+   - Made cards smaller (size-12) by default 
+   - Made the center card larger (size-16) when `isCenter={true}`
+   - Used `rounded-full` for circular cards
+   - Adjusted icon sizes (5 for regular, 8 for center)
+
+The InfiniteSlider component at `apps/intentified/src/components/ui/infinite-slider.tsx` is already well-implemented with:
+- Support for horizontal/vertical directions
+- Configurable gap and speed
+- Hover speed variations
+- Reverse direction option
+- Smooth infinite scrolling using Framer Motion
+
+The data sources section should now display with smooth infinite scrolling animations, maintaining the Intentified project's design theme while using the modern InfiniteSlider pattern!
+
+---
+

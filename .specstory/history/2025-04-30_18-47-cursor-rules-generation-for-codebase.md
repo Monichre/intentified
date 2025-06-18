@@ -263,3 +263,286 @@ _**Assistant**_
 
 ---
 
+I'll create all the rules in the `.cursor/rules/` directory.
+
+---
+
+<details>
+            <summary>Listed current directory • **23** results</summary>
+        
+| Name |
+|-------|
+| 📄 `.DS_Store` |
+| 📁 `apps` |
+| 📁 `packages` |
+| 📄 `bun.lock` |
+| 📁 `node_modules` |
+| 📁 `.git` |
+| 📄 `package.json` |
+| 📁 `.cursor` |
+| 📁 `.turbo` |
+| 📄 `.gitignore` |
+| 📁 `.specstory` |
+| 📄 `.cursorindexingignore` |
+| 📁 `.github` |
+| 📄 `next-env.d.ts` |
+| 📁 `turbo` |
+| 📁 `scripts` |
+| 📁 `.vscode` |
+| 📄 `.cursorrules.example` |
+| 📄 `README.md` |
+| 📄 `biome.json` |
+| 📄 `tsconfig.json` |
+| 📄 `tsup.config.ts` |
+| 📄 `turbo.json` |
+
+</details>
+
+---
+
+<details>
+            <summary>Listed directory .cursor • **1** results</summary>
+        
+| Name |
+|-------|
+| 📁 `rules` |
+
+</details>
+
+---
+
+<details>
+            <summary>Listed directory .cursor/rules • **3** results</summary>
+        
+| Name |
+|-------|
+| 📄 `cursor-rule-creation.mdc` |
+| 📄 `cursor_rules.mdc` |
+| 📄 `nextjs-react-ai-sdk-prompt.mdc` |
+
+</details>
+
+---
+
+Now I'll create all the rule files:
+
+---
+
+```diff
+- 
++ - **Project Root**
++   - Contains configuration files: [package.json](mdc:package.json), [tsconfig.json](mdc:tsconfig.json), [README.md](mdc:README.md), [biome.json](mdc:biome.json)
++   - Top-level directories:
++     - `apps/`: Application entry points (API, web, docs, studio, etc.)
++     - `packages/`: Shared libraries, design system, utilities, and feature modules
++     - `scripts/`: Project automation and code generation scripts
++     - `turbo/`: TurboRepo configuration and generators
++     - `.github/`: GitHub workflows and issue templates
++     - `.specstory/`, `.turbo/`: Internal tooling and cache
++ - **Navigation Tips**
++   - Use `apps/` for app-specific logic and routes
++   - Use `packages/` for shared, reusable code
++   - Use `intentified/` for the main Next.js app and its features
++   - Use `docs/` for documentation and API references
++ 
+```
+
+---
+
+```diff
+- 
++ - **Directory Naming**
++   - Use lowercase with dashes (e.g., `components/auth-wizard`)
++ - **File Naming**
++   - React components: PascalCase (e.g., `AuthWizard.tsx`)
++   - Hooks: camelCase (e.g., `useAuthWizard.ts`)
++   - Utility files: lowercase with dashes (e.g., `get-wizard-data.ts`)
++ - **Export Style**
++   - Always use named exports for modules and components
++ - **Constants**
++   - Use all caps with underscores (e.g., `export const API_URL = '...'`)
++ - **Examples**
++   ```typescript
++   // ✅ DO:
++   export const API_URL = '...';
++   export function useAuthWizard() { ... }
++   export { AuthWizard } from './AuthWizard';
++   ```
++ 
+```
+
+---
+
+<no message>
+
+---
+
+```diff
+- 
++ - **Single Responsibility Principle**
++   - Each module/function should have one reason to change
++   - Refactor modules exceeding 100–150 lines or mixing concerns
++ - **Open/Closed Principle**
++   - Design modules to be open for extension, closed for modification
++   - Use interfaces and abstract types for contracts
++ - **Liskov Substitution Principle**
++   - Ensure substitutability and maintain invariants in extensions
++ - **Interface Segregation Principle**
++   - Design focused, minimal interfaces; avoid "fat" interfaces
++ - **Dependency Inversion Principle**
++   - Depend on abstractions, not concretions; use dependency injection
++ - **Implementation**
++   - Use composition over inheritance
++   - Favor functional and declarative patterns
++   - Avoid deep inheritance hierarchies and type checks
++ 
+```
+
+---
+
+<no message>
+
+---
+
+```diff
+- 
++ - **TypeScript**
++   - Use interfaces over types where possible
++   - Avoid enums; use const maps instead
++   - Ensure type safety and inference
++   - Use `satisfies` for type validation
++ - **React 19/Next.js 15**
++   - Favor React Server Components (RSC) where possible
++   - Minimize 'use client' directives
++   - Use Suspense for async operations
++   - Use `useActionState` for form state
++   - Use async runtime APIs (e.g., `await cookies()`)
++ - **Component Structure**
++   - Structure: exports, subcomponents, helpers, types
++   - Use early returns for readability
++   - Implement error boundaries and accessibility
++ 
+```
+
+---
+
+<no message>
+
+---
+
+```diff
+- 
++ - **Testing**
++   - Place tests in `__tests__` directories adjacent to source
++   - Cover core business logic, API endpoints, and UI components
++   - Use descriptive test names and clear assertions
++ - **Documentation**
++   - Maintain up-to-date [README.md](mdc:README.md) and [docs/](mdc:docs/)
++   - Document key modules, data flow, and extension points
++   - Use code comments for complex logic
++   - Reference actual code in documentation and rules
++ 
+```
+
+---
+
+<no message>
+
+---
+
+```diff
+- 
++ - **API Endpoints**
++   - Define endpoints in `apps/api/app/` and `apps/api/app/api/`
++   - Use RESTful conventions and clear naming
++   - Validate input and handle errors gracefully
++ - **Database**
++   - Use Prisma or ORM in `packages/database/prisma/`
++   - Keep schema and migrations in sync
++   - Use abstraction layers for DB access
++ - **External Services**
++   - Integrate via dedicated packages (e.g., `packages/payments/`, `packages/notifications/`)
++   - Store secrets in `.env` and never commit them
++ 
+```
+
+---
+
+<no message>
+
+---
+
+```diff
+- 
++ - **State Management**
++   - Use local state for UI, server state for data
++   - Use `useActionState` and `useFormStatus` for forms
++   - Minimize client-side state; prefer server-driven UI
++ - **UI Components**
++   - Use Shadcn UI, Radix UI, and Tailwind CSS
++   - Compose UI from small, reusable components
++   - Follow accessibility best practices
++   - Use Suspense and error boundaries for async UI
++ 
+```
+
+---
+
+<no message>
+
+---
+
+```diff
+- 
++ - **Secrets**
++   - Store all secrets in `.env` and never commit them
++ - **Environment**
++   - Use environment variables for config
++   - Document required env vars in [README.md](mdc:README.md)
++ - **Security**
++   - Validate all user input
++   - Sanitize data before DB/API usage
++   - Use HTTPS and secure cookies
++   - Regularly update dependencies
++ 
+```
+
+---
+
+<no message>
+
+---
+
+```diff
+- 
++ - **Branching**
++   - Use feature branches for new work
++   - Merge via pull requests with code review
++ - **CI/CD**
++   - Use GitHub Actions for automated tests and builds
++ - **Releases**
++   - Tag releases and update changelogs
++ - **Code Review**
++   - Require reviews for all merges to main
++   - Use linters and formatters (see [biome.json](mdc:biome.json))
++ 
+```
+
+---
+
+All Cursor Rules have been successfully created in the `.cursor/rules/` directory:
+
+1. `project-structure.mdc` - Overview of project structure and navigation
+2. `naming-conventions.mdc` - File and directory naming conventions
+3. `solid-principles.mdc` - SOLID design principles implementation
+4. `typescript-react-best-practices.mdc` - Best practices for TypeScript and React
+5. `testing-documentation.mdc` - Standards for testing and documentation
+6. `api-database-interaction.mdc` - Patterns for API and database interaction
+7. `state-management-ui-patterns.mdc` - UI component and state management patterns
+8. `security-environment.mdc` - Security and environment configuration
+9. `git-development-workflow.mdc` - Git workflow and development processes
+
+These rules provide comprehensive guidance for working with the codebase and will help ensure consistency across the project.
+
+---
+

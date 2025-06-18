@@ -475,8 +475,6 @@ Let’s begin by reading the main landing page file.
 
 ---
 
-
-
 There is currently **no `page.tsx` or main landing page entry point** in the `apps/intentified/` directory structure. This means the public-facing landing page does not exist yet, which matches the workflow described in your ticketing/documentation system.
 
 **Next step:**  

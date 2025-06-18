@@ -135,3 +135,96 @@ _**Assistant**_
 
 ---
 
+<details>
+            <summary>Searched codebase "context7 mcp-server" • **25** results</summary>
+        
+| File | Lines |
+|------|-------|
+| `.cursor/rules/byterover-rules.mdc` | L1-8 |
+| `packages/db/convex/_generated/server.d.ts` | L106-114 |
+| `packages/db/convex/_generated/server.d.ts` | L95-106 |
+| `packages/db/convex/_generated/server.d.ts` | L114-122 |
+| `.cursor/rules/convex_rules.mdc` | L535-593 |
+| `docs/planning/CompetitorAnalysisIntegration_PSEUDOCODE.md` | L102-135 |
+| `.cursor/environment.json` | L1-6 |
+| `packages/db/convex/_generated/server.js` | L39-49 |
+| `.cursor/rules/convex_rules.mdc` | L390-449 |
+| `.cursor/rules/convex_rules.mdc` | L593-678 |
+| `packages/db/convex/_generated/server.d.ts` | L42-52 |
+| `packages/db/convex/_generated/server.js` | L59-72 |
+| `packages/ai/core/workflows/workflow-orchestrator.service.ts` | L495-515 |
+| `packages/ai/core/models/AnthropicModels_PSEUDOCODE.md` | L1-60 |
+| `packages/db/convex/_generated/server.d.ts` | L52-62 |
+| `packages/db/convex/_generated/server.js` | L49-59 |
+| `packages/db/convex/_generated/server.d.ts` | L1-32 |
+| `packages/ai/integrations/tavily.ts` | L67-98 |
+| `packages/db/src/supabase/server.ts` | L3-29 |
+| `packages/db/convex/_generated/server.d.ts` | L62-75 |
+| `apps/intentified/src/components/ui/agent-plan.tsx` | L636-664 |
+| `apps/intentified/src/components/animated-modal.tsx` | L19-31 |
+| `.cursor/rules/derived-cursor-rules.mdc` | L1-9 |
+| `packages/ai/core/prompts/marketing.prompts.ts` | L301-304 |
+| `packages/ai/actions/server-action-handler.ts` | L1-61 |
+
+</details>
+
+---
+
+I see that we're looking for `context7 mcp-server`, but I don't find specific implementations in the codebase. Let's check for functions related to the rough-notation library that we can use:
+
+---
+
+<details>
+            <summary>Searched codebase "highlight text annotation" • **25** results</summary>
+        
+| File | Lines |
+|------|-------|
+| `apps/intentified/src/features/pipelines/document-processing/document.tsx` | L202-241 |
+| `apps/app/features/pipelines/document-processing/document.tsx` | L152-193 |
+| `apps/intentified/src/features/pipelines/ai-prompting-pipeline/code-preview.tsx` | L12-24 |
+| `apps/intentified/src/features/pipelines/document-processing/document.tsx` | L364-402 |
+| `apps/intentified/src/features/pipelines/ai-agents-processing/effects.tsx` | L357-411 |
+| `apps/app/features/pipelines/ai-agents-processing/effects.tsx` | L324-370 |
+| `apps/intentified/src/features/landing/hero.tsx` | L65-83 |
+| `packages/ai/agents/tools/types/serper.ts` | L101-106 |
+| `apps/app/features/pipelines/document-processing/document.tsx` | L297-331 |
+| `apps/intentified/src/features/pipelines/ai-prompting-pipeline/prompt-editor.tsx` | L471-533 |
+| `apps/app/features/pipelines/ai-prompting-pipeline/code-preview.tsx` | L12-24 |
+| `apps/app/features/pipelines/ai-prompting-pipeline/prompt-editor.tsx` | L421-483 |
+| `apps/intentified/src/components/text-effect.tsx` | L110-164 |
+| `apps/intentified/src/components/ui/true-focus.tsx` | L63-126 |
+| `apps/intentified/src/components/ui/true-focus.tsx` | L176-228 |
+| `apps/intentified/src/components/ui/true-focus.tsx` | L126-176 |
+| `docs/planning/AnimatedUnderline_PSEUDOCODE.md` | L72-110 |
+| `apps/intentified/src/features/pipelines/document-processing/document.tsx` | L185-202 |
+| `apps/intentified/src/components/layered-data-card-unified.tsx` | L295-362 |
+| `packages/ai/integrations/exa/exa.ts` | L28-42 |
+| `apps/intentified/src/features/pipelines/ai-prompting-pipeline/code-preview.tsx` | L24-55 |
+| `.cursor/rules/derived-cursor-rules.mdc` | L26-42 |
+| `packages/ai/agents/tools/schema/exa.ts` | L61-97 |
+| `apps/app/features/pipelines/ai-prompting-pipeline/prompt-editor.tsx` | L519-540 |
+| `apps/intentified/src/features/landing/lead-capture-form-streaming.tsx` | L346-394 |
+
+</details>
+
+---
+
+I don't see specific usage of rough-notation in the codebase. Let's check if we need to install it:
+
+---
+
+```bash
+cd /Users/liamellis/Desktop/intentified-platform && npm install rough-notation
+```
+
+```
+npm error A complete log of this run can be found in: /Users/liamellis/.npm/_logs/2025-06-10T11_42_32
+_995Z-debug-0.log
+
+    ~/Des/intentified-platform  on   main !169 ?59     1 ✘  took 4s   at 06:42:36 AM  
+directory
+apps/          docs/          node_modules/  packages/      scripts/       turbo/
+```
+
+---
+

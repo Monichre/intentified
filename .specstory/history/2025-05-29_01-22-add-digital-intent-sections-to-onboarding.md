@@ -589,7 +589,176 @@ make it "competitors" and the array begins empty so mapping doesnt make sense
 
 _**Assistant**_
 
+Excellent point!  
+If the array is named `competitors` and starts empty, you should:
 
+- Use `competitors: { name: string; url: string }[]` in your state.
+- Render a message or a single empty input row if the array is empty, and always provide an “Add Competitor” button.
+- Only map and render rows if there are competitors in the array.
+
+---
+
+## Implementation Plan
+
+1. **Rename** `competitorIntents` to `competitors` everywhere.
+2. **Initialize** `competitors` as an empty array: `competitors: []`.
+3. **UI Logic:**
+   - If `competitors.length === 0`, show a single empty row (or a button to add the first competitor).
+   - Otherwise, map and render each competitor row.
+4. **Add Competitor**: Always adds a new `{ name: '', url: '' }` object.
+5. **Remove Competitor**: Removes by index.
+
+---
+
+## Example UI Logic
+
+```tsx
+<div className="space-y-2">
+  <h3 className="font-medium">Competitors</h3>
+  <p className="text-sm text-muted-foreground">
+    Add your competitors' names and websites.
+  </p>
+  {competitors.length === 0 ? (
+    <Button type="button" onClick={addCompetitor}>Add First Competitor</Button>
+  ) : (
+    competitors.map((competitor, idx) => (
+      <div key={idx} className="flex flex-col md:flex-row gap-2 mb-2">
+        <input ... value={competitor.name} ... />
+        <input ... value={competitor.url} ... />
+        <Button ... onClick={() => removeCompetitor(idx)}>-</Button>
+      </div>
+    ))
+  )}
+  {competitors.length > 0 && (
+    <Button type="button" onClick={addCompetitor} disabled={competitors.length >= 10}>
+      Add Another Competitor
+    </Button>
+  )}
+</div>
+```
+
+---
+
+## Next Step
+
+I will update your code to:
+- Use `competitors` (empty array by default)
+- Render a button to add the first competitor if the array is empty
+- Only map if there are competitors
+
+**Proceeding with the edit.**
+
+---
+
+```diff
+      };
+      goals: string[];
+-     competitorIntents: { name: string; url: string }[];
++     competitors: { name: string; url: string }[];
+      socialIntents: string[];
+      keywordIntents: string[];
+```
+
+```diff
+    triggerSeoAnalysis: (url: string) => Promise<boolean>;
+    // New handlers for digital intents
+-   handleCompetitorIntentChange: (index: number, field: 'name' | 'url', value: string) => void;
+-   addCompetitorIntent: () => void;
+-   removeCompetitorIntent: (index: number) => void;
++   handleCompetitorChange: (index: number, field: 'name' | 'url', value: string) => void;
++   addCompetitor: () => void;
++   removeCompetitor: (index: number) => void;
+    handleSocialIntentChange: (index: number, value: string) => void;
+    addSocialIntent: () => void;
+```
+
+```diff
+    seoAnalysisState,
+    triggerSeoAnalysis,
+-   handleCompetitorIntentChange,
+-   addCompetitorIntent,
+-   removeCompetitorIntent,
++   handleCompetitorChange,
++   addCompetitor,
++   removeCompetitor,
+    handleSocialIntentChange,
+    addSocialIntent,
+```
+
+```diff
+              <Separator />
+  
+-             {/* 1. Competitor Intent */}
++             {/* Competitors */}
+              <div className="space-y-2">
+-               <h3 className="font-medium">1. Competitor Intent</h3>
++               <h3 className="font-medium">Competitors</h3>
+                <p className="text-sm text-muted-foreground">
+-                 Provide a list of 5–10 competitors' names and websites. Optionally, include subpages that target specific services or products similar to your offerings.
++                 Add your competitors' names and websites.
+                </p>
+-               {formData.competitorIntents.map((competitor, idx) => (
++               {formData.competitors.length === 0 ? (
++                 <Button type="button" onClick={addCompetitor}>Add First Competitor</Button>
++               ) : (
++                 <>
++                   {formData.competitors.map((competitor, idx) => (
+                      <div key={idx} className="flex flex-col md:flex-row gap-2 mb-2">
+                        <input
+```
+
+```diff
+                          placeholder="Competitor Name (e.g., Acme Inc.)"
+                          value={competitor.name}
+-                     onChange={e => handleCompetitorIntentChange(idx, 'name', e.target.value)}
++                         onChange={e => handleCompetitorChange(idx, 'name', e.target.value)}
+                        />
+                        <input
+```
+
+```diff
+                          placeholder="Competitor Website (e.g., https://acme.com)"
+                          value={competitor.url}
+-                     onChange={e => handleCompetitorIntentChange(idx, 'url', e.target.value)}
++                         onChange={e => handleCompetitorChange(idx, 'url', e.target.value)}
+                        />
+-                   {formData.competitorIntents.length > 1 && (
+-                     <Button type="button" variant="ghost" onClick={() => removeCompetitorIntent(idx)}>-</Button>
+-                   )}
++                       <Button type="button" variant="ghost" onClick={() => removeCompetitor(idx)} disabled={formData.competitors.length === 1}>-</Button>
+                      </div>
+                    ))}
+-               <Button type="button" variant="link" className="px-0" onClick={addCompetitorIntent} disabled={formData.competitorIntents.length >= 10}>
++                   <Button type="button" variant="link" className="px-0" onClick={addCompetitor} disabled={formData.competitors.length >= 10}>
+                      Add Another Competitor
+                    </Button>
++                 </>
++               )}
+              </div>
+- 
+-       
+  
+              <Separator />
+```
+
+---
+
+You should now use `competitors` (not `competitorIntents`), initialized as an empty array.  
+- If the array is empty, the UI shows an “Add First Competitor” button.
+- When competitors are present, each row has name and URL fields, a remove button, and an “Add Another Competitor” button (up to 10).
+
+**Make sure your parent state and handlers are updated to:**
+```ts
+competitors: { name: string; url: string }[]
+```
+and
+```ts
+handleCompetitorChange: (index: number, field: 'name' | 'url', value: string) => void
+addCompetitor: () => void
+removeCompetitor: (index: number) => void
+```
+
+Let me know if you want a code snippet for the parent state/handlers, or if you want to apply this pattern to the other dynamic sections as well!
 
 ---
 

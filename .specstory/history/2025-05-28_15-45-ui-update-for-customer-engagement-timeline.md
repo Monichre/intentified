@@ -372,3 +372,137 @@ _**Assistant**_
 
 ---
 
+I'll update the `@logs-explorer.tsx` component to have a black background with white/brand yellow text as shown in your reference screenshots:
+
+---
+
+```diff
+  
+    const resolveLogColor = {
+-     LOG: 'hsl(151 60.2% 54.1%)',
+-     INFO: 'hsl(206 99.9% 65.3%)',
+-     ERROR: 'hsl(359 90.5% 74.3%)',
++     LOG: '#a3e635', // Lime green (brand yellow/green)
++     INFO: '#3b82f6', // Blue
++     ERROR: '#ef4444', // Red
+    };
+  
+```
+
+```diff
+  
+    return (
+-     <div className="relative w-full overflow-hidden h-[400px]">
+-       <div className="absolute h-[100px] z-10 left-0 bottom-0 right-0 w-full bg-gradient-to-t from-[rgb(22,22,22)] to-transparent" />
++     <div className="relative w-full overflow-hidden h-[400px] bg-black rounded-lg">
++       <div className="absolute h-[100px] z-10 left-0 bottom-0 right-0 w-full bg-gradient-to-t from-black to-transparent" />
+        <div className="absolute inset-0 w-full">
+          <motion.div
+```
+
+```diff
+                  },
+                }}
+-               className="flex items-center gap-4 py-2 text-xs text-[hsl(0,0%,65.1%)] font-mono border-b border-[hsl(0,0%,22.5%)]"
++               className="flex items-center gap-4 py-2 text-xs text-white font-mono border-b border-gray-800"
+              >
+-               <div className="flex-shrink-0">{formatTimestamp(log.timestamp)}</div>
++               <div className="flex-shrink-0 text-gray-400">{formatTimestamp(log.timestamp)}</div>
+                <div
+-                 className="flex gap-1 w-[50px] flex-shrink-0"
++                 className="flex gap-1 w-[50px] flex-shrink-0 font-bold"
+                  style={{
+                    //@ts-ignore
+```
+
+---
+
+
+
+---
+
+Now let me update the `@process-framework.tsx` timeline to match these colors:
+
+---
+
+```diff
+            
+            <motion.div 
+-             className="relative w-full overflow-hidden h-[400px] bg-black/50 rounded-lg border border-white/10"
++             className="relative w-full overflow-hidden h-[400px] bg-black rounded-lg border border-gray-800"
+              onViewportEnter={() => setIsTimelineInView(true)}
+              viewport={{ once: true, amount: 0.3 }}
+```
+
+```diff
+                    const IconComponent = step.icon;
+                    const resolveLogColor = {
+-                     LOG: 'hsl(151 60.2% 54.1%)',
+-                     INFO: 'hsl(206 99.9% 65.3%)',
+-                     ERROR: 'hsl(359 90.5% 74.3%)',
++                     LOG: '#a3e635', // Lime green (brand yellow/green)
++                     INFO: '#3b82f6', // Blue  
++                     ERROR: '#ef4444', // Red
+                    };
+                    
+```
+
+```diff
+                          ease: "easeOut"
+                        }}
+-                       className="flex items-center gap-4 py-3 text-sm text-[hsl(0,0%,65.1%)] font-mono border-b border-[hsl(0,0%,22.5%)]"
++                       className="flex items-center gap-4 py-3 text-sm text-white font-mono border-b border-gray-800"
+                      >
+-                       <div className="flex-shrink-0 w-20 text-right">
++                       <div className="flex-shrink-0 w-20 text-right text-gray-400">
+                          {step.time}
+                        </div>
+                        <div
+-                         className="flex gap-1 w-[60px] flex-shrink-0"
++                         className="flex gap-1 w-[60px] flex-shrink-0 font-bold"
+                          style={{
+                            color: resolveLogColor[step.status as keyof typeof resolveLogColor],
+```
+
+```diff
+                        </div>
+                        <div className="flex items-center gap-2 flex-1">
+-                         <IconComponent className="h-4 w-4 text-primary" />
++                         <IconComponent className="h-4 w-4 text-lime-400" />
+                          <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                            {step.action}
+```
+
+```diff
+                          repeatType: "reverse"
+                        }}
+-                       className="text-primary"
++                       className="text-lime-400"
+                      >
+                        ▊
+```
+
+---
+
+
+
+---
+
+Perfect! I've updated both the `@logs-explorer.tsx` component and the timeline in `@process-framework.tsx` to match your reference screenshots:
+
+**Changes made:**
+1. **Background**: Pure black (`bg-black`) instead of semi-transparent
+2. **Main text**: White (`text-white`) for better contrast
+3. **Status colors**:
+   - `[LOG]` - Brand yellow/green (`#a3e635` / `lime-400`)
+   - `[INFO]` - Blue (`#3b82f6`)
+   - `[ERROR]` - Red (`#ef4444`)
+4. **Timestamps**: Gray (`text-gray-400`) to de-emphasize
+5. **Icons**: Brand lime color (`text-lime-400`)
+6. **Borders**: Subtle gray (`border-gray-800`)
+7. **Blinking cursor**: Brand lime color
+
+The components now have that sharp, high-contrast terminal aesthetic with your brand colors, matching the "START CAPTURING COMPETITOR TRAFFIC" button style from your screenshots.
+
+---
+

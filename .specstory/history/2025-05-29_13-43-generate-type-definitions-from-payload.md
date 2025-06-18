@@ -212,7 +212,152 @@ export interface LinkedinData {
   results: Array<{
     url: string;
     title: string;
-    text:
+    text: string;
+    publishedDate: string;
+  }>;
+}
+
+/** Founders */
+export interface FoundersResult extends BaseResult<FoundersData, "founders"> {}
+export interface FoundersData {
+  results: unknown[];
+}
+
+/** Crunchbase */
+export interface CrunchbaseResult extends BaseResult<CrunchbaseData, "crunchbase"> {}
+export interface CrunchbaseData {
+  results: unknown[];
+}
+
+/** News */
+export interface NewsResult extends BaseResult<NewsData, "news"> {}
+export interface NewsData {
+  results: unknown[];
+}
+
+/** Financial Report */
+export interface FinancialReportResult extends BaseResult<FinancialReportData, "financial-report"> {}
+export interface FinancialReportData {
+  results: unknown[];
+}
+
+/** Github URL */
+export interface GithubUrlResult extends BaseResult<GithubUrlData, "github-url"> {}
+export interface GithubUrlData {
+  results: unknown[];
+}
+
+/** Pitchbook */
+export interface PitchbookResult extends BaseResult<PitchbookData, "pitchbook"> {}
+export interface PitchbookData {
+  results: unknown[];
+}
+
+/** Tiktok */
+export interface TiktokResult extends BaseResult<TiktokData, "tiktok"> {}
+export interface TiktokData {
+  results: unknown[];
+}
+
+/** Tracxn */
+export interface TracxnResult extends BaseResult<TracxnData, "tracxn"> {}
+export interface TracxnData {
+  results: unknown[];
+}
+
+/** Wikipedia */
+export interface WikipediaResult extends BaseResult<WikipediaData, "wikipedia"> {}
+export interface WikipediaData {
+  results: unknown[];
+}
+
+/** Youtube Videos */
+export interface YoutubeVideosResult extends BaseResult<YoutubeVideosData, "youtube-videos"> {}
+export interface YoutubeVideosData {
+  results: unknown[];
+}
+
+/** Recent Tweets (error) */
+export interface RecentTweetsResult extends BaseResult<RecentTweetsData, "recent-tweets"> {}
+export interface RecentTweetsData {
+  error: string;
+}
+
+/** Reddit */
+export interface RedditResult extends BaseResult<RedditData, "reddit"> {}
+export interface RedditData {
+  results: unknown[];
+}
+
+/** Twitter Profile (error) */
+export interface TwitterProfileResult extends BaseResult<TwitterProfileData, "twitter-profile"> {}
+export interface TwitterProfileData {
+  error: string;
+}
+
+/** Website Sub Pages */
+export interface WebsiteSubPagesResult extends BaseResult<WebsiteSubPagesData, "website-sub-pages"> {}
+export interface WebsiteSubPagesData {
+  results: unknown[];
+}
+
+/** Website URL */
+export interface WebsiteUrlResult extends BaseResult<WebsiteUrlData, "website-url"> {}
+export interface WebsiteUrlData {
+  results: Array<{
+    url: string;
+    title: string;
+    text: string;
+    summary: string;
+    publishedDate: string;
+  }>;
+}
+
+/** Youtube Video Details (error) */
+export interface YoutubeVideoDetailsResult extends BaseResult<YoutubeVideoDetailsData, "youtube-video-details"> {}
+export interface YoutubeVideoDetailsData {
+  error: string;
+}
+
+/** Competitors */
+export interface CompetitorsResult extends BaseResult<CompetitorsData, "competitors"> {}
+export interface CompetitorsData {
+  results: Array<{
+    url: string;
+    title: string;
+    text: string;
+    summary: string;
+    publishedDate: string;
+  }>;
+}
+
+/** Mind Map */
+export interface MindMapResult extends BaseResult<MindMapData, "mind-map"> {}
+export interface MindMapData {
+  companyName: string;
+  rootNode: MindMapNode;
+}
+export interface MindMapNode {
+  title: string;
+  description?: string;
+  children?: MindMapNode[];
+}
+
+/** Summary object at the root */
+export interface EnrichedCompanySummary {
+  totalRequested: number;
+  successful: number;
+  failed: number;
+  skipped: number;
+  totalDuration: number;
+}
+```
+
+---
+
+If you want this written to a file, please let me know if you want to try again later or if you'd like the code in a different format.  
+You can copy-paste this into `apps/intentified/src/types/enriched-company-typings.ts` or your preferred location.  
+Let me know if you want the documentation file as well!
 
 ---
 

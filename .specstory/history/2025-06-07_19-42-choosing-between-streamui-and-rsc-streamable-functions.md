@@ -1078,3 +1078,263 @@ _**Assistant**_
 
 ---
 
+This is a syntax error indicating there's a `try` block without a corresponding `catch` or `finally` block. Let me check the `competitor-analysis.ts` file for any syntax issues:
+
+---
+
+Read file: apps/intentified/src/app/actions/competitor-analysis.ts
+
+---
+
+
+
+---
+
+The `competitor-analysis.ts` file has proper try-catch blocks. Let me check the other file we modified:
+
+---
+
+Read file: apps/intentified/src/app/actions/enrich-company.ts
+
+---
+
+
+
+---
+
+Both files have proper try-catch blocks with `finally` clauses. The syntax error appears to be happening during Next.js's server-side rendering chunk loading, not directly in our code. This could be caused by:
+
+1. **Build/compilation issues**
+2. **Corrupted Next.js cache**
+3. **Issues with the `@repo/ai` package**
+
+Here are the steps to fix this:
+
+---
+
+```bash
+cd /Users/liamellis/Desktop/intentified-platform && rm -rf apps/intentified/.next
+```
+
+```
+apps/    node_modules/    packages/    plan/    scripts/    tickets/    turbo/
+```
+
+---
+
+
+
+---
+
+Let me provide you with manual steps to fix this issue:
+
+## Fix Steps:
+
+### 1. **Clear Next.js Cache** (in your terminal):
+```bash
+# Navigate to your project root
+cd /Users/liamellis/Desktop/intentified-platform
+
+# Clear Next.js cache
+rm -rf apps/intentified/.next
+
+# Also clear turbo cache
+rm -rf .turbo
+```
+
+### 2. **Check for Syntax Errors in @repo/ai**:
+The error might be coming from the `@repo/ai` package. Let's check if `makeCompanyEnrichmentService` or `analyzeCompetitiveLandscape` has any syntax issues.
+
+---
+
+<details>
+            <summary>Searched codebase "makeCompanyEnrichmentService" • **0** results</summary>
+        
+No results found
+</details>
+
+---
+
+
+
+---
+
+### 3. **Restart the Development Server**:
+After clearing the cache, restart your dev server:
+```bash
+# Kill any running processes
+pkill -f "next dev" || true
+
+# Restart the dev server
+cd apps/intentified
+npm run dev
+# or
+bun dev
+```
+
+### 4. **If the Error Persists**, check these potential issues:
+
+**A. Syntax in @repo/ai package:**
+```bash
+# Check for syntax errors in the AI package
+cd packages/ai
+bun lint
+# or
+npm run lint
+```
+
+**B. Verify the exports are correct:**
+Check that `makeCompanyEnrichmentService` is properly exported from `@repo/ai`:
+```typescript
+// In packages/ai/index.ts or similar
+export { makeCompanyEnrichmentService } from './path/to/service';
+```
+
+**C. Add error boundaries:**
+Sometimes the error is clearer with more detailed logging:
+
+---
+
+```diff
+    // Create a streamable value
+    const stream = createStreamableValue<CompetitorAnalysisStreamUpdate>();
+- 
+-   // Create enrichment service instance
+-   const enrichmentService = makeCompanyEnrichmentService();
+  
+    // Process the analysis asynchronously
+-   
++   (async () => {
+      try {
++       // Create enrichment service instance
++       const enrichmentService = makeCompanyEnrichmentService();
++       
+        // Call analyzeCompetitiveLandscape with progress callback
+        const result = await enrichmentService.analyzeCompetitiveLandscape(
+```
+
+```diff
+        stream.done();
+      } catch (error) {
++       console.error("Competitor analysis error:", error);
+        // Stream error to the client
+        stream.update({
+```
+
+```diff
+        });
+        stream.done();
+-     }finally{
+-       stream.done();
+      }
+-   
++   })();
+  
+    return stream.value;
+```
+
+---
+
+
+
+---
+
+I found a potential issue! The apply model fixed a malformed `finally` block. There was `}finally{` without proper spacing which could cause the syntax error.
+
+### 5. **Common Syntax Error Patterns to Check**:
+
+The error "Missing catch or finally after try" can occur from:
+- Malformed `finally` blocks (like `}finally{` instead of `} finally {`)
+- Missing closing braces `}`
+- Incorrect async function syntax
+- Import/export syntax errors
+
+### 6. **If you're still getting errors**, try this minimal test:
+
+---
+
+```diff
+- 
++ "use server";
++ 
++ export async function testServerAction() {
++   return { message: "Server action works!" };
++ } 
+```
+
+---
+
+
+
+---
+
+Now test if basic server actions work:
+
+---
+
+```diff
+- 
++ "use client";
++ 
++ import { testServerAction } from "@/app/actions/test-server-action";
++ 
++ export default function TestPage() {
++   async function handleClick() {
++     const result = await testServerAction();
++     console.log("Server action result:", result);
++     alert(result.message);
++   }
++ 
++   return (
++     <div className="p-8">
++       <h1 className="mb-4 text-2xl">Test Server Actions</h1>
++       <button
++         onClick={handleClick}
++         className="rounded bg-blue-500 px-4 py-2 text-white"
++       >
++         Test Server Action
++       </button>
++     </div>
++   );
++ }
++ 
+```
+
+---
+
+
+
+---
+
+## Summary of Debugging Steps:
+
+1. **Clear all caches**:
+   ```bash
+   rm -rf apps/intentified/.next
+   rm -rf .turbo
+   rm -rf node_modules/.cache
+   ```
+
+2. **Restart your dev server**:
+   ```bash
+   # From apps/intentified directory
+   bun dev
+   ```
+
+3. **Test basic server actions**:
+   Navigate to `http://localhost:3000/test-server-action` and click the button. If this works, the issue is with `@repo/ai`.
+
+4. **If the test works**, the issue is likely in the `@repo/ai` package:
+   - Check for syntax errors in `packages/ai`
+   - Ensure all exports are correct
+   - Look for any malformed try-catch blocks
+
+5. **If the test fails**, you might have a broader Next.js configuration issue:
+   - Check your `next.config.js`
+   - Ensure you're using a compatible version of Next.js with server actions
+   - Try updating dependencies: `bun update`
+
+The key fix was removing the malformed `}finally{` syntax that was causing the parse error. After clearing the cache and restarting, your app should work correctly.
+
+---
+

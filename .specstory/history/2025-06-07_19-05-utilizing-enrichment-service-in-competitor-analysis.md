@@ -1440,3 +1440,20 @@ Delete the .tsx file since server actions should use .ts extension
 
 ---
 
+I've fixed the issue by:
+
+1. **Renamed the file from `.tsx` to `.ts`** - Server actions should use `.ts` extension since they don't contain JSX
+2. **Restored the proper type** for the function parameter instead of using `any`
+3. **Kept the proper import structure** with the type import
+
+The "Missing catch or finally after try" error was likely caused by using `.tsx` extension for a server action file. Next.js server actions should be in `.ts` files.
+
+The changes made:
+- Created `apps/intentified/src/app/actions/competitor-analysis.ts` with the correct content
+- Deleted the old `competitor-analysis.tsx` file
+- Restored the `CompetitorAnalysisRequest` type for the function parameter
+
+You may need to restart your development server for the changes to take effect properly.
+
+---
+

@@ -236,11 +236,184 @@ I'll help you integrate the `IntentifiedProcessCard` styling into the `process-f
 
 ---
 
+```diff
+- 
++ "use client";
++ import { FC } from "react";
++ import { Badge } from "@/components/ui/badge";
++ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
++ import { AnimatedNumber } from "@/components/ui/animated-number";
++ import { LucideIcon } from "lucide-react";
++ import { cn } from "@/utils/utils";
++ 
++ interface ProcessStep {
++   id: number;
++   title: string;
++   subtitle: string;
++   icon: LucideIcon;
++   color: string;
++   description: string;
++   features: string[];
++   metrics?: {
++     urls?: number;
++     consumers?: number;
++   };
++ }
++ 
++ interface ProcessStepCardProps {
++   step: ProcessStep;
++   isActive: boolean;
++   onMouseEnter: () => void;
++   onMouseLeave: () => void;
++ }
++ 
++ export const ProcessStepCard: FC<ProcessStepCardProps> = ({
++   step,
++   isActive,
++   onMouseEnter,
++   onMouseLeave,
++ }) => {
++   const IconComponent = step.icon;
++ 
++   return (
++     <Card
++       className={cn(
++         "relative cursor-pointer overflow-visible border-white/30 bg-black/90 shadow-xl shadow-white/10 backdrop-blur-lg transition-all duration-300 hover:scale-105",
++         isActive
++           ? "shadow-lg ring-2 shadow-white/30 ring-white"
++           : "hover:border-white/40 hover:shadow-md hover:shadow-white/20",
++       )}
++       onMouseEnter={onMouseEnter}
++       onMouseLeave={onMouseLeave}
++     >
++       {/* Top connector line - similar to IntentifiedProcessCard */}
++       <div className="absolute -top-3 left-1/2 h-3 w-px -translate-x-1/2 bg-white/50"></div>
++ 
++       <CardHeader className="pb-3">
++         <div className="mb-3 flex items-center justify-between">
++           <div className={cn("rounded-full p-2 text-white", step.color)}>
++             <IconComponent className="h-6 w-6" />
++           </div>
++           <Badge className="border-white bg-white px-2 text-xs text-black">
++             STEP {step.id}
++           </Badge>
++         </div>
++         <CardTitle className="text-lg text-white">{step.title}</CardTitle>
++         <span className="text-sm font-medium text-white/70">
++           {step.subtitle}
++         </span>
++       </CardHeader>
++ 
++       <CardContent className="space-y-4 text-xs text-white/80">
++         <p>{step.description}</p>
++ 
++         {/* Metrics Section - styled like Energy Level */}
++         {step.id === 1 && step.metrics?.urls && step.metrics?.consumers && (
++           <div className="border-t border-white/10 pt-3">
++             <div className="grid grid-cols-2 gap-3">
++               <div className="space-y-1">
++                 <div className="flex items-center justify-between text-xs">
++                   <span className="text-white/70">URLs Daily</span>
++                   <span className="font-mono text-white">
++                     <AnimatedNumber value={step.metrics.urls} />B
++                   </span>
++                 </div>
++                 <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
++                   <div
++                     className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
++                     style={{ width: "100%" }}
++                   />
++                 </div>
++               </div>
++               <div className="space-y-1">
++                 <div className="flex items-center justify-between text-xs">
++                   <span className="text-white/70">Consumers</span>
++                   <span className="font-mono text-white">
++                     <AnimatedNumber value={step.metrics.consumers} />M
++                   </span>
++                 </div>
++                 <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
++                   <div
++                     className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
++                     style={{ width: "100%" }}
++                   />
++                 </div>
++               </div>
++             </div>
++           </div>
++         )}
++ 
++         {/* Features List - styled similar to Connected Nodes */}
++         <div className="border-t border-white/10 pt-3">
++           <h4 className="mb-2 text-xs font-medium tracking-wider text-white/70 uppercase">
++             Key Features
++           </h4>
++           <ul className="space-y-2">
++             {step.features.map((feature, idx) => (
++               <li key={idx} className="flex items-start text-xs text-white/80">
++                 <div className="mt-1 mr-2 h-1 w-1 flex-shrink-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
++                 <span>{feature}</span>
++               </li>
++             ))}
++           </ul>
++         </div>
++       </CardContent>
++     </Card>
++   );
++ };
++ 
+```
+
+---
+
+
+
+---
+
+Now let me update the `process-framework-workflow.tsx` to use the new `ProcessStepCard` component:
+
+---
+
 
 
 ---
 
 
+
+---
+
+
+
+---
+
+
+
+---
+
+Perfect! I've successfully integrated the `IntentifiedProcessCard` styling into the `process-framework-workflow.tsx` by creating a new `ProcessStepCard` component. Here's what I did:
+
+1. **Created `ProcessStepCard` component** (`apps/intentified/src/components/ui/process-step-card.tsx`):
+   - Maintains the same dark glass-morphism aesthetic as `IntentifiedProcessCard`
+   - Features the signature top connector line
+   - Uses similar Badge styling (adapted for "STEP X")
+   - Implements progress bars for metrics (styled like the energy level)
+   - Styles the features list similar to the connected nodes section
+
+2. **Updated `process-framework-workflow.tsx`**:
+   - Removed the inline Card implementation
+   - Imported and used the new `ProcessStepCard` component
+   - Simplified the render logic
+
+The result is a more consistent UI that shares the same visual language as your `IntentifiedProcessCard` while being adapted for the specific needs of the process steps. The cards now have:
+
+- Dark background with blur effect (`bg-black/90 backdrop-blur-lg`)
+- White/translucent borders and shadows
+- Hover effects with scaling and enhanced shadows
+- Consistent typography and spacing
+- Progress bars for metrics with gradient fills
+- The distinctive top connector line
+
+This makes the codebase more maintainable and ensures visual consistency across different components.
 
 ---
 

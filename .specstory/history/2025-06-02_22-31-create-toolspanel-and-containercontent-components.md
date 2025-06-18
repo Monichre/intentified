@@ -390,7 +390,46 @@ Where is the custom logo in the top left coming from?
 
 _**Assistant**_
 
-The custom logo in the top
+The custom logo in the top left of your dashboard (the "Intentified" logo with the swirl icon) is coming from the **ToolsPanel** component, specifically from this line:
+
+```tsx
+<aside
+  className="flex w-[280px] flex-col border-r border-[#2A2A2A] bg-[#0A0A0A]"
+  role="complementary"
+  aria-label="Tools panel"
+>
+  {/* Header */}
+  <div className="flex h-14 items-center justify-between border-b border-[#2A2A2A] px-6">
+    <h2 className="text-sm font-semibold text-white">Tools</h2>
+    <Button ...>
+      <Settings className="size-4" />
+    </Button>
+  </div>
+  {/* ... */}
+</aside>
+```
+
+But the **actual logo graphic** (the swirl and "Intentified" text) is rendered **above the "Quick Actions" section**. In your screenshot, it appears just under the "Tools" header. This is likely coming from a component or image import that is rendered at the top of the ToolsPanel, possibly something like:
+
+```tsx
+import { Logo } from "@/components/logo";
+// ...
+<Logo className="mb-4" />
+```
+
+However, in the code you provided for `ToolsPanel.tsx`, there is **no explicit logo import or rendering**. This means **the logo is likely being rendered by a parent layout or a wrapper component** (possibly in the sidebar or a global layout), or it is hardcoded in the CSS as a background image, or injected by a higher-level component.
+
+**In summary:**
+- The logo is not in the `ToolsPanel.tsx` code you provided.
+- It is likely coming from a shared `Logo` component (e.g., `@/components/logo`) or a parent layout.
+- Check your sidebar, app container, or global layout files for a `<Logo />` component or an image tag at the top of the left panel.
+
+**To find the exact source:**
+1. Search your codebase for `<Logo` or `logo` in the sidebar, app container, or layout files.
+2. Check for any image tags or background images in the left panel's CSS.
+3. If you have a custom sidebar component (e.g., `AppSidebar`), check its header section for the logo.
+
+If you want, I can help you search for the exact file and line where the logo is rendered—just let me know!
 
 ---
 

@@ -136,6 +136,21 @@ Read file: apps/intentified/src/components/header.tsx
 
 ---
 
+Read file: apps/intentified/src/components/header.tsx
+
+---
+
+<details>
+            <summary>Searched codebase "logo-icon.png" • **1** results</summary>
+        
+| File |
+|------|
+| `undefined` |
+
+</details>
+
+---
+
 
 
 ---

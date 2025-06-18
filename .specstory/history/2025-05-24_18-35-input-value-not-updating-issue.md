@@ -203,3 +203,97 @@ Could not resolve URI: Error: Unable to resolve nonexistent file '/Users/liamell
 
 ---
 
+<details>
+            <summary>Listed directory apps/intentified/src/features/dashboard/pipelines/seo-digital-processing/sections • **6** results</summary>
+        
+| Name |
+|-------|
+| 📄 `website-form.tsx` |
+| 📄 `web-vitals.tsx` |
+| 📄 `seo-score.tsx` |
+| 📄 `og-images.tsx` |
+| 📄 `analyze-with-ai.tsx` |
+| 📄 `_layout.tsx` |
+
+</details>
+
+---
+
+
+
+---
+
+Read file: apps/intentified/src/features/dashboard/pipelines/seo-digital-processing/sections/_layout.tsx
+
+---
+
+
+
+---
+
+Could not resolve URI: Error: Unable to resolve nonexistent file '/Users/liamellis/Desktop/intentified-platform/apps/intentified/src/components/sections'
+
+---
+
+
+
+---
+
+```diff
+  import { Separator } from "@/components/ui/separator";
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
++ import { OnboardingForm } from "@/components/onboarding-form";
++ import SeoPipelineLayout from "@/features/dashboard/pipelines/seo-digital-processing/sections/_layout";
+  
+  export default function OnboardingPage() {
+```
+
+```diff
+          className="w-full"
+        >
+-         <TabsList className="mx-auto mb-8 grid w-full max-w-xl grid-cols-3">
++         <TabsList className="mx-auto mb-8 grid w-full max-w-xl grid-cols-5">
+            <TabsTrigger value="welcome">Welcome</TabsTrigger>
+            <TabsTrigger value="company">Company</TabsTrigger>
+            <TabsTrigger value="goals">Goals</TabsTrigger>
++           <TabsTrigger value="details">Details</TabsTrigger>
++           <TabsTrigger value="seo">SEO Analysis</TabsTrigger>
+          </TabsList>
+  
+```
+
+```diff
+            </Card>
+          </TabsContent>
++ 
++         {/* Details Step - comprehensive form */}
++         <TabsContent value="details">
++           <OnboardingForm />
++         </TabsContent>
++ 
++         {/* SEO Digital Processing Step */}
++         <TabsContent value="seo">
++           <div className="min-h-screen w-full">
++             <SeoPipelineLayout />
++           </div>
++         </TabsContent>
+        </Tabs>
+      </div>
+```
+
+---
+
+Added two new steps to your onboarding flow:
+
+1. Details – renders the comprehensive `OnboardingForm`.
+2. SEO Analysis – embeds the SEO-digital-processing pipeline layout.
+
+Key changes in `page.tsx`:
+• Imported `OnboardingForm` and `SeoPipelineLayout`.
+• Expanded the tabs list to five columns and added corresponding `TabsTrigger`s.
+• Added `TabsContent` blocks for both new steps.
+
+These now appear sequentially alongside Welcome, Company, and Goals. Let me know if you’d like any adjustments!
+
+---
+

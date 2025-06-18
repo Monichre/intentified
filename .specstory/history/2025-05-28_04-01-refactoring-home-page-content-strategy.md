@@ -466,7 +466,247 @@ merge @@00-Overview.md and @00-Overview.md
 
 _**Assistant**_
 
+**Plan for Merging `tickets/@00-Overview.md` and `docs/00-Overview.md`:**
 
+### Step-by-Step Plan
+
+1. **Analyze Both Files:**
+   - `docs/00-Overview.md`: Home Page Refactor & "Hijacking System" Feature Epic (tickets 01–05, focused on homepage refactor).
+   - `tickets/@00-Overview.md`: Project Epics Overview (two epics: Website Form Integration and Website & Marketing Copy, with detailed ticket lists and implementation strategies).
+
+2. **Merge Strategy:**
+   - Create a single, comprehensive overview file.
+   - Preserve both epic descriptions and ticket lists.
+   - Clearly separate each epic with headings.
+   - Ensure all ticket tables, dependencies, and implementation strategies are included.
+   - Add a top-level table of contents for navigation.
+   - Remove duplicate or redundant sections.
+   - Use consistent formatting for all epics and tickets.
+
+3. **File Location:**
+   - Save the merged file as `docs/00-Overview.md` (the canonical project epic/ticket overview).
+
+---
+
+### Merged File Draft
+
+```markdown
+# Project Epics & Ticket Overview
+
+## Table of Contents
+
+1. [Home Page Refactor & "Hijacking System" Feature Epic](#home-page-refactor--hijacking-system-feature-epic)
+2. [Website Form Integration Epic](#website-form-integration-epic---overview)
+3. [Website & Marketing Copy Epic](#website--marketing-copy---overview)
+
+---
+
+## Home Page Refactor & "Hijacking System" Feature Epic
+
+### Description
+Refactor the home page to use new strategic copy, modularize sections, and introduce "The Hijacking System" as a feature section (not the brand identity). See individual tickets for details.
+
+### Ticket List
+
+| #  | Ticket Name                                         | Status   | Dependencies |
+|----|-----------------------------------------------------|----------|--------------|
+| 01 | Home Page Refactor Planning                         | ⏳       |              |
+| 02 | Implement Hijacking System Feature Section          | ⏳       | 01           |
+| 03 | Integrate Hijacking System Section Into Home Page   | ⏳       | 02           |
+| 04 | Update Home Page Content With New Copy              | ⏳       | 01           |
+| 05 | Documentation And Code Review                       | ⏳       | 03, 04       |
+
+### Progress
+- Mark each ticket as ✅ done, ⏳ pending, or 🛑 blocked as work proceeds.
+
+---
+
+## Website Form Integration Epic - Overview
+
+### Epic Description
+
+Integrate the sophisticated website form functionality from `website-form.tsx` into the onboarding sequence to trigger SEO analysis when users enter their website URL.
+
+**Business Value**: Streamlines user onboarding by providing immediate value through SEO analysis, improving user engagement and product adoption.
+
+**Total Story Points**: 16
+
+### Ticket List
+
+| Ticket | Title | Status | Story Points | Dependencies |
+|--------|-------|--------|--------------|--------------|
+| [01-Extract-Reusable-Website-URL-Input-Component.md](01-Extract-Reusable-Website-URL-Input-Component.md) | Extract Reusable Website URL Input Component | ⏳ pending | 3 | None |
+| [02-Add-SEO-Analysis-State-Management-to-Onboarding-Parent.md](02-Add-SEO-Analysis-State-Management-to-Onboarding-Parent.md) | Add SEO Analysis State Management to Onboarding Parent | ⏳ pending | 2 | None |
+| [03-Update-OnboardingSequence-Props-and-Interface.md](03-Update-OnboardingSequence-Props-and-Interface.md) | Update OnboardingSequence Props and Interface | ⏳ pending | 1 | None |
+| [04-Integrate-WebsiteUrlInput-into-Digital-Onboarding-Step.md](04-Integrate-WebsiteUrlInput-into-Digital-Onboarding-Step.md) | Integrate WebsiteUrlInput into Digital Onboarding Step | ⏳ pending | 2 | Ticket 01 |
+| [05-Implement-SEO-Analysis-Results-Display.md](05-Implement-SEO-Analysis-Results-Display.md) | Implement SEO Analysis Results Display | ⏳ pending | 3 | Tickets 02, 03 |
+| [06-Update-Onboarding-Completion-Logic.md](06-Update-Onboarding-Completion-Logic.md) | Update Onboarding Completion Logic | ⏳ pending | 1 | Ticket 02 |
+| [07-Add-Comprehensive-Error-Handling-and-Edge-Cases.md](07-Add-Comprehensive-Error-Handling-and-Edge-Cases.md) | Add Comprehensive Error Handling and Edge Cases | ⏳ pending | 2 | Tickets 04, 05 |
+| [08-Add-Integration-and-E2E-Tests.md](08-Add-Integration-and-E2E-Tests.md) | Add Integration and E2E Tests | ⏳ pending | 2 | All previous tickets |
+
+### Implementation Strategy
+
+#### Week 1: Foundation (Tickets 01-03)
+- **Parallel Track A**: Extract WebsiteUrlInput component (01)
+- **Parallel Track B**: Add state management (02) and update interfaces (03)
+- **Goal**: Establish foundation for integration
+
+#### Week 2: UI Integration (Tickets 04-05)
+- **Sequential**: Integrate WebsiteUrlInput (04) → Implement results display (05)
+- **Goal**: Complete core user-facing functionality
+
+#### Week 3: Completion & Polish (Tickets 06-07)
+- **Parallel**: Update completion logic (06) and add error handling (07)
+- **Goal**: Robust, production-ready implementation
+
+#### Week 4: Testing & Validation (Ticket 08)
+- **Focus**: Comprehensive testing suite
+- **Goal**: Ensure quality and prevent regressions
+
+### Dependencies Map
+
+```
+01 → 04 → 07 → 08
+02 → 05 → 07 → 08
+     ↓    ↓
+03 → 05   06 → 08
+```
+
+### Key Risk Areas
+
+1. **Integration Complexity**: Component extraction and state management integration
+2. **SEO Pipeline Dependencies**: Ensuring all SEO components are accessible
+3. **User Experience**: Maintaining smooth onboarding flow during changes
+4. **Testing Coverage**: Comprehensive testing of async operations and error states
+
+### Success Criteria
+
+- [ ] Users can trigger SEO analysis from onboarding sequence
+- [ ] SEO results display correctly in Analysis tab
+- [ ] Error scenarios are handled gracefully
+- [ ] Onboarding completion rate maintains or improves
+- [ ] No regressions in existing onboarding functionality
+- [ ] All tests pass with ≥90% coverage
+
+### Technical Scope
+
+**Files Modified**:
+- `apps/intentified/src/app/dashboard/onboarding/page.tsx`
+- `apps/intentified/src/components/onboarding/onboarding-sequence.tsx`
+
+**Files Created**:
+- `apps/intentified/src/components/onboarding/website-url-input.tsx`
+
+**External Dependencies**:
+- SEO pipeline components in `features/pipelines/seo-digital-processing/`
+- Clerk user metadata system
+- Existing form validation patterns
+
+---
+
+## Website & Marketing Copy - Overview
+
+### Epic Description
+
+Create a cohesive and compelling marketing narrative for the Intentified platform that effectively communicates the product's value proposition, competitive advantages, and technical capabilities to potential customers.
+
+**Business Value**: Establishes a clear market position, drives customer acquisition, and increases conversion rates by effectively communicating Intentified's unique value proposition as a competitor traffic hijacking system.
+
+**Total Story Points**: 16
+
+### Ticket List
+
+| Ticket | Title | Status | Story Points | Dependencies |
+|--------|-------|--------|--------------|--------------|
+| [09-Implement-Primary-Marketing-Headline-and-Value-Proposition.md](09-Implement-Primary-Marketing-Headline-and-Value-Proposition.md) | Implement Primary Marketing Headline and Value Proposition | ✅ completed | 2 | None |
+| [10-Develop-Core-Benefit-Metrics-and-Comparison-Table.md](10-Develop-Core-Benefit-Metrics-and-Comparison-Table.md) | Develop Core Benefit Metrics and Comparison Table | ⏳ pending | 2 | None |
+| [11-Create-Four-Step-Process-Framework-and-Visual-Assets.md](11-Create-Four-Step-Process-Framework-and-Visual-Assets.md) | Create Four-Step Process Framework and Visual Assets | ⏳ pending | 3 | None |
+| [12-Develop-Detailed-Intent-Database-Specifications.md](12-Develop-Detailed-Intent-Database-Specifications.md) | Develop Detailed Intent Database Specifications | ⏳ pending | 2 | Ticket 11 |
+| [13-Create-Customer-Testimonials-and-Conversion-Elements.md](13-Create-Customer-Testimonials-and-Conversion-Elements.md) | Create Customer Testimonials and Conversion Elements | ⏳ pending | 2 | Ticket 09 |
+| [14-Implement-FAQ-Section-and-Trust-Indicators.md](14-Implement-FAQ-Section-and-Trust-Indicators.md) | Implement FAQ Section and Trust Indicators | ⏳ pending | 2 | Ticket 13 |
+| [15-Integrate-Marketing-Content-with-Website-UI-Components.md](15-Integrate-Marketing-Content-with-Website-UI-Components.md) | Integrate Marketing Content with Website UI Components | ⏳ pending | 3 | Tickets 09, 10, 11, 12, 13, 14 |
+
+### Implementation Strategy
+
+#### Phase 1: Core Messaging Foundation (Tickets 09-10)
+- **Focus**: Establish headline, value proposition, and key metrics
+- **Goal**: Create a compelling marketing foundation that clearly communicates Intentified's value
+
+#### Phase 2: Detailed Process Explanation (Tickets 11-12)
+- **Focus**: Detail the four-step process and technical specifications
+- **Goal**: Build credibility through transparent explanation of technology and methodology
+
+#### Phase 3: Social Proof and Conversion (Tickets 13-14)
+- **Focus**: Add testimonials, conversion elements, and trust indicators
+- **Goal**: Reduce friction in the customer journey and increase conversion rates
+
+#### Phase 4: Technical Implementation (Ticket 15)
+- **Focus**: Integrate all content with UI components and interactive elements
+- **Goal**: Create a cohesive, visually engaging user experience that supports conversion goals
+
+### Dependencies Map
+
+```
+09 → 13 → 14
+10          ↘
+11 → 12     → 15
+```
+
+### Key Risk Areas
+
+1. **Message Clarity**: Ensuring complex technical capabilities are explained simply
+2. **Competitive Positioning**: Maintaining legal compliance while highlighting competitor targeting
+3. **Proof Points**: Providing credible metrics and testimonials that build trust
+4. **Conversion Optimization**: Creating effective calls-to-action that drive engagement
+5. **Technical Implementation**: Balancing visual appeal with performance and accessibility
+
+### Success Criteria
+
+- [ ] Clear articulation of unique value proposition
+- [ ] Compelling presentation of 4-step process
+- [ ] Effective communication of technical capabilities
+- [ ] Strong social proof elements
+- [ ] Clear call-to-action paths for different customer personas
+- [ ] Compliance with legal and ethical marketing standards
+- [ ] Cohesive visual presentation across all marketing content
+- [ ] Strong performance and accessibility metrics
+
+### Technical Scope
+
+**Content Areas Modified**:
+- Main website headline and hero section
+- Benefits and comparison tables
+- Process explanation framework
+- Technical specifications and capabilities
+- Testimonials and social proof
+- Conversion elements and calls-to-action
+- FAQ section and trust indicators
+- UI components and interactive elements
+
+---
+```
+
+---
+
+**Next Step:**  
+I will now write this merged content to `docs/00-Overview.md` as the canonical project epic/ticket overview.
+
+---
+
+
+
+---
+
+The contents of both `tickets/@00-Overview.md` and `docs/00-Overview.md` have been merged into a single, comprehensive epic and ticket overview in `docs/00-Overview.md`. This file now includes:
+
+- A table of contents for navigation
+- The Home Page Refactor & "Hijacking System" Feature Epic (with tickets and progress)
+- The Website Form Integration Epic (with tickets, implementation strategy, dependencies, and risk areas)
+- The Website & Marketing Copy Epic (with tickets, implementation strategy, dependencies, and risk areas)
+
+This unified overview provides a single source of truth for all major project epics, tickets, and their relationships.
+
+If you need further organization, cross-linking, or want to split out any sections, let me know! Ready to proceed with the next implementation step.
 
 ---
 

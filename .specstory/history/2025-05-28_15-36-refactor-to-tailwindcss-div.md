@@ -172,7 +172,3 @@ The component now uses pure Tailwind CSS classes while maintaining all the origi
 
 ---
 
-
-
----
-

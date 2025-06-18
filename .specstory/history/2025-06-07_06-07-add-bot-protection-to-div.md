@@ -220,3 +220,28 @@ _**Assistant**_
 
 ---
 
+Looking at the project structure and the BotProtection component, I need to fix the import path. The component is exported as a default export, and the correct path should be without the `/src` and `/index`.
+
+---
+
+```diff
+  
+  import { TrustedBySection } from "@/components/shared/TrustedBySection";
+- import { BotProtection } from "@repo/design-system/src/components/BotProtection/index";
++ import BotProtection from "@repo/design-system/components/BotProtection";
+  
+  import React from "react";
+```
+
+---
+
+Perfect! I've fixed the import by:
+
+1. ✅ **Corrected the path**: Removed `/src` and `/index` from the path since the design-system package structure doesn't include a `src` folder and the `index` is auto-resolved
+2. ✅ **Fixed the import syntax**: Changed from named import `{ BotProtection }` to default import `BotProtection` since the component is exported as a default export in the design-system package
+3. ✅ **Used the correct package alias**: `@repo/design-system/components/BotProtection` matches the monorepo structure
+
+The import should now work correctly without any linter errors.
+
+---
+

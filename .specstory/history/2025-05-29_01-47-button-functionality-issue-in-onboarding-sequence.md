@@ -203,7 +203,77 @@ continue
 
 _**Assistant**_
 
+Here’s what needs to be done to resolve the issue:
 
+**Problem Recap:**
+- The `OnboardingSequence` component expects several handler props for competitors and keywords (add, remove, change), but the parent (`onboarding/page.tsx`) is not passing them.
+- This causes the "Add Another" buttons for competitors and keywords to not work.
+
+---
+
+## Step-by-Step Plan
+
+1. **Pass all required handler functions as props** from the parent to `OnboardingSequence`.
+2. **Verify types**: Ensure the handlers match the expected signatures.
+3. **Test**: After the fix, clicking "Add Another Competitor" or "Add Another Keyword" should add a new input.
+
+---
+
+## Pseudocode
+
+```typescript
+<OnboardingSequence
+  ...
+  handleCompetitorChange={handleCompetitorChange}
+  addCompetitor={addCompetitor}
+  removeCompetitor={removeCompetitor}
+  handleSocialIntentChange={handleSocialIntentChange}
+  addSocialIntent={addSocialIntent}
+  removeSocialIntent={removeSocialIntent}
+  handleKeywordIntentChange={handleKeywordIntentChange}
+  addKeywordIntent={addKeywordIntent}
+  removeKeywordIntent={removeKeywordIntent}
+/>
+```
+
+---
+
+## Implementation
+
+I will update the `OnboardingSequence` usage in `onboarding/page.tsx` to pass all the required handler props.
+
+---
+
+```diff
+          seoAnalysisState={seoAnalysisState}
+          triggerSeoAnalysis={triggerSeoAnalysis}
++         handleCompetitorChange={handleCompetitorChange}
++         addCompetitor={addCompetitor}
++         removeCompetitor={removeCompetitor}
++         handleSocialIntentChange={handleSocialIntentChange}
++         addSocialIntent={addSocialIntent}
++         removeSocialIntent={removeSocialIntent}
++         handleKeywordIntentChange={handleKeywordIntentChange}
++         addKeywordIntent={addKeywordIntent}
++         removeKeywordIntent={removeKeywordIntent}
+        />
+      </div>
+```
+
+---
+
+The missing handler functions are now passed as props to `OnboardingSequence`. This will enable the "Add Another" buttons for both competitors and keywords to work as intended.
+
+**What to expect:**
+- Clicking "Add Another Competitor" will add a new competitor input row.
+- Clicking "Add Another Keyword" will add a new keyword input row.
+- Removing works as well.
+
+**If you still have issues:**
+- Make sure the state is not being mutated elsewhere.
+- Ensure the initial state for `competitors` and `keywords` is as shown (`[{ name: '', url: '' }]` and `['']`).
+
+You can now test the onboarding flow and the dynamic add/remove for competitors and keywords should work! If you need further adjustments (e.g., validation, min/max enforcement), let me know.
 
 ---
 
