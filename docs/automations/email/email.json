@@ -1,0 +1,1109 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# 🎯 AI Email Lead Nurturing & Engagement System\n\n**Workflow Overview:**\n\n**Step 1: Lead Intake & Enrichment**\n- Captures lead data from forms or webhooks\n- Enriches with behavioral and demographic data\n- Validates and scores lead quality\n\n**Step 2: AI Behavior Analysis**\n- Analyzes lead pain points and motivations\n- Identifies optimal communication style\n- Determines journey stage and priorities\n\n**Step 3: Custom Sequence Generation**\n- Creates personalized email sequences\n- Tailors messaging to lead's specific needs\n- Generates multiple touchpoint strategies\n\n**Step 4: Psychological Trigger Testing**\n- A/B tests subject lines with different psychological triggers\n- Tests urgency, curiosity, social proof, and personalization\n- Optimizes for highest engagement rates\n\n**Step 5: Engagement-Based Follow-ups**\n- Tracks opens, clicks, and replies\n- Adjusts sequence based on engagement patterns\n- Escalates hot leads and nurtures cold ones\n\n**Output:** Fully automated, personalized email nurturing system that adapts based on lead behavior and engagement.",
+        "height": 780,
+        "width": 700,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2700,
+        -120
+      ],
+      "id": "3fa9bec8-cc83-4ad8-b1c6-b8e76ea2afc0",
+      "name": "Workflow Overview"
+    },
+    {
+      "parameters": {
+        "formTitle": "Lead Capture & Analysis",
+        "formDescription": "Enter lead information to start AI-powered email nurturing sequence",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name",
+              "placeholder": "John Smith",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "john@company.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Company",
+              "placeholder": "Company Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Job Title",
+              "placeholder": "CEO, Marketing Director, etc."
+            },
+            {
+              "fieldLabel": "Company Website",
+              "placeholder": "https://company.com"
+            },
+            {
+              "fieldLabel": "Pain Points / Challenges",
+              "fieldType": "textarea",
+              "placeholder": "What challenges are you facing?"
+            },
+            {
+              "fieldLabel": "Lead Source",
+              "placeholder": "LinkedIn, Website, Referral, etc."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -2140,
+        100
+      ],
+      "id": "7daf3b40-0aed-4cc3-a73d-a763dc06f7b2",
+      "name": "Lead Capture Form",
+      "webhookId": "lead-capture-form"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "lead-data-id",
+              "name": "leadData",
+              "value": "={{ JSON.stringify($json) }}",
+              "type": "string"
+            },
+            {
+              "id": "timestamp-id",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "lead-id",
+              "name": "leadId",
+              "value": "={{ $json.email.split('@')[0] + '_' + Date.now() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1900,
+        100
+      ],
+      "id": "b1b9d59a-7949-4770-bbea-ef3bd2109372",
+      "name": "Prepare Lead Data"
+    },
+    {
+      "parameters": {
+        "url": "=https://emailverifier.reoon.com/api/v1/verify?email={{ $json.email }}&key=YOUR_API_KEY&mode=quick",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1660,
+        100
+      ],
+      "id": "0692fc35-9099-4034-8431-20306087b01c",
+      "name": "Email Verification"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "email-valid-check",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "valid",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1420,
+        100
+      ],
+      "id": "d26f9b46-7aac-4937-8c75-74f8fe77e6c5",
+      "name": "Email Validation Check"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Lead Information:\n- Name: {{ $('Lead Capture Form').item.json['Full Name'] }}\n- Company: {{ $('Lead Capture Form').item.json.Company }}\n- Job Title: {{ $('Lead Capture Form').item.json['Job Title'] }}\n- Website: {{ $('Lead Capture Form').item.json['Company Website'] }}\n- Pain Points: {{ $('Lead Capture Form').item.json['Pain Points / Challenges'] }}\n- Lead Source: {{ $('Lead Capture Form').item.json['Lead Source'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert lead behavior analyst and sales psychologist. Your task is to analyze incoming lead data and provide deep insights about their behavior patterns, pain points, motivations, and optimal communication strategies.\n\nAnalyze the provided lead information and return a structured analysis including:\n\n1. **Pain Point Analysis**: Identify primary and secondary pain points\n2. **Behavioral Profile**: Communication style preferences, decision-making patterns\n3. **Journey Stage**: Where they are in the buying journey (awareness, consideration, decision)\n4. **Psychological Triggers**: What motivates them (urgency, social proof, authority, etc.)\n5. **Optimal Approach**: Recommended communication tone, frequency, and messaging angles\n6. **Risk Factors**: Potential objections or concerns they might have\n7. **Engagement Predictors**: Likelihood to engage and conversion probability\n\nProvide actionable insights that can be used to create highly personalized email sequences."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1180,
+        -100
+      ],
+      "id": "dad483df-938d-42ec-a4ad-d7da36bc0653",
+      "name": "Lead Behavior Analyzer"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1180,
+        -20
+      ],
+      "id": "ce4723c5-b045-4e71-8134-2c701f4876be",
+      "name": "OpenAI Analyzer Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "2rdkqvzVqstsA7yD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"pain_points\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"primary\": {\"type\": \"string\"},\n        \"secondary\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}\n      }\n    },\n    \"behavioral_profile\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"communication_style\": {\"type\": \"string\"},\n        \"decision_making\": {\"type\": \"string\"},\n        \"engagement_level\": {\"type\": \"string\"}\n      }\n    },\n    \"journey_stage\": {\"type\": \"string\"},\n    \"psychological_triggers\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},\n    \"optimal_approach\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"tone\": {\"type\": \"string\"},\n        \"frequency\": {\"type\": \"string\"},\n        \"messaging_angles\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}\n      }\n    },\n    \"conversion_probability\": {\"type\": \"string\"}\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -980,
+        -20
+      ],
+      "id": "1c28a7f5-a69f-40b4-b585-42291de73856",
+      "name": "Behavior Analysis Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "behavior-analysis-id",
+              "name": "behaviorAnalysis",
+              "value": "={{ JSON.stringify($json.output) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -760,
+        0
+      ],
+      "id": "6e8fd4fc-a273-404d-a68a-8bba15765dbe",
+      "name": "Store Behavior Analysis"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Lead Profile:\n{{ $('Store Behavior Analysis').item.json.behaviorAnalysis }}\n\nLead Information:\n- Name: {{ $('Lead Capture Form').item.json['Full Name'] }}\n- Company: {{ $('Lead Capture Form').item.json.Company }}\n- Job Title: {{ $('Lead Capture Form').item.json['Job Title'] }}\n- Pain Points: {{ $('Lead Capture Form').item.json['Pain Points / Challenges'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert email sequence strategist and copywriter. Based on the lead's behavioral analysis and profile, create a comprehensive 5-email nurturing sequence that addresses their specific pain points and motivations.\n\nFor each email in the sequence, provide:\n\n1. **Email Purpose**: What this email aims to achieve\n2. **Subject Line Options**: 3 different subject lines using different psychological triggers\n3. **Email Content**: Complete email copy (150-250 words)\n4. **Call-to-Action**: Specific next step for the lead\n5. **Timing**: When to send this email (immediate, +2 days, +1 week, etc.)\n6. **Psychological Trigger**: Primary trigger used (urgency, social proof, curiosity, etc.)\n\nSequence Structure:\n- Email 1: Welcome & Value Introduction\n- Email 2: Problem Agitation & Solution Preview\n- Email 3: Social Proof & Case Study\n- Email 4: Urgency & Scarcity\n- Email 5: Final Value-Add & Clear CTA\n\nTailor each email to the lead's specific profile, pain points, and communication preferences identified in the analysis."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -500,
+        0
+      ],
+      "id": "36421bc8-c74d-470d-a492-ebef919de290",
+      "name": "Email Sequence Generator"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -500,
+        80
+      ],
+      "id": "9302412b-5cce-4c6c-b273-17d51b42a2bc",
+      "name": "OpenAI Sequence Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "2rdkqvzVqstsA7yD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"email_sequence\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"email_number\": {\"type\": \"number\"},\n          \"purpose\": {\"type\": \"string\"},\n          \"subject_lines\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},\n          \"content\": {\"type\": \"string\"},\n          \"call_to_action\": {\"type\": \"string\"},\n          \"timing\": {\"type\": \"string\"},\n          \"psychological_trigger\": {\"type\": \"string\"}\n        }\n      }\n    }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -340,
+        80
+      ],
+      "id": "bfc83579-3d31-4e62-8a2e-3de0ab20d35c",
+      "name": "Email Sequence Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "email_sequence",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        200
+      ],
+      "id": "14ef6385-6d83-4ade-bd94-532884ce767b",
+      "name": "Split Email Sequence"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "first-email-check",
+              "leftValue": "={{ $json.email_number }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1960,
+        700
+      ],
+      "id": "71a78ec9-1363-4b70-a214-c129d36cd750",
+      "name": "First Email Filter"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get subject lines array and randomly select one for A/B testing\nconst subjectLines = $json.subject_lines;\nconst randomIndex = Math.floor(Math.random() * subjectLines.length);\nconst selectedSubjectLine = subjectLines[randomIndex];\n\n// Track which subject line was used for later analysis\nreturn [{\n  json: {\n    ...($input.item.json),\n    selected_subject_line: selectedSubjectLine,\n    subject_line_variant: randomIndex + 1,\n    all_subject_lines: subjectLines\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1720,
+        600
+      ],
+      "id": "6744e259-f5d5-4d48-b6d9-31d9fd7700de",
+      "name": "A/B Test Subject Lines"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Lead Capture Form').item.json.Email }}",
+        "subject": "={{ $json.selected_subject_line }}",
+        "emailType": "text",
+        "message": "=Dear {{ $('Lead Capture Form').item.json['Full Name'] }},\n\n{{ $json.content }}\n\n{{ $json.call_to_action }}\n\nBest regards,\n[Your Name]\n[Your Company]",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1460,
+        600
+      ],
+      "id": "14999ac2-f069-46c5-a4a2-5f4ce3cf2cea",
+      "name": "Send First Email",
+      "webhookId": "a0157822-5a5e-4212-af09-93477a2a611a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "h6Ah1h013F5wEKFK",
+          "name": "Test Account (RA)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "email-tracking-id",
+              "name": "emailTracking",
+              "value": "={{ JSON.stringify({\n  leadId: $('Prepare Lead Data').item.json.leadId,\n  emailNumber: 1,\n  sentAt: $now,\n  messageId: $json.id,\n  threadId: $json.threadId,\n  subjectLineVariant: $('A/B Test Subject Lines').item.json.subject_line_variant,\n  psychologicalTrigger: $('Split Email Sequence').item.json.psychological_trigger\n}) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1240,
+        600
+      ],
+      "id": "e5e1764a-1aab-40de-8f86-2504c0d515ce",
+      "name": "Track Email Sent"
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1000,
+        600
+      ],
+      "id": "d007f236-f438-4f0d-be22-4dab1b3f9c96",
+      "name": "Wait for Engagement",
+      "webhookId": "engagement-wait-webhook"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $('Track Email Sent').item.json.emailTracking.messageId }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -760,
+        600
+      ],
+      "id": "102b836f-2dcb-49ba-a393-19c84a07eafe",
+      "name": "Check Email Engagement",
+      "webhookId": "228937b9-3355-4d8f-8eb6-267c572fbe9a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "h6Ah1h013F5wEKFK",
+          "name": "Test Account (RA)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyze email engagement based on Gmail API response\nconst messageData = $json;\nconst snippet = messageData.snippet || '';\nconst isRead = messageData.labelIds ? !messageData.labelIds.includes('UNREAD') : false;\n\n// Simple engagement scoring\nlet engagementScore = 0;\nif (isRead) engagementScore += 30;\nif (snippet.length > 50) engagementScore += 20; // Longer snippet might indicate interaction\n\n// Check if there are replies by looking at thread messages\nconst hasReply = messageData.threadId ? false : false; // This would need thread analysis\n\nconst engagementLevel = engagementScore >= 40 ? 'high' : engagementScore >= 20 ? 'medium' : 'low';\n\nreturn [{\n  json: {\n    ...($input.item.json),\n    engagementScore,\n    engagementLevel,\n    isRead,\n    hasReply,\n    analyzedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        600
+      ],
+      "id": "3618316c-f363-4104-b718-35fd3879b1f4",
+      "name": "Analyze Engagement"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "high-engagement-check",
+              "leftValue": "={{ $json.engagementLevel }}",
+              "rightValue": "high",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -280,
+        600
+      ],
+      "id": "dec0b1ee-ecf8-46e1-9252-0a351fc2cab5",
+      "name": "Engagement Routing"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "next-email-check",
+              "leftValue": "={{ $json.email_number }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1960,
+        900
+      ],
+      "id": "099722da-0034-4241-9990-55dd49b7473a",
+      "name": "Next Email Filter"
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1680,
+        920
+      ],
+      "id": "9452d5b9-dc69-4d7d-afa5-1d92a11d30ec",
+      "name": "Wait for Next Email",
+      "webhookId": "next-email-wait"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Lead Capture Form').item.json.Email }}",
+        "subject": "={{ $json.subject_lines[0] }}",
+        "emailType": "text",
+        "message": "=Dear {{ $('Lead Capture Form').item.json['Full Name'] }},\n\n{{ $json.content }}\n\n{{ $json.call_to_action }}\n\nBest regards,\n[Your Name]\n[Your Company]",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1440,
+        920
+      ],
+      "id": "a9cdc748-6609-4687-8141-ffb7e8b1b50e",
+      "name": "Send Follow-up Email",
+      "webhookId": "d08b711c-489c-4b9d-9d61-d27c2bde4145",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "h6Ah1h013F5wEKFK",
+          "name": "Test Account (RA)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Lead Engagement Data:\n{{ JSON.stringify($json) }}\n\nOriginal Lead Info:\n- Name: {{ $('Lead Capture Form').item.json['Full Name'] }}\n- Company: {{ $('Lead Capture Form').item.json.Company }}\n- Behavior Analysis: {{ $('Store Behavior Analysis').item.json.behaviorAnalysis }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        -40,
+        700
+      ],
+      "id": "3d0c83d1-b4b5-43a7-999c-9530b4f2b9e9",
+      "name": "Engagement Optimizer"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -40,
+        780
+      ],
+      "id": "02003cd7-6d29-47c1-bdac-a2bac8526d07",
+      "name": "OpenAI Optimizer Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "2rdkqvzVqstsA7yD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Email Analytics [CONFIGURE]"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "list",
+          "cachedResultName": "Analytics Data"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Lead_ID": "={{ $('Prepare Lead Data').item.json.leadId }}",
+            "Name": "={{ $('Lead Capture Form').item.json['Full Name'] }}",
+            "Email": "={{ $('Lead Capture Form').item.json.Email }}",
+            "Company": "={{ $('Lead Capture Form').item.json.Company }}",
+            "Email_Number": "={{ $json.email_number || 1 }}",
+            "Subject_Line_Variant": "={{ $json.subject_line_variant || 1 }}",
+            "Psychological_Trigger": "={{ $json.psychological_trigger }}",
+            "Engagement_Score": "={{ $json.engagementScore || 0 }}",
+            "Engagement_Level": "={{ $json.engagementLevel || 'unknown' }}",
+            "Sent_At": "={{ $now }}",
+            "Analyzed_At": "={{ $json.analyzedAt || $now }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1240,
+        920
+      ],
+      "id": "2203b7c2-b8c2-4b51-9d4a-d67c2c9ecff1",
+      "name": "Log Analytics",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "u3VrnG9OQHvXE2rN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "SLACK_CHANNEL_ID",
+          "mode": "list",
+          "cachedResultName": "sales-alerts [CONFIGURE]"
+        },
+        "text": "=🔥 **High Engagement Alert!**\n\n**Lead:** {{ $('Lead Capture Form').item.json['Full Name'] }} ({{ $('Lead Capture Form').item.json.Company }})\n**Email:** {{ $('Lead Capture Form').item.json.Email }}\n**Engagement Score:** {{ $json.engagementScore }}/50\n**Subject Line Tested:** {{ $('A/B Test Subject Lines').item.json.selected_subject_line }}\n**Psychological Trigger:** {{ $('Split Email Sequence').item.json.psychological_trigger }}\n\n**Recommended Action:** {{ $('Engagement Optimizer').item.json.text }}\n\n**Lead Profile:** {{ $('Store Behavior Analysis').item.json.behaviorAnalysis }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -40,
+        500
+      ],
+      "id": "6fd7c895-4641-41a7-8939-1bb11a5c5022",
+      "name": "High Engagement Alert",
+      "webhookId": "f4db6140-f796-49d1-bb56-73d9dd749208",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 📊 Lead Enrichment & Validation\n\nValidates email addresses and enriches lead data before processing.",
+        "height": 360,
+        "width": 500,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1960,
+        -60
+      ],
+      "id": "75121139-1ed7-47ba-a615-3b56eba42ce0",
+      "name": "Lead Enrichment Note"
+    },
+    {
+      "parameters": {
+        "content": "## 🧠 AI Behavior Analysis\n\nDeep analysis of lead psychology, pain points, and optimal communication strategies.",
+        "height": 400,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1260,
+        -280
+      ],
+      "id": "b5a98095-510e-434c-be0b-66b8473dc179",
+      "name": "Behavior Analysis Note"
+    },
+    {
+      "parameters": {
+        "content": "## ✉️ Dynamic Sequence Generation\n\nCreates personalized email sequences based on behavioral analysis.",
+        "height": 300,
+        "width": 460,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        -120
+      ],
+      "id": "3345cd33-3eeb-4f5f-b022-e17ecd2d47c3",
+      "name": "Sequence Generation Note"
+    },
+    {
+      "parameters": {
+        "content": "## 🧪 A/B Testing & Psychological Triggers\n\nTests different subject lines with psychological triggers for optimal engagement.",
+        "height": 380,
+        "width": 300,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1820,
+        420
+      ],
+      "id": "81718d9e-9a02-4755-92a6-9f7755b07c6b",
+      "name": "A/B Testing Note"
+    },
+    {
+      "parameters": {
+        "content": "## 📈 Engagement Tracking & Optimization\n\nMonitors email engagement and optimizes future communications based on behavior.",
+        "height": 420,
+        "width": 500,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        420
+      ],
+      "id": "1f4c67af-a196-48f7-b973-b5e127982d95",
+      "name": "Engagement Tracking Note"
+    },
+    {
+      "parameters": {
+        "chatId": "7049994855",
+        "text": "Customer Added Incorrect Email ",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1180,
+        200
+      ],
+      "id": "bd70afcd-a064-4373-b887-15aca4eb94e3",
+      "name": "Telegram",
+      "webhookId": "03e30e99-2f3a-41f7-a637-916370b68eba",
+      "credentials": {
+        "telegramApi": {
+          "id": "19UDgjkzawcl04p4",
+          "name": "Telegram Twitter Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Bad Email\n",
+        "height": 220,
+        "width": 280,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1260,
+        140
+      ],
+      "id": "7e446261-5736-46da-ba19-3b9fa8e32eb9",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Lead Capture Form": {
+      "main": [
+        [
+          {
+            "node": "Prepare Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Email Verification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Verification": {
+      "main": [
+        [
+          {
+            "node": "Email Validation Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Validation Check": {
+      "main": [
+        [
+          {
+            "node": "Lead Behavior Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Behavior Analyzer": {
+      "main": [
+        [
+          {
+            "node": "Store Behavior Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Analyzer Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Lead Behavior Analyzer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Behavior Analysis Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Lead Behavior Analyzer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Behavior Analysis": {
+      "main": [
+        [
+          {
+            "node": "Email Sequence Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Sequence Generator": {
+      "main": [
+        [
+          {
+            "node": "Split Email Sequence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Sequence Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Sequence Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Sequence Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Email Sequence Generator",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Email Sequence": {
+      "main": [
+        [
+          {
+            "node": "First Email Filter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Next Email Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "First Email Filter": {
+      "main": [
+        [
+          {
+            "node": "A/B Test Subject Lines",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "A/B Test Subject Lines": {
+      "main": [
+        [
+          {
+            "node": "Send First Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send First Email": {
+      "main": [
+        [
+          {
+            "node": "Track Email Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Track Email Sent": {
+      "main": [
+        [
+          {
+            "node": "Wait for Engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Engagement": {
+      "main": [
+        [
+          {
+            "node": "Check Email Engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Email Engagement": {
+      "main": [
+        [
+          {
+            "node": "Analyze Engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Engagement": {
+      "main": [
+        [
+          {
+            "node": "Engagement Routing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Engagement Routing": {
+      "main": [
+        [
+          {
+            "node": "High Engagement Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Engagement Optimizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Next Email Filter": {
+      "main": [
+        [
+          {
+            "node": "Wait for Next Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Next Email": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow-up Email": {
+      "main": [
+        [
+          {
+            "node": "Log Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Engagement Optimizer": {
+      "main": [
+        [
+          {
+            "node": "Log Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Optimizer Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Engagement Optimizer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Engagement Alert": {
+      "main": [
+        [
+          {
+            "node": "Engagement Optimizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0e58a39e-ac6c-4278-943d-b82e0c5975fd",
+  "meta": {
+    "instanceId": "c0fb75cf7fe95e3dad8680101bdc45549409c0f747d9491461d65b61bd6537e9"
+  },
+  "id": "2cGQX9O8plAnBKSQ",
+  "tags": []
+}

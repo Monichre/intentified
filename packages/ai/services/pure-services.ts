@@ -180,14 +180,17 @@ const extractCompetitiveAdvantages = (summary: any, competitors: any): string[] 
  * @param request - The enrichment request containing website URL
  * @returns Promise<EnrichmentResult> - The enriched company summary data
  */
-export async function enrichCompanySummary(request: EnrichmentRequest): Promise<EnrichmentResult> {
+export async function enrichCompanySummary(
+  request: EnrichmentRequest,
+  onProgress?: (progress: EnrichmentProgress) => void
+): Promise<EnrichmentResult> {
   const service = makeCompanyEnrichmentService();
   
   // Execute the enrichment for company summary type only
   const result = await service.enrichCompany({
     ...request,
     enrichmentTypes: ['company-summary']
-  });
+  }, onProgress);
   
   // Extract the company summary result
   const summaryResult = result.results.find(r => r.type === 'company-summary');
@@ -206,7 +209,8 @@ export async function enrichCompanySummary(request: EnrichmentRequest): Promise<
  */
 export async function enrichCompetitors(
   request: EnrichmentRequest, 
-  summaryText?: string
+  summaryText?: string,
+  onProgress?: (progress: EnrichmentProgress) => void
 ): Promise<EnrichmentResult> {
   const service = makeCompanyEnrichmentService();
   
@@ -215,7 +219,7 @@ export async function enrichCompetitors(
   const result = await service.enrichCompany({
     ...request,
     enrichmentTypes: ['competitors']
-  });
+  }, onProgress);
   
   const competitorsResult = result.results.find(r => r.type === 'competitors');
   if (!competitorsResult) {
@@ -237,14 +241,15 @@ export async function enrichMindMap(
     summary?: CompanySummaryResult;
     funding?: any;
     competitors?: any;
-  }
+  },
+  onProgress?: (progress: EnrichmentProgress) => void
 ): Promise<EnrichmentResult> {
   const service = makeCompanyEnrichmentService();
   
   const result = await service.enrichCompany({
     ...request,
     enrichmentTypes: ['mind-map']
-  });
+  }, onProgress);
   
   const mindMapResult = result.results.find(r => r.type === 'mind-map');
   if (!mindMapResult) {
@@ -329,7 +334,8 @@ export function getDefaultEnrichmentTypes(analysisType: 'marketing' | 'competito
         'competitors',
         'mind-map',
         'news',
-        'website-sub-pages'
+        'website-sub-pages',
+        'competitive-analysis'
       ];
     case 'full':
     default:
@@ -344,6 +350,7 @@ export function getDefaultEnrichmentTypes(analysisType: 'marketing' | 'competito
         'crunchbase',
         'news',
         'website-sub-pages',
+        'competitive-analysis',
       ];
   }
 } 

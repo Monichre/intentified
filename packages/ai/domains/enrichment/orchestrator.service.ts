@@ -3,16 +3,19 @@ import type {
   EnrichmentProgress,
   BulkEnrichmentResponse,
   EnrichmentType,
-  CompanySummaryResult
+  
 } from '../../core/schemas/enrichment.schema';
 import { ALL_ENRICHMENT_TYPES } from '../../core/schemas/enrichment.schema';
-import { enrichCompetitors, enrichCompanySummary, enrichMindMap } from './enrichment.service';
+
 import { takeScreenshot } from '../../integrations/screenshot';
 import { exaResearch } from '../../integrations/exa/exa-research';
 import { exaService } from '../../integrations/exa';
+import { makeCompanyEnrichmentService } from './enrichment.service';
+import type { CompanySummaryResult } from 'integrations/types'
 
 // Only for orchestrator awareness
 const exaR = exaResearch(exaService);
+const enrichmentService = makeCompanyEnrichmentService();
 
 /**
  * Main enrichment pipeline orchestrator, calling respective phase/logic.
@@ -48,8 +51,8 @@ export const enrichCompany = async (
   };
 
   // Phase handling
-  const independentTypes = typesToRun.filter(t => !['competitors', 'mind-map'].includes(t));
-  const dependentTypes = typesToRun.filter(t => ['competitors', 'mind-map'].includes(t));
+  const independentTypes = typesToRun.filter(t => !['competitors', 'mind-map', 'competitive-analysis'].includes(t));
+  const dependentTypes = typesToRun.filter(t => ['competitors', 'mind-map', 'competitive-analysis'].includes(t));
   const allResults: any[] = [];
 
   // Phase 1: Independent enrichments (could modularize into domain/research)
@@ -57,9 +60,9 @@ export const enrichCompany = async (
     const independentPromises = independentTypes.map(async (type) => {
       // Use mappings or direct logic as appropriate
       let fn;
-      if (type === 'company-summary') fn = enrichCompanySummary;
-      else if (type === 'competitors') fn = enrichCompetitors;
-      else if (type === 'mind-map') fn = enrichMindMap;
+      if (type === 'company-summary') fn = enrichmentService.enrichCompanySummary;
+      else if (type === 'competitors') fn = enrichmentService.enrichCompetitors;
+      else if (type === 'mind-map') fn = enrichmentService.enrichMindMap;
       else fn = undefined;
       // fallback to simple API otherwise (for now)
       if (!fn && exaR[type]) fn = (req: any) => exaR[type](req);
@@ -95,14 +98,40 @@ export const enrichCompany = async (
         let result;
         if (type === 'competitors') {
           const summaryText = summaryData ? summaryData.sections.map((s: any) => s.text).join(' ') : undefined;
-          result = await enrichCompetitors(req, summaryText);
+          result = await enrichmentService.enrichCompetitors(req, summaryText);
         } else if (type === 'mind-map') {
           const competitorsResult = allResults.find(r => r.type === 'competitors' && r.status === 'success');
-          result = await enrichMindMap(req, {
+          result = await enrichmentService.enrichMindMap(req, {
             summary: summaryData,
             funding: fundingData,
             competitors: competitorsResult?.data
           });
+        } else if (type === 'competitive-analysis') {
+          // For competitive analysis, use the analyzeCompetitiveLandscape function
+          // Create enrichment data from current results
+          const enrichmentData = {
+            websiteUrl: req.websiteUrl,
+            requestId: req.requestId || `competitive-analysis-${Date.now()}`,
+            results: allResults,
+            summary: {
+              totalRequested: allResults.length,
+              successful: allResults.filter(r => r.status === 'success').length,
+              failed: allResults.filter(r => r.status === 'error').length,
+              skipped: allResults.filter(r => r.status === 'skipped').length,
+              totalDuration: Date.now() - startTime
+            }
+          };
+          
+          const analysisResult = await enrichmentService.analyzeCompetitiveLandscape({
+            websiteUrl: req.websiteUrl,
+            enrichmentData
+          });
+          
+          result = {
+            type: 'competitive-analysis',
+            status: 'success',
+            data: analysisResult
+          };
         } else {
           result = { type, status: 'skipped' };
         }

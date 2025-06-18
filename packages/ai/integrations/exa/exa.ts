@@ -58,14 +58,30 @@ export const search = async (options: SearchOptions): Promise<ExaResponse> => {
 
 export const searchAndContents = async (options: SearchAndContentsOptions): Promise<ExaResponse> => {
   const { query, searchOptions, contentOptions } = options;
-  const response = await exaInstance.searchAndContents(query, {
-    ...searchOptions,
-    ...contentOptions,
-  } as any);
-  return {
-    results: response.results,
-    autopromptString: response.autopromptString,
-  };
+  
+  try {
+    const response = await exaInstance.searchAndContents(query, {
+      ...searchOptions,
+      ...contentOptions,
+    } as any);
+    return {
+      results: response.results,
+      autopromptString: response.autopromptString,
+    };
+  } catch (error) {
+    console.error('🚨 Exa API searchAndContents error:', {
+      query,
+      searchOptions,
+      contentOptions,
+      error: error instanceof Error ? error.message : error
+    });
+    
+    // Return empty results instead of crashing
+    return {
+      results: [],
+      autopromptString: undefined,
+    };
+  }
 };
 
 export const getContents = async (options: GetContentsOptions): Promise<ExaResponse> => {

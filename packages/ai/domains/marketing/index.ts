@@ -3,13 +3,15 @@
  * Exports all marketing analysis services and utilities
  */
 
+import { BrandExtractorService } from './brand-extractor'
+import { BrandPositioningService } from './brand-positioning'
+import { BrandSentimentService } from './brand-sentiment'
+
 // Type exports
 export type * from './types';
 
 // Service exports
-export { BrandExtractorService } from './brand-extractor.service';
-export { BrandSentimentService } from './brand-sentiment.service';
-export { BrandPositioningService } from './brand-positioning.service';
+
 
 // Prompt exports
 export * from './prompts';
@@ -18,9 +20,7 @@ export * from './prompts';
 export { formatPrompt } from './prompts';
 
 // Re-export existing services
-export { MarketingIntelligenceService } from './marketing-intelligence.service';
-export { ReactEmailGeneratorService } from './react-email-generator.service';
-export { SocialMediaService } from './social-media.service';
+
 
 // Main orchestrator service that combines all marketing intelligence capabilities
 export class MarketingIntelligenceFacade {

@@ -63,9 +63,15 @@ export const makeCompanyEnrichmentService = () => {
    * ------------------------------------------------------------------ */
 
   const enrichCompanySummary = async (request: EnrichmentRequest): Promise<EnrichmentResult> => {
+
+    
+    
+    
     return wrapEnrichmentResult('company-summary', async () => {
       const main = await exaR.scrapeWebsiteUrl(request);
+      console.log("🚀 ~ returnwrapEnrichmentResult ~ main:", main)
       const screenshot = await takeScreenshot({url: request.websiteUrl, fullPage: true, format: 'webp', blockAds: true, blockCookieBanners: true, blockTrackers: true, prefersColorScheme: 'light', viewportWidth: 1920, viewportHeight: 1080});
+      console.log("🚀 ~ returnwrapEnrichmentResult ~ screenshot:", screenshot)
       console.log(screenshot);
       // const doc = await pdf(request.websiteUrl);
       // console.log(doc);
@@ -74,7 +80,7 @@ export const makeCompanyEnrichmentService = () => {
       // const meta = await metadata(request.websiteUrl);
       // console.log(meta);
       const sub = await exaR.scrapeWebsiteSubPages(request);
- 
+      console.log("🚀 ~ returnwrapEnrichmentResult ~ sub:", sub)
       
       const insightsSummary = await insights.summary({
         mainpage: main,
@@ -166,6 +172,33 @@ export const makeCompanyEnrichmentService = () => {
     'competitors': enrichCompetitors,
     'mind-map': enrichMindMap,
     
+    // NEW: Comprehensive competitive analysis as an enrichment type
+    'competitive-analysis': (req, enrichmentResults?: EnrichmentResult[]) => wrapEnrichmentResult('competitive-analysis', async () => {
+      // This performs full competitive analysis using all available enrichment data
+      const analysisRequest = {
+        websiteUrl: req.websiteUrl,
+        companyName: req.companyName,
+        industry: req.industry,
+        focusAreas: ['market-position', 'strengths', 'opportunities'],
+        skipScreenshot: req.skipScreenshot || false,
+        enrichmentData: enrichmentResults ? {
+          websiteUrl: req.websiteUrl,
+          requestId: req.requestId || `competitive-analysis-${Date.now()}`,
+          results: enrichmentResults,
+          summary: {
+            totalRequested: enrichmentResults.length,
+            successful: enrichmentResults.filter(r => r.status === 'success').length,
+            failed: enrichmentResults.filter(r => r.status === 'error').length,
+            skipped: enrichmentResults.filter(r => r.status === 'skipped').length,
+            totalDuration: 0
+          }
+        } : undefined
+      };
+      
+      // Use the full competitive analysis function with enrichment data
+      return await analyzeCompetitiveLandscape(analysisRequest);
+    }),
+    
     // Direct mappings for remaining exa.api functions
     'financial-report': (req) => wrapEnrichmentResult('financial-report', () => exaR.fetchFinancialReport(req)),
     'github-url': (req) => wrapEnrichmentResult('github-url', () => exaR.fetchGithubUrl(req)),
@@ -223,13 +256,22 @@ export const makeCompanyEnrichmentService = () => {
     const completedTypes: EnrichmentType[] = [];
 
      // Step 1
-     const main = await exaR.scrapeWebsiteUrl(req);
+     let main, sub;
+     try {
+       main = await exaR.scrapeWebsiteUrl(req);
+       console.log("🚀 ~ makeCompanyEnrichmentService ~ main:", main)
+     } catch (error) {
+       console.error('🚨 Failed to scrape main website, using fallback:', error);
+       main = { results: [{ url: req.websiteUrl, title: 'Website', text: 'Unable to scrape content' }] };
+     }
 
-     console.log("🚀 ~ makeCompanyEnrichmentService ~ main:", main)
-
-     const sub = await exaR.scrapeWebsiteSubPages(req);
-
-      console.log("🚀 ~ makeCompanyEnrichmentService ~ sub:", sub)
+     try {
+       sub = await exaR.scrapeWebsiteSubPages(req);
+       console.log("🚀 ~ makeCompanyEnrichmentService ~ sub:", sub)
+     } catch (error) {
+       console.error('🚨 Failed to scrape sub pages, using fallback:', error);
+       sub = { results: [] };
+     }
 
       const screenshot = await takeScreenshot({url: req.websiteUrl, fullPage: true, format: 'webp', blockAds: true, blockCookieBanners: true, blockTrackers: true, prefersColorScheme: 'light', viewportWidth: 1920, viewportHeight: 1080});
       console.log(screenshot);
@@ -238,13 +280,25 @@ export const makeCompanyEnrichmentService = () => {
       // console.log(doc);
 
    
-      const insightsSummary = await insights.summary({
-        mainpage: main,
-        subpages: sub,
-        websiteUrl: req.websiteUrl
-      });
-
-      console.log("🚀 ~ makeCompanyEnrichmentService ~ insightsSummary:", insightsSummary)
+      let insightsSummary;
+      try {
+        insightsSummary = await insights.summary({
+          mainpage: main,
+          subpages: sub,
+          websiteUrl: req.websiteUrl
+        });
+        console.log("🚀 ~ makeCompanyEnrichmentService ~ insightsSummary:", insightsSummary)
+      } catch (error) {
+        console.error('🚨 Failed to generate insights summary, using fallback:', error);
+        insightsSummary = {
+          sections: [
+            {
+              heading: '🌐 Company Website',
+              text: `Analysis of ${req.websiteUrl} - Limited data available due to API constraints.`
+            }
+          ]
+        };
+      }
 
     
     // Progress reporting helper
@@ -282,7 +336,10 @@ export const makeCompanyEnrichmentService = () => {
         reportProgress(type);
         
         try {
-          const result = await fn(req);
+          // Pass current results to competitive-analysis type
+          const result = type === 'competitive-analysis' 
+            ? await fn(req, allResults) 
+            : await fn(req);
           completedTypes.push(type);
           reportProgress();
           return result;
@@ -343,7 +400,10 @@ export const makeCompanyEnrichmentService = () => {
             });
           } else {
             const fn = ENRICHMENT_TYPE_TO_FUNCTION[type];
-            result = fn ? await fn(req) : { type, status: 'skipped' as const };
+            // Pass current results to competitive-analysis type
+            result = fn ? (type === 'competitive-analysis' 
+              ? await fn(req, allResults) 
+              : await fn(req)) : { type, status: 'skipped' as const };
           }
           
           completedTypes.push(type);
@@ -402,23 +462,15 @@ export const makeCompanyEnrichmentService = () => {
   /* ------------------------------------------------------------------ *
    * NEW: Competitive Landscape Analysis                               *
    * ------------------------------------------------------------------ */
+
   const analyzeCompetitiveLandscape = async (
-    req: CompetitorAnalysisRequest,
+    req: CompetitorAnalysisRequest & { enrichmentData?: BulkEnrichmentResponse },
     onProgress?: (p: CompetitorAnalysisProgress) => void
   ): Promise<CompetitorAnalysisResponse> => {
     const startTime = Date.now();
     const requestId = `competitor-analysis-${Date.now()}`;
     
-    // Focused subset of enrichment types for competitor analysis
-    const COMPETITOR_ANALYSIS_TYPES: EnrichmentType[] = [
-      'basic-info',
-      'company-summary',
-      'competitors',
-      'mind-map',
-      'news',
-      'website-sub-pages'
-    ];
-    
+    const COMPETITOR_ANALYSIS_STEPS = ['initialization', 'data-extraction', 'competitor-analysis', 'insights-generation', 'finalization'];
     const completedSteps: string[] = [];
     
     // Progress reporting helper
@@ -427,59 +479,120 @@ export const makeCompanyEnrichmentService = () => {
         onProgress({
           requestId,
           currentStep: completedSteps.length,
-          totalSteps: COMPETITOR_ANALYSIS_TYPES.length,
+          totalSteps: COMPETITOR_ANALYSIS_STEPS.length,
           currentType,
           message,
-          isComplete: completedSteps.length === COMPETITOR_ANALYSIS_TYPES.length
+          isComplete: completedSteps.length === COMPETITOR_ANALYSIS_STEPS.length
         });
       }
     };
     
     try {
       reportProgress('Starting competitive landscape analysis...', 'initialization');
+      completedSteps.push('initialization');
       
-      // Step 1: Get basic info and website content
-      reportProgress('Analyzing company website...', 'basic-info');
-      const [main, sub] = await Promise.all([
-        exaR.scrapeWebsiteUrl(req),
-        exaR.scrapeWebsiteSubPages(req)
-      ]);
-      completedSteps.push('basic-info', 'website-sub-pages');
+      // Use enrichment data if available, otherwise fallback to scraping
+      let main, sub, insightsSummary, screenshot;
       
-      // Step 2: Generate company summary
-      reportProgress('Understanding company positioning...', 'company-summary');
-      const screenshot = req.skipScreenshot ? undefined : await takeScreenshot({url: req.websiteUrl, fullPage: true, format: 'webp', blockAds: true, blockCookieBanners: true, blockTrackers: true, prefersColorScheme: 'light', viewportWidth: 1920, viewportHeight: 1080});
-      const insightsSummary = await insights.summary({
-        mainpage: main,
-        subpages: sub,
-        websiteUrl: req.websiteUrl
-      });
-      completedSteps.push('company-summary');
+      if (req.enrichmentData) {
+        reportProgress('Using enrichment data for analysis...', 'data-extraction');
+        
+        // Extract data from enrichment results
+        const summaryResult = req.enrichmentData.results.find(r => r.type === 'company-summary' && r.status === 'success');
+        const basicInfoResult = req.enrichmentData.results.find(r => r.type === 'basic-info' && r.status === 'success');
+        const subPagesResult = req.enrichmentData.results.find(r => r.type === 'website-sub-pages' && r.status === 'success');
+        
+        // Use enrichment data
+        main = basicInfoResult?.data || { results: [] };
+        sub = subPagesResult?.data || { results: [] };
+        insightsSummary = summaryResult?.data || req.enrichmentData.summary?.insightsSummary;
+        screenshot = req.enrichmentData.summary?.screenshot;
+        
+        // If no summary in enrichment data, generate one
+        if (!insightsSummary) {
+          insightsSummary = await insights.summary({
+            mainpage: main,
+            subpages: sub,
+            websiteUrl: req.websiteUrl
+          });
+        }
+      } else {
+        // Fallback: scrape fresh data
+        reportProgress('Scraping company website...', 'data-extraction');
+        const [mainFresh, subFresh] = await Promise.all([
+          exaR.scrapeWebsiteUrl(req),
+          exaR.scrapeWebsiteSubPages(req)
+        ]);
+        main = mainFresh;
+        sub = subFresh;
+        screenshot = req.skipScreenshot ? undefined : await takeScreenshot({url: req.websiteUrl, fullPage: true, format: 'webp', blockAds: true, blockCookieBanners: true, blockTrackers: true, prefersColorScheme: 'light', viewportWidth: 1920, viewportHeight: 1080});
+        insightsSummary = await insights.summary({
+          mainpage: main,
+          subpages: sub,
+          websiteUrl: req.websiteUrl
+        });
+      }
       
-      // Step 3: Find competitors
-      reportProgress('Identifying competitors...', 'competitors');
-      const competitorsData = await exaR.findCompetitors({
-        websiteUrl: req.websiteUrl,
-        summaryText: insightsSummary.sections.map((s: any) => s.text).join(' ')
-      });
-      completedSteps.push('competitors');
+      completedSteps.push('data-extraction');
       
-      // Step 4: Get recent news for context
-      reportProgress('Gathering market intelligence...', 'news');
-      const newsData = await exaR.findNews(req);
-      completedSteps.push('news');
+      // Step 3: Competitor Analysis
+      reportProgress('Identifying competitors and market dynamics...', 'competitor-analysis');
       
-      // Step 5: Generate mind map with competitive insights
-      reportProgress('Analyzing competitive positioning...', 'mind-map');
-      const mindMapData = await insights.mindMap({
-        companySummary: insightsSummary,
-        mainpage: main,
-        websiteUrl: req.websiteUrl,
-        subpages: sub,
-        funding: null, // Skip funding for faster analysis
-        competitors: competitorsData
-      });
-      completedSteps.push('mind-map');
+      // Use existing competitor data if available from enrichment
+      let competitorsData, newsData;
+      if (req.enrichmentData) {
+        const competitorsResult = req.enrichmentData.results.find(r => r.type === 'competitors' && r.status === 'success');
+        const newsResult = req.enrichmentData.results.find(r => r.type === 'news' && r.status === 'success');
+        
+        competitorsData = competitorsResult?.data || await exaR.findCompetitors({
+          websiteUrl: req.websiteUrl,
+          summaryText: insightsSummary.sections?.map((s: any) => s.text).join(' ') || ''
+        });
+        
+        newsData = newsResult?.data || await exaR.findNews(req);
+      } else {
+        // Fresh competitor and news analysis
+        competitorsData = await exaR.findCompetitors({
+          websiteUrl: req.websiteUrl,
+          summaryText: insightsSummary.sections?.map((s: any) => s.text).join(' ') || ''
+        });
+        newsData = await exaR.findNews(req);
+      }
+      
+      completedSteps.push('competitor-analysis');
+      
+      // Step 4: Generate insights and mind map
+      reportProgress('Generating competitive insights...', 'insights-generation');
+      
+      // Use existing mind map if available from enrichment
+      let mindMapData;
+      if (req.enrichmentData) {
+        const mindMapResult = req.enrichmentData.results.find(r => r.type === 'mind-map' && r.status === 'success');
+        const fundingResult = req.enrichmentData.results.find(r => r.type === 'funding' && r.status === 'success');
+        
+        mindMapData = mindMapResult?.data || await insights.mindMap({
+          companySummary: insightsSummary,
+          mainpage: main,
+          websiteUrl: req.websiteUrl,
+          subpages: sub,
+          funding: fundingResult?.data || null,
+          competitors: competitorsData
+        });
+      } else {
+        mindMapData = await insights.mindMap({
+          companySummary: insightsSummary,
+          mainpage: main,
+          websiteUrl: req.websiteUrl,
+          subpages: sub,
+          funding: null,
+          competitors: competitorsData
+        });
+      }
+      
+      completedSteps.push('insights-generation');
+      
+      // Step 5: Finalize analysis
+      reportProgress('Finalizing competitive analysis...', 'finalization');
       
       // Process and structure the response
       const competitiveLandscape = processCompetitorData(competitorsData, insightsSummary);
@@ -490,7 +603,8 @@ export const makeCompanyEnrichmentService = () => {
         mindMapData
       );
       
-      reportProgress('Analysis complete!');
+      completedSteps.push('finalization');
+      reportProgress('Competitive analysis complete!');
       
       return {
         websiteUrl: req.websiteUrl,
@@ -504,9 +618,9 @@ export const makeCompanyEnrichmentService = () => {
         competitiveLandscape,
         insights: marketInsights,
         summary: {
-          totalAnalyzed: COMPETITOR_ANALYSIS_TYPES.length,
+          totalAnalyzed: COMPETITOR_ANALYSIS_STEPS.length,
           successful: completedSteps.length,
-          failed: COMPETITOR_ANALYSIS_TYPES.length - completedSteps.length,
+          failed: COMPETITOR_ANALYSIS_STEPS.length - completedSteps.length,
           totalDuration: Date.now() - startTime
         }
       };
@@ -613,3 +727,6 @@ export const makeCompanyEnrichmentService = () => {
     ENRICHMENT_TYPE_TO_FUNCTION
   };
 };
+
+// Export the service type
+export type CompanyEnrichmentService = ReturnType<typeof makeCompanyEnrichmentService>;

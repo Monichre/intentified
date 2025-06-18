@@ -10,6 +10,46 @@ alwaysApply: false
   globs: path/to/files/*.ext, other/path/**/*
   alwaysApply: boolean
   ---
+  
+[Exa home page](https://docs.exa.ai/)
+
+Search...
+
+**⌘K**Ask AI
+- [**Exa Search**](https:/i/search)
+- [**API Dashboard**](https://dashboard.exa.ai/login?redirect=/)
+
+[**Documentation**](https://docs.exa.ai/reference/getting-started)
+
+[**Examples**](https://docs.exa.ai/examples/exa-mcp)
+
+[**Integrations**](https://docs.exa.ai/integrations/lang-chain-docs)
+
+[**SDKs**](https://docs.exa.ai/sdks/python-sdk-specific*](https://docs.exa.ai/w
+
+[**Chaocs.exa.ai/changelog/livecrawl-preferred-option)(httpscord.com/invite/HCShtBqbfV)
+
+[**Blog**](https://exa.ai/blog)
+
+**Live De](https://docs.exa.ai/examples/exa-mcp)
+- [Hallucination Detector](https://docs.exa.ai/e- [Writing Assistant](https://docs.exa.ai/examples/demo-exa-powered-writing-assistant)
+- [Chat app](https://chat.exa.ai/)
+- [Company researcher](https://companyresearcher.exa.ai/)
+
+**Tutorials**
+- [Hacker News Clone](https://docs.exa.ai/examples/live-demo-hacker-news-clone)
+- [B://docs.exa.ai/examples/recent-news-summarizer)
+- [Building a Hallucination Checker](https://docs.exa.ai/examples/identifying-hallucns-with-exa)
+- [RAG Q&A](https://docs.exa.ai/examples/exa-rag)
+- [**Company Analyst**](https://docs.exa.ai/examples/company-analyst)
+- [Exa Researcher - JavaScript](https://docs.exa.ai/examples/exa-researcher)
+- [Exa Researcher - Python](https://docs.exa.ai/examples/exa-researcher-python)
+- [Recruiting Agent](https://docs.exa.ai/examples/exa-recruiting-agent)
+- [Phrase Filters: Niche Company Finder](https://docs.exa.ai/examiche-company-finder-with-phrase-filters)
+- [Job Search with Exa](https://docs.exa.ai/examples/job-search-with-exa)
+- [Build a Retrieval Agent with LangGraph](https://docs.exa.ai/examples/getting-started-with-rag-in-langgraph)
+- Instructor](https://docs.exa.ai/examples/getting-started-with-exa-in-instructor)
+
 **Tutorials**
 
 # **Company Analyst**
@@ -44,9 +84,9 @@ What we really need is neural search.
 
 **What is neural search?**
 
-Exa is a fully neural search engine built using a foundational embeddings model trained for webpage retrieval. It’s capable of understanding entity types (company, blog post, Github repo), descriptors (funny, scholastic, authoritative), and any other semantic qualities inside of a query. Neural search can be far more useful than traditional keyword-based searches for these complex queries.
+Exa is a fully neural search engine built using a foundational embeddings model trained for webpage retrieval. It’s capable of understanding entity types (company, blog post, Github repo), descriptors (funny, scholastic, authoritative), and any other semantic qualities inside of a query. Neural search can be fan traditional keyword-based searches for these complex queries.
 
-## [**​**](https://docs.exa.ai/examples/company-analyst#finding-companies-with-exa-link-similarity-search)
+## [**​**](https://docs.exa.ai/examples/company-analnding-companies-with-exa-link-similarity-search)
 
 **Finding companies with Exa link similarity search**
 
@@ -58,7 +98,9 @@ By specifying `highlights={"num_sentences":2}` for each search result, Exa wil
 
 **Copy**
 
-```Python
+**Ask AI**
+
+```
 !pip install exa_py
 
 from exa_py import Exa
@@ -79,9 +121,13 @@ companies = search_response.results
 print(companies[0])
 ```
 
+Copy And SaveShareAsk Copilot
+
 This is an example of the full first result:
 
 Copy
+
+Ask AI
 
 ```
 [Result(url='https://www.mystorestash.com/',
@@ -95,24 +141,32 @@ Copy
         highlight_scores=[0.23423566609247845])]
 ```
 
+Copy And SaveShareAsk Copilot
+
 And here are the 10 titles and URLs I got:
 
 **Python**
 
 **Copy**
 
-```Python
+**Ask AI**
+
+```
 # to just see the 10 titles and urls
 urls = {}
 for c in companies:
   print(c.title + ':' + c.url)
 ```
 
+Copy And SaveShareAsk Copilot
+
 **- College Marketplace:https://www.rumieapp.com/**
 
 **Copy**
 
-```rumie
+**Ask AI**
+
+```
 The Airbnb of Storage:https://www.mystorestash.com/
 Bunction.net:https://bunction.net/
 Home - Community Gearbox:https://communitygearbox.com/
@@ -123,6 +177,8 @@ Branded Resale | Treet:https://www.treet.co/
 Swapskis:https://www.swapskis.co/
 Earn Money for Used Clothing:https://www.thredup.com/cleanout?redirectPath=%2Fcleanout%2Fsell
 ```
+
+Copy And SaveShareAsk Copilot
 
 Looks pretty darn good! As a bonus specifically for companies data, specifying `category="company"` in the SDK will search across a curated, larger companies dataset - if you’re interested in this, let us know at [**hello@exa.ai**](mailto:hello@exa.ai)!
 
@@ -138,7 +194,9 @@ Now let’s get more information by finding additional webpages about each compa
 
 **Copy**
 
-```python
+**Ask AI**
+
+```
 # doing an example with the first companies
 c = companies[0]
 all_contents = ""
@@ -152,13 +210,19 @@ for r in research_response:
   all_contents += r.text
 ```
 
+Copy And SaveShareAsk Copilot
+
 Here’s an example of the first result for the first company, Rumie App. You can see the first result is the actual link contents itself.
 
 Copy
 
+Ask AI
+
 ```
-<div><div><div><div><p><a href="https://www.rumieapp.com/"></a></p></div><div><p>The <strong>key</strong> to <strong>your</strong> college experience. </p><p><br/>Access the largest college exclusive marketplace to buy, sell, and rent with other students.</p></div></div><div><h2>320,000+</h2><p>Users in Our Network</p></div><div><div><p><h2>Selling is just a away.</h2></p><p>Snap a pic, post a listing, and message buyers all from one intuitive app.</p><div><p></p><p>Quick setup and .edu verification</p></div><div><p></p><p>Sell locally or ship to other campuses</p></div><div><p></p><p>Trade with other students like you</p></div></div><div><p><h2>. From local businesses around your campus</h2></p><h4>Get access to student exclusive discounts</h4><p>rumie students get access to student exclusive discounts from local and national businesses around their campus.</p></div></div><div><p><h2>Rent dresses from   </h2></p><p>Wear a new dress every weekend! Just rent it directly from a student on your campus.</p><div><p></p><p>Make money off of the dresses you've already worn</p></div><div><p></p><p>rumie rental guarantee ensures your dress won't be damaged</p></div><div><p></p><p>Find a new dress every weekend and save money</p></div></div><div><p><h2>. The only place to buy student tickets at student prices</h2></p><h4>Buy or Sell students Football and Basketball tickets with your campus</h4><p>rumie students get access to the first-ever student ticket marketplace. No more getting scammed trying to buy tickets from strangers on the internet.</p></div><div><div><div><p></p><h4>Secure</h4><p>.edu authentication and buyer protection on purchases.</p></div><div><p></p><h4>Lightning-fast</h4><p>Post your first listing in under a minute.</p></div><div><p></p><h4>Verified Students</h4><p>Trade with other students, not strangers.</p></div><div><p></p><h4>Intuitive</h4><p>List an item in a few simple steps. Message sellers with ease.</p></div></div><p><a href="https://apps.apple.com/us/app/rumie-college-marketplace/id1602465206">Download the app now</a></p></div><div><p><h2>Trusted by students.</h2></p><div><div><p></p><p>Saves me money</p><p>Facebook Marketplace and Amazon are great but often times you have to drive a long way to meet up or pay for shipping. rumie let’s me know what is available at my school… literally at walking distance. </p></div><div><p></p><p>5 stars!</p><p>Having this app as a freshman is great! It makes buying and selling things so safe and easy! Much more efficient than other buy/sell platforms!</p></div><div><p></p><p>Amazing!</p><p>5 stars for being simple, organized, safe, and a great way to buy and sell in your college community.. much more effective than posting on Facebook or Instagram!</p></div><div><p></p><p>The BEST marketplace for college students!!!</p><p>Once rumie got to my campus, I was excited to see what is has to offer! Not only is it safe for students like me, but the app just has a great feel and is really easy to use. The ONLY place I’ll be buying and selling while I’m a student.</p></div></div></div><div><p><h2>Easier to than GroupMe or Instagram.</h2></p><p>Forget clothing instas, selling groupme's, and stress when buying and selling. Do it all from the rumie app.</p></div></div></div>
+<div><div><div><div><p><a href="https://www.rumieapp.com/"></a></p></div><div><p>The <strong>key</strong> to <strong>your</strong> college experience. </p><p><br/>Access the largest college exclusive marketplace to buy, sell, and rent with other students.</p></div></div><div><h2>320,000+</h2ers in Our Network</p></div><div><div><p><h2>Selling is just a away.</h2></p><p>Snap a pic, post a listing, and message buyers all from one intuitive app.</p><div><p></p><p>Quick setup and .edu verification</p></div><div><p></p><p>Sell locally or ship to other campuses</p></div><div><p></p><p>Trade with other students like you</p></div></div><div><p><h2>. From local businesses around your campus</h2></p><h4>Get access to student exclusive discounts</h4><p>rumie students get access to student exclusive discounts from local and national businesses around their campus.</p></div></div><div><p><h2>Rent dresses from   </h2></p><p>Wear a new dress every weekend! Just rent it directly from a student on your campus.</p><div><p></p><p>Make money off of the dresses you've already worn</p></div><div><p></p><p>rumie rental guarantee ensures your dress won't be damaged</p></div><div><p></p><p>Find a new dress every weekend and save money</p></div></div><div><p><h2>. The only place to buy student tickets at student prices</h2></p><h4>Buy or Sell students Football and Basketball tickets with your campus</h4><p>rumie students get access to the first-ever student ticket marketplace. No more getting scammed trying to buy tickets from strangers on the internet.</p></div><div><div><div><p></p><h4>Secure</h4><p>.edu authentication and buyer protection on purchases.</p></div><div><p></p><h4>Lightning-fast</h4><p>Post your first listing in under a minute.</p></div><div><p></p><h4>Verified Students</h4><p>Trade with other students, not strangers.</p></div><div><p></p><h4>Intuitive</h4><p>List an item in a few simple steps. Message sellers with ease.</p></div></div><p><a href="https://apps.apple.com/us/app/rumie-college-marketplace/id1602465206">Download the app now</a></p></div><div><p><h2>Trusted by students.</h2></p><div><div><p></p><p>Saves me money</p><p>Facebook Marketplace and Amazon are great but often times you have to drive a long way to meet up or pay for shipping. rumie let’s me know what is available at my school… literally at walking distance. </p></div><div><p></p><p>5 stars!</p><p>Having this app as a freshman is great! It makes buying and selling things so safe and easy! Much more efficient than other buy/sell platforms!</p></div><div><p></p><p>Amazing!</p><p>5 stars for being simple, organized, safe, and a great way to buy and sell in your college community.. much more effective than posting on Facebook or Instagram!</p></div><div><p></p><p>The BEST marketplace for college students!!!</p><p>Once rumie got to my campus, I was excited to see what is has to offer! Not only is it safe for students like me, but the app just has a great feel and is really easy to use. The ONLY place I’ll be buying and selling while I’m a student.</p></div></div></div><div><p><h2>Easier to than GroupMe or Instagram.</h2></p><p>Forget clothing instas, selling groupme's, and stress when buying and selling. Do it all from the rumie app.</p></div></div></div>
 ```
+
+Copy And SaveShareAsk Copilot
 
 ## [**​**](https://docs.exa.ai/examples/company-analyst#creating-a-report-with-llms)
 
@@ -170,7 +234,9 @@ Finally, let’s create a summarized report that lists our 10 companies and give
 
 **Copy**
 
-```Python
+**Ask AI**
+
+```
 import textwrap
 import openai
 import os
@@ -192,7 +258,11 @@ print(f"Summary for {c.url}:")
 print(textwrap.fill(summary, 80))
 ```
 
+Copy And SaveShareAsk Copilot
+
 Copy
+
+Ask AI
 
 ```
 Summary for https://www.rumieapp.com/:
@@ -222,9 +292,25 @@ experience. Continual updates and improvements to the app's interface and
 functionality can also ensure that it remains user-friendly and efficient.
 ```
 
+Copy And SaveShareAsk Copilot
+
 And we’re done! We’ve built an app that takes in a company webpage and uses Exa to
 1. Discover similar startups
 2. Find information about each of those startups
 3. Gather useful content and summarize it with OpenAI
 
 Hopefully you found this tutorial helpful and are ready to start building your very own company analyst! Whether you want to generate sales leads or research competitors to your own company, Exa’s got you covered.
+
+[**RAG Q&A**](https://docs.exa.ai/examples/exa-rag)[**Exa Researcher - JavaScript**](https://docs.exa.ai/examples/exa-researcher)
+
+[x](https://twitter.com/exaailabs)[discord](https://discord.com/invite/HCShtBqbfV)
+
+[Powered by Mintlify](https://mintlify.com/preview-request?utm_campaign=poweredBy&utm_medium=referral&utm_source=docs.exa.ai)
+
+**On this page**
+- [**What this doc covers**](https://docs.exa.ai/examples/company-analyst#what-this-doc-covers)
+- [Shortcomings of Google](https://docs.exa.ai/examples/company-analyst#shortcomings-of-google)
+- [What is neural search?](https://docs.exa.ai/examples/company-analyst#what-is-neural-search%3F)
+- [Finding companies with Exa link similarity search](https://docs.exa.ai/examples/company-analyst#finding-companies-with-exa-link-similarity-search)
+- [Finding additional info for each company](https://docs.exa.ai/examples/company-analyst#finding-additional-info-for-each-company)
+- [Creating a report with LLMs](https://docs.exa.ai/examples/company-analyst#creating-a-report-with-llms)

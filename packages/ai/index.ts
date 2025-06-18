@@ -1,12 +1,16 @@
 export { enrichCompany } from './domains/enrichment/orchestrator.service';
 export { analyzeCompetitiveLandscape } from './domains/analysis/analysis.service';
-export * from 'ai';
+export { enrichCompanyBulk, getDefaultEnrichmentTypes, validateEnrichmentRequest } from './services/pure-services';
+export { makeCompanyEnrichmentService, type CompanyEnrichmentService } from './domains/enrichment/enrichment.service';
+// Export schema types
+export * from './core/schemas/enrichment.schema';
+// export * from 'ai';
 export * from './agents';
 export * from './services';
 // export * from './services/enrichment';
 // export * from "./services/enrichment/enrichment.service";
 // export * from "./services/pure-services";
-// export * from "./services/insights";
+export * from "./services/insights";
 // export * from "./services/enrichment/types";
 // export * from "./services/persistence.service";
 // export * from "./services/enrichment/enrichment-persistence.service";

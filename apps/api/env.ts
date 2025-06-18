@@ -1,23 +1,16 @@
-import { keys as analytics } from '@repo/analytics/keys';
-import { keys as auth } from '@repo/auth/keys';
-import { keys as database } from '@repo/db/keys';
-import { keys as email } from '@repo/email/keys';
-import { keys as core } from '@repo/next-config/keys';
-import { keys as observability } from '@repo/observability/keys';
-import { keys as payments } from '@repo/payments/keys';
 import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
-  extends: [
-    auth(),
-    analytics(),
-    core(),
-    database(),
-    email(),
-    observability(),
-    payments(),
-  ],
-  server: {},
+  server: {
+    CLERK_SECRET_KEY: z.string().min(1),
+    STRIPE_SECRET_KEY: z.string().min(1),
+    STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
+  },
   client: {},
-  runtimeEnv: {},
+  runtimeEnv: {
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+  },
 });

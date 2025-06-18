@@ -8,4 +8,4 @@ export * from './document-storage.service';
 export * from './persistence.service';
 export * from '../domains/marketing/react-email-generator.service';
 
-export * from '../domains/marketing/social-media.service';
+

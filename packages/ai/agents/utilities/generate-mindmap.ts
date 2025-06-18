@@ -4,6 +4,8 @@ import type { CompanyMapParams, CompanyMindMap } from "../../integrations/types"
 import { askAiStructuredResponse } from "./common"
 import { MODEL_REGISTRY } from "../../core/models/model-registry"
 import { z } from "zod";
+import { anthropic } from "@ai-sdk/anthropic"
+import { generateObject } from "ai"
 
 
 /* ------------------------------------------------------------------ *
@@ -19,6 +21,42 @@ import { z } from "zod";
  * Pure helper functions – absolutely no hidden state                 *
  * ------------------------------------------------------------------ */
 
+// Helper function to safely stringify content for mind map generation
+const safeStringify = (content: any): string => {
+  if (!content) return 'No data available';
+  if (typeof content === 'string') return content;
+  
+  // Handle Exa API response structure
+  if (content.results && Array.isArray(content.results)) {
+    return content.results
+      .map((result: any) => {
+        const parts = [];
+        if (result.title) parts.push(result.title);
+        if (result.text) parts.push(result.text);
+        if (result.summary) parts.push(result.summary);
+        return parts.join(' - ');
+      })
+      .join('\n');
+  }
+  
+  // Handle company summary structure
+  if (content.sections && Array.isArray(content.sections)) {
+    return content.sections
+      .map((section: any) => `${section.heading}: ${section.text}`)
+      .join('\n');
+  }
+  
+  // Handle object with text content
+  if (typeof content === 'object') {
+    if (content.text) return content.text;
+    if (content.summary) return content.summary;
+    if (content.description) return content.description;
+  }
+  
+  // Fallback to JSON representation for complex objects
+  return JSON.stringify(content, null, 2);
+};
+
 export const generateCompanyMindMap = async ({
   companySummary,
   mainpage,
@@ -27,6 +65,14 @@ export const generateCompanyMindMap = async ({
   funding,
   subpages,
 }: CompanyMapParams): Promise<CompanyMindMap> => {
+  
+  // Safely convert all inputs to strings
+  const mainPageText = safeStringify(mainpage);
+  const subPagesText = safeStringify(subpages);
+  const companySummaryText = safeStringify(companySummary);
+  const competitorsText = safeStringify(competitors);
+  const fundingText = safeStringify(funding);
+
    // Define a recursive schema for mind map nodes
     const mindMapNodeSchema = z.object({
       title: z.string(),
@@ -44,26 +90,26 @@ export const generateCompanyMindMap = async ({
       rootNode: mindMapNodeSchema
     });
 
-    const {object} = await askAiStructuredResponse({
-      model: MODEL_REGISTRY.anthropic.CLAUDE_37_SONNET.model,
+    const {object} = await generateObject({
+       model:  anthropic('claude-4-sonnet-20250514'),
       schema: mindMapSchema,
-      system: "Create clear, concise mind maps that help users quickly understand companies. Use simple English and focus on the most important aspects.",
+    
       prompt: `You are an expert at creating insightful mind maps about companies.
       
       MAIN WEBSITE CONTENT:
-      ${mainpage}
+      ${mainPageText}
 
       SUBPAGES:
-      ${subpages}
+      ${subPagesText}
 
       SUMMARY OF THE COMPANY:
-      ${companySummary}
+      ${companySummaryText}
 
       COMPETITORS:
-      ${competitors}
+      ${competitorsText}
 
       FUNDING:
-      ${funding}
+      ${fundingText}
 
       Create a mind map for the company at ${websiteUrl}. The mind map should:
       1. Have exactly 3 levels of depth

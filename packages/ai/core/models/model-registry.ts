@@ -5,8 +5,8 @@ import {
 import { openai } from "@ai-sdk/openai";
 
 import { anthropic } from "@ai-sdk/anthropic";
-import { OpenAiModels } from "./llm/openai";
-import { AnthropicModels } from "./llm/anthropic";
+import { OpenAiModels } from "./openai";
+import { AnthropicModels } from "./anthropic";
 // import { google } from "@ai-sdk/google";
 
 

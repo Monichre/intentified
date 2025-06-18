@@ -1,12 +1,14 @@
 
 
-import { generateObject } from "ai";
+
 import { z } from "zod";
 
 
 import type { CompanySummaryParams, CompanySummaryResult } from "../../domains/enrichment"
-import { askAiStructuredResponse } from "./common"
-import { MODEL_REGISTRY } from "../../core/models/model-registry"
+
+import { anthropic, AnthropicProviderOptions } from '@ai-sdk/anthropic';
+import { generateText, generateObject } from 'ai';
+
 
 /* ------------------------------------------------------------------ *
  * Generic model selector – switchable for testing / staging.          *
@@ -21,12 +23,47 @@ import { MODEL_REGISTRY } from "../../core/models/model-registry"
  * Pure helper functions – absolutely no hidden state                 *
  * ------------------------------------------------------------------ */
 
+// Helper function to extract text content from Exa API response
+const extractTextFromExaResponse = (response: any): string => {
+  if (!response) return 'No content available';
+  
+  // If it's already a string, return it
+  if (typeof response === 'string') return response;
+  
+  // If it has results array (standard Exa response)
+  if (response.results && Array.isArray(response.results)) {
+    return response.results
+      .map((result: any) => {
+        const parts = [];
+        if (result.title) parts.push(`Title: ${result.title}`);
+        if (result.text) parts.push(`Content: ${result.text}`);
+        if (result.summary) parts.push(`Summary: ${result.summary}`);
+        return parts.join('\n');
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  
+  // If it's an object but not standard format, try to extract useful content
+  if (typeof response === 'object') {
+    if (response.text) return response.text;
+    if (response.content) return response.content;
+    if (response.summary) return response.summary;
+  }
+  
+  // Last resort - return a message indicating the structure
+  return `Content structure: ${Object.keys(response || {}).join(', ')}`;
+};
+
 export const generateCompanySummary = async ({
   subpages,
   mainpage,
   websiteUrl,
 }: CompanySummaryParams): Promise<CompanySummaryResult> => {
 
+  // Extract text content from the Exa API responses
+  const mainPageText = extractTextFromExaResponse(mainpage);
+  const subPagesText = extractTextFromExaResponse(subpages);
 
        // Define the schema as an object with a 'sections' array
     const summarySchema = z.object({
@@ -37,18 +74,18 @@ export const generateCompanySummary = async ({
       }))
     });
 
-    const {object} = await askAiStructuredResponse({
+    const {object} = await generateObject({
        schema: summarySchema,
-       model: MODEL_REGISTRY.openai.O3_MINI.model,
-      system: "All the output content should be in simple english. Don't use any difficult words. Keep sentences short and simple.  Use unique emojis for each heading.",
+       model:  anthropic('claude-4-sonnet-20250514'),
+  
       prompt: `You are an expert at writing important points about a company.
       Here are the content from a company's website so you can understand about the company in detail.
       
       SUBPAGES CONTENT (includes about, pricing, faq, blog, etc):
-      ${subpages}
+      ${subPagesText}
       
       MAIN WEBSITE CONTENT:
-      ${mainpage}
+      ${mainPageText}
       
       Now, after understanding about this company whose url is ${websiteUrl}, give me headings and the relevant content about it.
 

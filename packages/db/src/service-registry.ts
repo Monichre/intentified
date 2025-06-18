@@ -95,7 +95,7 @@ export function initializeRegistry() {
   registry.registerFactory(ServiceName.STORAGE, () => {
     const env = keys();
     const url = env.SUPABASE_URL;
-    const key = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY;
+    const key = env.SUPABASE_SERVICE_ROLE_API_KEY || env.SUPABASE_ANON_KEY;
 
     if (!url || !key) {
       console.warn('Missing Supabase credentials for storage service');

@@ -1,0 +1,70 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# **Phrase Filters: Niche Company Finder**
+
+---
+
+## [**​**](https://docs.exa.ai/examples/niche-company-finder-with-phrase-filters#what-this-doc-covers)
+
+**What this doc covers**
+1. What Phrase filters are and how they work
+2. Using ‘Phrase Filters’ to find specific results, in this case filtering by a foreign company suffix
+
+In this simple example, we’ll demonstrate a company discovery search that helps find relevant companies incorporated in the Germany (and a few nearby countries) via Phrase Filters. This example will use the fact that companies incorporated in these locations [**have a suffix of GmbH**](https://en.wikipedia.org/wiki/GmbH), which is a term in the region similar to the US ‘incorporated’.
+
+## [**​**](https://docs.exa.ai/examples/niche-company-finder-with-phrase-filters#how-phrase-filters-work)
+
+**How Phrase Filters work**
+
+Exa’s search combines semantic relevance with precise filtering: a neural query first retrieves contextually relevant documents, then a phrase filter refines these results by checking for specific text in the content. This two-stage approach delivers highly targeted outputs by leveraging both semantic understanding and exact text matching.
+
+## [**​**](https://docs.exa.ai/examples/niche-company-finder-with-phrase-filters#running-a-query-with-phrase-filter)
+
+**Running a query with phrase filter**
+
+Using Phrase Filters is super simple. As usual, install the `exa_py` library with `pip install exa_py`. Then instantiate the library:
+
+**Python**
+
+**Copy**
+
+**Ask AI**
+
+```
+```
+
+Make a query, in this example searching for the most innovative climate tech companies. To use Phrase Filters, specify a string corresponding to the `includeText` input parameter
+
+**Python**
+
+**Copy**
+
+**Ask AI**
+
+```
+```
+
+Which outputs:
+
+Copy
+
+Ask AI
+
+```
+```
+
+Nice! On inspection, these results include companies located in Hamburg, Munich and other close by European locations. This example can be extended to any key phrase - have a play with filtering via [**other company suffixes - **](https://en.wikipedia.org/wiki/List%5Fof%5Flegal%5Fentity%5Ftypes%5Fby%5Fcountry)and see what interesting results you get back!
+
+[**Recruiting Agent**](https://docs.exa.ai/examples/exa-recruiting-agent)[**Job Search with Exa**](https://docs.exa.ai/examples/job-search-with-exa)
+
+[x](https://twitter.com/exaailabs)[discord](https://discord.com/invite/HCShtBqbfV)
+
+[Powered by Mintlify](https://mintlify.com/preview-request?utm_campaign=poweredBy&utm_medium=referral&utm_source=docs.exa.ai)
+
+**On this page**
+- [What this doc covers](https://docs.exa.ai/examples/niche-company-finder-with-phrase-filters#what-this-doc-covers)
+- [How Phrase Filters work](https://docs.exa.ai/examples/niche-company-finder-with-phrase-filters#how-phrase-filters-work)
+- [**Running a query with phrase filter**](https://docs.exa.ai/examples/niche-company-finder-with-phrase-filters#running-a-query-with-phrase-filter)

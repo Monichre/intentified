@@ -1,7 +1,8 @@
-import { google } from "@ai-sdk/google";
+import { nextActionDecisionSchema } from "../agents/tools/schema/intelligence-enrichment"
+
 import { CoreMessage, generateObject } from "ai";
-import { nextActionDecisionSchema } from "../tools/schema/intelligence-enrichment";
-import { MODEL_REGISTRY } from "../../core/llm/model-registry"
+import { MODEL_REGISTRY } from "../core/models/model-registry"
+
 
 /**
  * Decision-making service for determining if a query is ready to proceed or requires more information.
