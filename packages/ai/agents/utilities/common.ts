@@ -1,4 +1,9 @@
 
+import { generateObject, generateText } from 'ai';
+import { z } from 'zod';
+import { AnthropicModels } from '../../core/models/anthropic';
+import { exaWebSearchTool } from '../tools/exa-research-tool';
+import { fireCrawlExtraction } from '../tools/firecrawl-tool';
 
 export const askAiStructuredResponse = async ({prompt, system, schema, tools, model}: {prompt: string, system?: string, schema?: z.ZodSchema, tools?: any, model?: any}) => {
 
@@ -29,7 +34,7 @@ return text
 
 export const askSonnetWithThinking = async ({prompt, system, schema, tools, model}: {prompt: string, system?: string, schema?: z.ZodSchema, tools?: any, model?: any}) => {
 const { text, reasoning, reasoningDetails } = await generateText({
-  model: ANTHROPIC_MODELS.SONNET_37,
+  model: AnthropicModels.CLAUDE_37_SONNET.model,
   system: system,
   prompt: prompt,
   tools: tools,
@@ -42,7 +47,7 @@ return {text, reasoning, reasoningDetails}
 
 
 export const askAiWithWebSearch = async ({prompt, system, model, client}: {prompt: string, system?: string, model?: any, client?: any}) => {
-  const webSearch = client === 'exa' ? exaWebSearch : firecrawlWebSearch
+  const webSearch = client === 'exa' ? exaWebSearchTool : fireCrawlExtraction
 const { text } = await generateText({
   model: model,
   system: system,

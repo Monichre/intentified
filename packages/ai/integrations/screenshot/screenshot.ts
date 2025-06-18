@@ -4,7 +4,7 @@
  */
 
 // Environment configuration
-export const SCREENSHOT_API_KEY = process.env.SCREENSHOT_API_KEY;
+export const SCREENSHOT_API_KEY = process.env.SCREENSHOT_API_KEY || "ss_live_IjCCeqIQxSDjOaPknILJcbKkCvYPhopnSqcVfZBUBGfHyFfdFekVAqDMpTLNYPkP"
 const SCREENSHOT_API_BASE_URL = process.env.SCREENSHOT_API_BASE_URL || 'https://api.screenshothis.com/v1/screenshots/take';
 const DEFAULT_TIMEOUT = parseInt(process.env.SCREENSHOT_DEFAULT_TIMEOUT || '30000', 10);
 const MAX_RETRIES = parseInt(process.env.SCREENSHOT_MAX_RETRIES || '3', 10);
@@ -79,11 +79,11 @@ function normalizeUrl(url: string): string {
 }
 
 /**
- * Encodes URL for API consumption
+ * Normalizes URL for API consumption (URLSearchParams will handle encoding)
  */
 function encodeTargetUrl(url: string): string {
   const normalizedUrl = normalizeUrl(url);
-  return encodeURIComponent(normalizedUrl);
+  return normalizedUrl;
 }
 
 /**

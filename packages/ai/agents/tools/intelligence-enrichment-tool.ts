@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { decideProceedOrInquire } from "../workflows/intelligence-enrichment";
+import { decideProceedOrInquire } from "../../workflows/intelligence-enrichment";
 
 /**
  * Zod schema for the tool input parameters.

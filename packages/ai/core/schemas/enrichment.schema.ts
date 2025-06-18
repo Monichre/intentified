@@ -77,7 +77,8 @@ export type EnrichmentType =
   | "website-sub-pages"
   | "website-url"
   | "youtube-video-details"
-  | "mind-map";
+  | "mind-map"
+  | "competitive-analysis";
 
 export const ALL_ENRICHMENT_TYPES: EnrichmentType[] = [
   'basic-info',
@@ -102,6 +103,7 @@ export const ALL_ENRICHMENT_TYPES: EnrichmentType[] = [
   'website-sub-pages',
   'website-url',
   'youtube-video-details',
+  'competitive-analysis',
 ];
 
 export interface EnrichmentRequest {

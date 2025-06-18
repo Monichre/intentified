@@ -1,8 +1,9 @@
-import type {
-  CompetitorAnalysisRequest,
-  CompetitorAnalysisProgress,
-  CompetitorAnalysisResponse,
-  EnrichmentType
+import {
+  type CompetitorAnalysisRequest,
+  type CompetitorAnalysisProgress,
+  type CompetitorAnalysisResponse,
+  type EnrichmentType,
+  ALL_ENRICHMENT_TYPES
 } from '../../core/schemas/enrichment.schema';
 
 import { insights } from "../../services/insights";
@@ -56,7 +57,7 @@ export const analyzeCompetitiveLandscape = async (
     completedSteps.push('basic-info', 'website-sub-pages');
     // Step 2: Generate company summary
     reportProgress('Understanding company positioning...', 'company-summary');
-    const screenshot = req.skipScreenshot
+    const screenshot = req?.skipScreenshot
       ? undefined
       : await takeScreenshot({
           url: req.websiteUrl,
@@ -386,7 +387,7 @@ export const makeCompanyEnrichmentService = () => {
     const requestId = req.requestId || `enrich-${Date.now()}`;
     
     // Determine which enrichment types to run
-    const typesToRun = req.enrichmentTypes || ALL_ENRICHMENT_TYPES;
+    const typesToRun = ALL_ENRICHMENT_TYPES;
     const completedTypes: EnrichmentType[] = [];
 
      // Step 1

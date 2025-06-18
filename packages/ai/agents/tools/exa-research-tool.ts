@@ -10,7 +10,7 @@ import { z } from "zod"
     query: z.string().min(1).max(100).describe('The search query'),
   }),
   execute: async ({ query }) => {
-    const { results } = await EXA_CLIENT.searchAndContents(query, {
+    const { results } = await exaService.searchAndContents(query, {
       livecrawl: 'always',
       numResults: 3,
     });

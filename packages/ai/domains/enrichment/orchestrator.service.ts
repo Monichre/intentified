@@ -51,8 +51,8 @@ export const enrichCompany = async (
   };
 
   // Phase handling
-  const independentTypes = typesToRun.filter(t => !['competitors', 'mind-map'].includes(t));
-  const dependentTypes = typesToRun.filter(t => ['competitors', 'mind-map'].includes(t));
+  const independentTypes = typesToRun.filter(t => !['competitors', 'mind-map', 'competitive-analysis'].includes(t));
+  const dependentTypes = typesToRun.filter(t => ['competitors', 'mind-map', 'competitive-analysis'].includes(t));
   const allResults: any[] = [];
 
   // Phase 1: Independent enrichments (could modularize into domain/research)
@@ -106,6 +106,32 @@ export const enrichCompany = async (
             funding: fundingData,
             competitors: competitorsResult?.data
           });
+        } else if (type === 'competitive-analysis') {
+          // For competitive analysis, use the analyzeCompetitiveLandscape function
+          // Create enrichment data from current results
+          const enrichmentData = {
+            websiteUrl: req.websiteUrl,
+            requestId: req.requestId || `competitive-analysis-${Date.now()}`,
+            results: allResults,
+            summary: {
+              totalRequested: allResults.length,
+              successful: allResults.filter(r => r.status === 'success').length,
+              failed: allResults.filter(r => r.status === 'error').length,
+              skipped: allResults.filter(r => r.status === 'skipped').length,
+              totalDuration: Date.now() - startTime
+            }
+          };
+          
+          const analysisResult = await enrichmentService.analyzeCompetitiveLandscape({
+            websiteUrl: req.websiteUrl,
+            enrichmentData
+          });
+          
+          result = {
+            type: 'competitive-analysis',
+            status: 'success',
+            data: analysisResult
+          };
         } else {
           result = { type, status: 'skipped' };
         }

@@ -1,5 +1,9 @@
 export { enrichCompany } from './domains/enrichment/orchestrator.service';
 export { analyzeCompetitiveLandscape } from './domains/analysis/analysis.service';
+export { enrichCompanyBulk, getDefaultEnrichmentTypes, validateEnrichmentRequest } from './services/pure-services';
+export { makeCompanyEnrichmentService, type CompanyEnrichmentService } from './domains/enrichment/enrichment.service';
+// Export schema types
+export * from './core/schemas/enrichment.schema';
 // export * from 'ai';
 export * from './agents';
 export * from './services';

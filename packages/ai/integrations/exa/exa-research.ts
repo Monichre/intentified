@@ -25,14 +25,21 @@ const withoutDomain = (domains: string[]) =>
   ({ excludeDomains: domains } as ExaSearchConfig);
 
 export const exaResearch = (exa: ExaService) => {
+  // Fix for includeText parameter - Exa API expects 'include' not 'includeText'
+  const normalizeConfig = (c?: ExaSearchConfig) => {
+    if (!c || !(c as any).includeText) return c;
+    const { includeText, ...rest } = c as any;
+    return { ...rest, include: includeText };
+  };
+
   /* shorthand wrappers that adapt to the new API */
   const S = (q: string, c?: ExaSearchConfig) => exa.search({ 
     query: q, 
-    searchOptions: c 
+    searchOptions: normalizeConfig(c)
   });
   const SC = (q: string, c?: ExaSearchConfig) => exa.searchAndContents({ 
     query: q, 
-    searchOptions: c,
+    searchOptions: normalizeConfig(c),
     contentOptions: {
       text: c?.text,
       summary: c?.summary,
@@ -194,7 +201,7 @@ export const exaResearch = (exa: ExaService) => {
       text: true,
       numResults: 1,
       livecrawl: "always",
-      subpages: 4,
+      subpages: 7,
       subpageTarget: ["about", "team", "products", "services", "pricing", "faq", "blog"],
       ...withDomain([websiteUrl]),
     });
