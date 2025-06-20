@@ -8,10 +8,9 @@
     "dist/index.js"
   ],
   "scripts": {
-    "build": "turbo build",
-    "build:intentified": "turbo build --filter=@repo/intentified",
+
+    "build": "turbo build --filter=@repo/intentified",
     "dev": "turbo dev",
-    "dev:intentified": "cd apps/intentified && bun dev",
     "lint": "ultracite lint",
     "format": "ultracite format",
     "test": "turbo test",
