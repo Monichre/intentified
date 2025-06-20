@@ -1,0 +1,7 @@
+{
+  "buildCommand": "turbo build --filter=@repo/intentified",
+  "framework": "nextjs",
+  "outputDirectory": "apps/intentified/.next",
+  "installCommand": "bun install",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet ."
+} 
