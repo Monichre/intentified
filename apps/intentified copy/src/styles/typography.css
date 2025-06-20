@@ -1,0 +1,57 @@
+/* Typography System - Semantic Font Weight Classes */
+
+/* Display Text - Maximum emphasis for hero titles */
+.text-display {
+  @apply font-extrabold leading-tight tracking-tight;
+}
+
+/* Headlines - Primary section titles */
+.text-headline {
+  @apply font-bold leading-tight tracking-tight;
+}
+
+/* Subheadings - Secondary titles and feature headers */
+.text-subheading {
+  @apply font-semibold leading-normal;
+}
+
+/* Body Text - Standard readable content */
+.text-body {
+  @apply font-normal leading-relaxed;
+}
+
+/* Caption Text - Small labels, stats descriptions */
+.text-caption {
+  @apply font-medium leading-normal;
+}
+
+/* Button Text - Call-to-action emphasis */
+.text-button {
+  @apply font-semibold tracking-wide;
+}
+
+/* Accent Text - Elegant light emphasis */
+.text-accent {
+  @apply font-light leading-normal;
+}
+
+/* Badge Text - Small notification emphasis */
+.text-badge {
+  @apply font-medium text-xs;
+}
+
+/* Stats Text - Numerical emphasis */
+.text-stats {
+  @apply font-bold;
+}
+
+/* Responsive adjustments for better readability */
+@media (max-width: 768px) {
+  .text-body {
+    @apply font-medium; /* Slightly heavier for smaller screens */
+  }
+  
+  .text-accent {
+    @apply font-normal; /* Normal weight for mobile readability */
+  }
+} 

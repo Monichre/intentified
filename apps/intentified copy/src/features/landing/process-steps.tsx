@@ -1,0 +1,141 @@
+import {
+  Brain,
+  CheckCircle,
+  Clock,
+  Globe,
+  Mail,
+  MessageSquare,
+  Search,
+  Send,
+  Sparkles,
+  Users,
+} from "lucide-react";
+
+import React from "react";
+
+import { Headphones } from "lucide-react";
+
+export const processSteps = [
+  {
+    id: 1,
+    title: "LISTEN",
+    subtitle: "Trillions of Signals",
+    icon: Headphones,
+    color: "from-blue-500 to-cyan-500 bg-blue-500",
+    description:
+      "We monitor 50 billion URLs daily across 270 million US consumers, tracking real-time buying behavior from: Competitor websites, Social media engagement, Search queries, Review sites, Industry publications. Using real-time data, we identify who's interested in your products.",
+    details: [
+      { icon: Globe, text: "50 billion URLs monitored daily" },
+      { icon: Users, text: "270 million US consumers tracked" },
+      { icon: Brain, text: "1.9 trillion intent signals processed" },
+      { icon: CheckCircle, text: "60-70% visitor identity resolution" },
+      { icon: null, text: "Competitor websites" },
+      { icon: null, text: "Social media engagement" },
+      { icon: null, text: "Search queries" },
+      { icon: null, text: "Review sites" },
+      { icon: null, text: "Industry publications" },
+    ],
+    features: [
+      "Competitor websites",
+      "Social media engagement",
+      "Search queries",
+      "Review sites",
+      "Industry publications",
+    ],
+    metrics: {
+      urls: 50,
+      consumers: 270,
+    },
+    x: 50,
+    y: 300,
+  },
+  {
+    id: 2,
+    title: "DISCOVER",
+    subtitle: "Extreme Precision",
+    icon: Search,
+    color: "from-purple-500 to-pink-500 bg-green-500",
+    description:
+      "Our AI identifies prospects actively researching solutions like yours by analyzing online behaviors. Which competitors they're visiting, What products they're comparing, When they're ready to buy, Full contact details (name, email, phone).",
+    details: [
+      { icon: Globe, text: "Which competitors they're visiting" },
+      { icon: Search, text: "What products they're comparing" },
+      { icon: Clock, text: "When they're ready to buy" },
+      { icon: Users, text: "Full contact details (name, email, phone)" },
+    ],
+    features: [
+      "Which competitors they're visiting",
+      "What products they're comparing",
+      "When they're ready to buy",
+      "Full contact details (name, email, phone)",
+    ],
+    metrics: {},
+    x: 400,
+    y: 100,
+  },
+  {
+    id: 3,
+    title: "CREATE",
+    subtitle: "Automated Excellence",
+    icon: Sparkles,
+    color: "from-orange-500 to-red-500 bg-purple-500",
+    description:
+      "Personalized campaigns created in real-time based on intent signals and behavior patterns: Dynamic content based on intent signals, Industry-specific messaging, Behavior-triggered sequences, Multi-channel coordination.",
+    details: [
+      { icon: Brain, text: "Dynamic content based on intent signals" },
+      { icon: Globe, text: "Industry-specific messaging" },
+      { icon: Sparkles, text: "Behavior-triggered sequences" },
+      { icon: Send, text: "Multi-channel coordination" },
+    ],
+    features: [
+      "Dynamic content based on intent signals",
+      "Industry-specific messaging",
+      "Behavior-triggered sequences",
+      "Multi-channel coordination",
+    ],
+    metrics: {},
+    x: 400,
+    y: 400,
+  },
+  {
+    id: 4,
+    title: "SEND",
+    subtitle: "Speed to Lead",
+    icon: Send,
+    color: "from-green-500 to-emerald-500 bg-orange-500",
+    description:
+      "Reach prospects while they're still shopping with our high-velocity outreach system: Near real-time email delivery (5 minutes or less), 8 different ISPs for maximum deliverability, Automated text follow-up for hot leads, Direct appointment scheduling.",
+    details: [
+      { icon: Clock, text: "5 minutes or less delivery time" },
+      { icon: Mail, text: "8 different ISPs for deliverability" },
+      { icon: MessageSquare, text: "Automated text follow-up" },
+      { icon: CheckCircle, text: "Direct appointment scheduling" },
+      { icon: null, text: "Near real-time email delivery (5 minutes or less)" },
+      { icon: null, text: "8 different ISPs for maximum deliverability" },
+      { icon: null, text: "Automated text follow-up for hot leads" },
+      { icon: null, text: "Direct appointment scheduling" },
+    ],
+    features: [
+      "Near real-time email delivery (5 minutes or less)",
+      "8 different ISPs for maximum deliverability",
+      "Automated text follow-up for hot leads",
+      "Direct appointment scheduling",
+    ],
+    metrics: {},
+    x: 900,
+    y: 100,
+  },
+  {
+    id: 5,
+    title: "FOLLOW-UP",
+    subtitle: "Speed to Lead",
+    icon: Send,
+    color: "bg-orange-500",
+    description: "Reach prospects while they're still shopping:",
+    details: [],
+    features: [],
+    metrics: {},
+    x: 900,
+    y: 400,
+  },
+];

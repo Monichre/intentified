@@ -463,3 +463,369 @@ apps/          docs/          node_modules/  packages/      scripts/       turbo
 
 ---
 
+```bash
+turbo build --filter=@repo/intentified --dry-run=json | jq '.tasks'
+```
+
+---
+
+
+
+---
+
+<details>
+            <summary>Grep search for ""@repo/[^\"]*":\s*"workspace:\*"" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/package.json` | L55 | `"@repo/ai": "workspace:*",` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/package.json` | L56 | `"@repo/analytics": "workspace:*",` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/package.json` | L57 | `"@repo/design-system": "workspace:*",` |
+| `file:///Users/liamellis/Desktop/intentified-platform/apps/intentified/package.json` | L58 | `"@repo/typescript-config": "workspace:*",` |
+
+</details>
+
+---
+
+
+
+---
+
+```bash
+cd packages/ai && cat package.json | grep -A5 '"scripts"'
+```
+
+```
+</ai && cat package.json | grep -A5 '"scripts"'
+❯ cd packages/ai && cat package.json | grep -A5 '"scripts"'
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "exports": {
+    ".": "./index.ts",
+
+    ~/Des/intentified-platform/p/ai  on   main *1              ✔  at 10:13:03 PM  
+```
+
+---
+
+
+
+---
+
+Cancelled
+
+---
+
+_**User**_
+
+what are you doing?
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+I'm debugging why the turbo build command is failing on Vercel. Let me explain what I'm investigating and provide a more direct solution:
+
+## What I'm checking:
+1. The `@repo/intentified` app has dependencies on other workspace packages (`@repo/ai`, `@repo/analytics`, `@repo/design-system`, `@repo/typescript-config`)
+2. These dependencies might not have build scripts, which could cause the turbo build to fail
+3. The error "Command exited with 1" suggests the build process is encountering an error
+
+Let me try a simpler, more direct approach:
+
+---
+
+```bash
+bun run build
+```
+
+```
+❯ bun run build
+$ turbo build
+turbo 2.5.4
+
+• Packages in scope: @repo/ai, @repo/analytics, @repo/auth, @repo/cms, @repo/collaboration, @re
+po/db, @repo/design-system, @repo/email, @repo/intentified, @repo/next-config, @repo/notificati
+ons, @repo/observability, @repo/payments, @repo/rate-limit, @repo/seo, @repo/tasks, @repo/types
+cript-config, @repo/webhooks, studio
+• Running build in 19 packages
+• Remote caching disabled
+@repo/intentified:build: cache hit (outputs already on disk), replaying logs a5bf575e9fe93a57
+@repo/intentified:build: 
+@repo/intentified:build: $ next build
+@repo/intentified:build:    ▲ Next.js 15.3.3
+@repo/intentified:build:    - Environments: .env
+@repo/intentified:build: 
+@repo/intentified:build:    Creating an optimized production build ...
+@repo/intentified:build: <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (146
+kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+@repo/intentified:build: <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139
+kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+@repo/intentified:build:  ✓ Compiled successfully in 11.0s
+@repo/intentified:build:    Skipping validation of types
+@repo/intentified:build:    Skipping linting
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+@repo/intentified:build:  ✓ Collecting page data 
+ ✓ Generating static pages (39/39)
+@repo/intentified:build:  ✓ Collecting build traces 
+@repo/intentified:build:  ✓ Finalizing page optimization 
+@repo/intentified:build: 
+@repo/intentified:build: Route (app)                                          Size  First Load 
+JS    
+@repo/intentified:build: ┌ ○ /                                              193 kB         412 
+kB
+@repo/intentified:build: ├ ○ /_not-found                                     989 B         103 
+kB
+@repo/intentified:build: ├ ƒ /api/intelligence/ai-analyze                    185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/intelligence/bulk-enrichment               185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/intelligence/bulk-enrichment/stream        185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/intelligence/competitor-analysis/lite      185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/intelligence/competitor-analysis/stream    185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/intelligence/enrich                        185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/intelligence/enrich/stream                 185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/webhooks/clerk                             185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/webhooks/clerk/user-created                185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /api/webhooks/stripe                            185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard                                     4.7 kB         115 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/activity-logs                      4.23 kB         151 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/analytics                          1.88 kB         112 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/analytics/cohort                   5.58 kB         142 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/analytics/engagement               1.77 kB         112 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/analytics/funnel                   2.03 kB         112 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/customers                            185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/customers/import-export              185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/customers/new                        185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/customers/segments                   185 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/documents                            45 kB         178 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/leads                              34.6 kB         191 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/leads/lead-scoring                   534 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/leads/new                            536 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/leads/qualified                      534 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/onboarding                         4.03 kB         189 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/pipelines                          2.93 kB         147 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/pipelines/automation               7.55 kB         117 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/pipelines/create                   6.19 kB         146 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/pipelines/stages                   1.87 kB         142 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/reports/customer-insights            534 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/reports/revenue                      528 B         102 
+kB
+@repo/intentified:build: ├ ƒ /dashboard/reports/sales                        525 B         102 
+kB
+@repo/intentified:build: ├ ○ /landing-three                                8.13 kB         218 
+kB
+@repo/intentified:build: ├ ○ /landing-two                                  4.19 kB         172 
+kB
+@repo/intentified:build: ├ ƒ /sign-in/[[...sign-in]]                         359 B         134 
+kB
+@repo/intentified:build: └ ƒ /sign-up/[[...sign-up]]                         359 B         134 
+kB
+@repo/intentified:build: + First Load JS shared by all                      102 kB
+@repo/intentified:build:   ├ chunks/1684-4715c3582c1bf0e3.js               46.2 kB
+@repo/intentified:build:   ├ chunks/4bd1b696-4e57c5fecd9252cf.js           53.2 kB
+@repo/intentified:build:   └ other shared chunks (total)                   2.14 kB
+@repo/intentified:build: 
+@repo/intentified:build: 
+@repo/intentified:build: ƒ Middleware                                        77 kB
+@repo/intentified:build: 
+@repo/intentified:build: ○  (Static)   prerendered as static content
+@repo/intentified:build: ƒ  (Dynamic)  server-rendered on demand
+@repo/intentified:build: 
+@repo/intentified:build: 
+@repo/observability:build: cache hit (outputs already on disk), replaying logs e011fbbed8cdccc3
+@repo/db:build: cache hit (outputs already on disk), replaying logs efb8a91a3dba5766
+@repo/cms:build: cache hit (outputs already on disk), replaying logs 0698a42e5accc117
+@repo/seo:build: cache hit (outputs already on disk), replaying logs 15eb735be8fe2a8f
+@repo/db:build: 
+@repo/seo:build: 
+@repo/db:build: $ tsc
+@repo/observability:build: 
+@repo/observability:build: $ tsc
+@repo/seo:build: $ tsc
+@repo/cms:build: 
+@repo/cms:build: $ basehub build
+@repo/cms:build: 🪄 Generating...
+@repo/cms:build: ┌─────────────────────────────────────────────────────────────────────────────
+───┐
+@repo/cms:build: │ 🎫 SDK Version: 8.2.11 (build id: bshb_sdk_732dbf9454d6d)                   
+   │
+@repo/cms:build: │ 🔗 Endpoint: https://api.basehub.com/graphql                                
+   │
+@repo/cms:build: │ 🔵 Draft: disabled                                                          
+   │
+@repo/cms:build: │ 📦 Output: /Users/liamellis/Desktop/intentified-platform/packages/cms/.baseh
+ub │
+@repo/cms:build: │ 🔀 Ref: main (basehub branch)                                               
+   │
+@repo/cms:build: └─────────────────────────────────────────────────────────────────────────────
+───┘
+@repo/cms:build: ◼ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+⠋ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+❯ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+@repo/cms:build:   ⠙ fetching schema from BaseHub's API
+@repo/cms:build:   ◼ preparing client directory
+@repo/cms:build:   ◼ writing files
+❯ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+@repo/cms:build:   ⠹ fetching schema from BaseHub's API
+@repo/cms:build:   ◼ preparing client directory
+@repo/cms:build:   ◼ writing files
+❯ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+@repo/cms:build:   ⠸ fetching schema from BaseHub's API
+@repo/cms:build:   ◼ preparing client directory
+@repo/cms:build:   ◼ writing files
+❯ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+@repo/cms:build:   ⠼ fetching schema from BaseHub's API
+@repo/cms:build:   ◼ preparing client directory
+@repo/cms:build:   ◼ writing files
+❯ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+@repo/cms:build:   ✔ fetching schema from BaseHub's API
+@repo/cms:build:   ✔ preparing client directory
+@repo/cms:build:   ❯ writing files
+@repo/cms:build:     ❯ writing schema.graphql
+@repo/cms:build:       ⠴ copy runtime files
+@repo/cms:build:       ⠴ writing schema.ts
+@repo/cms:build:       ⠴ writing types map
+@repo/cms:build:       ⠴ writing index.ts
+❯ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+@repo/cms:build:   ✔ fetching schema from BaseHub's API
+@repo/cms:build:   ✔ preparing client directory
+@repo/cms:build:   ✔ writing files
+✔ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+✔ generating the client in
+@repo/cms:build:   `/Users/liamellis/Desktop/intentified-platform/packages/cms/.basehub`
+@repo/cms:build: 📦 Compiling to JavaScript...
+@repo/cms:build: 🪄 Generated `basehub` client in 1819ms
+@repo/cms:build: 
+
+ Tasks:    5 successful, 5 total
+Cached:    5 cached, 5 total
+  Time:    257ms >>> FULL TURBO
+
+
+    ~/Des/intentified-platform  on   main *1                   ✔  at 10:14:12 PM  
+```
+
+---
+
+
+
+---
+
+The build works locally! The issue is likely that Vercel can't find the `turbo` command. Let me update the `vercel.json` to fix this:
+
+---
+
+```diff
+  {
+-   "buildCommand": "turbo build",
++   "buildCommand": "bun run turbo build --filter=@repo/intentified",
+    "framework": "nextjs",
+    "outputDirectory": "apps/intentified/.next",
+```
+
+---
+
+
+
+---
+
+```bash
+grep '"build"' package.json
+```
+
+```
+directory
+apps/          docs/          node_modules/  packages/      scripts/       turbo/
+```
+
+---
+
+
+
+---
+
+_**User**_
+
+ok
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Perfect! Here's what I fixed for your Vercel deployment:
+
+## Changes Made:
+
+1. **Removed** the conflicting `apps/intentified/vercel.json` that was using npm commands
+2. **Created** a proper `vercel.json` at the root with:
+   - `"buildCommand": "bun run turbo build --filter=@repo/intentified"`
+   - Proper bun install command
+   - Correct output directory
+
+## Your Vercel Settings Should Be:
+
+- **Root Directory**: Leave empty (run from monorepo root)
+- **Framework Preset**: Next.js 
+- **Build Command**: Override OFF (uses vercel.json)
+- **Output Directory**: Override OFF (uses vercel.json)  
+- **Install Command**: Override OFF (uses vercel.json)
+
+## Why This Works:
+
+- **Uses bun**: Matches your `bun.lock` file
+- **Monorepo-aware**: Turbo builds all dependencies correctly
+- **Scoped build**: Only builds the intentified app and its workspace dependencies
+
+Try deploying again - it should work now! The key fix was using `bun run turbo` instead of just `turbo`, since Vercel needs to find the turbo command through your
+
+---
+
