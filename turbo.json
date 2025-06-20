@@ -1,16 +1,38 @@
+
 {
-  "$schema": "https://turborepo.org/schema.json",
+  "$schema": "https://turborepo.com/schema.json",
+  "globalDependencies": ["**/.env"],
+  "ui": "tui",
+  "envMode": "loose",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        ".basehub/**",
+        "**/generated/**",
+        "storybook-static/**",
+        ".react-email/**",
+        "dist/**",
+        "*.js",
+        "*.d.ts",
+        "!*.config.js"
+      ]
     },
 
-    "check-types": {
-      "dependsOn": ["^check-types"]
+    "analyze": {
+      "dependsOn": ["^analyze"]
     },
     "dev": {
-      "persistent": true,
+      "cache": false,
+      "persistent": true
+    },
+
+    "clean": {
+      "cache": false
+    },
+    "//#clean": {
       "cache": false
     }
   },

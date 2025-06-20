@@ -9,6 +9,7 @@
   "exports": {
     ".": "./index.ts",
     "./lib": "./lib/index.ts",
+    "./lib/services/enrichment": "./lib/services/enrichment/index.ts",
     "./services": "./services/index.ts",
     "./types": "./services/enrichment/types.ts",
     "./agents": "./agents/index.ts"
