@@ -14,19 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["apps/intentified/src/*"],
-      "@ai/*": ["packages/ai/*"],
-      "@db/*": ["packages/db/*"],
-      "@design-system/*": ["packages/design-system/*"]
-    }
+    
+
   },
-  "references": [
-    { "path": "apps/intentified" },
-    { "path": "apps/api" },
-    { "path": "packages/ai" },
-    { "path": "packages/db" },
-    { "path": "packages/design-system" }
-  ]
+
 }
