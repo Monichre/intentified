@@ -18,3 +18,6 @@ const nextConfig = {
 		ignoreDuringBuilds: true,
 	},
 	// Prevents other errors from failing the build
+};
+
+export default nextConfig;
