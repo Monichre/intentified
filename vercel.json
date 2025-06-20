@@ -1,5 +1,5 @@
 {
-  "buildCommand": "turbo build --filter=@repo/intentified",
+  "buildCommand": "turbo build",
   "framework": "nextjs",
   "outputDirectory": "apps/intentified/.next",
   "installCommand": "bun install",

@@ -101,3 +101,365 @@ _**Assistant**_
 
 ---
 
+Looking at your Vercel settings and the monorepo structure, I can see several issues that need to be fixed:
+
+---
+
+```bash
+ls -la | grep -E "(bun\.lock|package-lock|yarn\.lock|pnpm-lock)"
+```
+
+```
+^[[200~ls -la | grep -E "(bun\.lock|package-lock|yarn\.lock|pnpm-lock)"^[[201~
+
+[WARNING]: Console output during zsh initialization detected.
+
+When using Powerlevel10k with instant prompt, console output during zsh
+initialization may indicate issues.
+
+You can:
+
+  - Recommended: Change ~/.zshrc so that it does not perform console I/O
+    after the instant prompt preamble. See the link below for details.
+
+    * You will not see this error message again.
+    * Zsh will start quickly and prompt will update smoothly.
+
+  - Suppress this warning either by running p10k configure or by manually
+    defining the following parameter:
+
+      typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+    * You will not see this error message again.
+    * Zsh will start quickly but prompt will jump down after initialization.
+
+  - Disable instant prompt either by running p10k configure or by manually
+    defining the following parameter:
+
+      typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+
+    * You will not see this error message again.
+    * Zsh will start slowly.
+
+  - Do nothing.
+
+    * You will see this error message every time you start zsh.
+    * Zsh will start quickly but prompt will jump down after initialization.
+
+For details, see:
+https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt
+
+-- console output produced during zsh initialization follows --
+
+</Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
+<rminal/common/scripts/shellIntegration-rc.zsh"
+
+    ~/Des/intentified-platform  on   main *1  
+❯ 
+
+<(bun\.lock|package-lock|yarn\.lock|pnpm-lock)"
+❯ ls -la | grep -E "(bun\.lock|package-lock|yarn\.lock|pnpm-lock)"
+-rw-r--r--     1 liamellis  staff  712312 Jun 19 00:01 bun.lock
+
+
+
+    ~/Des/intentified-platform  on   main *1 ?1                ✔  at 10:03:14 PM  
+```
+
+---
+
+
+
+---
+
+Now I can see the issues clearly. You have a `bun.lock` file at the root, but there are configuration conflicts. Let me help you fix the Vercel deployment:
+
+## Issues Identified:
+
+1. **Conflicting `vercel.json`**: The `apps/intentified/vercel.json` file has incorrect commands:
+   - It's using `npm` instead of `bun`
+   - It references a non-existent script `build:intentified`
+
+2. **Incorrect Root Directory**: Having `apps/intentified` as the root directory in Vercel settings can cause issues with monorepo dependencies.
+
+## Solution:
+
+---
+
+Remove the conflicting vercel.json file that has incorrect npm commands
+
+---
+
+
+
+---
+
+```diff
+- 
++ {
++   "buildCommand": "turbo build --filter=@repo/intentified",
++   "framework": "nextjs",
++   "outputDirectory": "apps/intentified/.next",
++   "installCommand": "bun install",
++   "ignoreCommand": "git diff HEAD^ HEAD --quiet ."
++ } 
+```
+
+---
+
+
+
+---
+
+Now, update your Vercel settings as follows:
+
+## Recommended Vercel Settings:
+
+1. **Root Directory**: Leave **empty** (to run from monorepo root)
+2. **Framework Preset**: Next.js (keep as is)
+3. **Build Command**: Override OFF (let it use vercel.json)
+4. **Output Directory**: Override OFF (let it use vercel.json)
+5. **Install Command**: Override OFF (let it use vercel.json)
+6. **Include files outside the root directory**: Turn OFF (since root is now empty)
+
+## What I've done:
+
+1. **Removed** the conflicting `apps/intentified/vercel.json` that was using npm
+2. **Created** a new `vercel.json` at the root with:
+   - Proper turborepo build command with filter for the intentified app
+   - Correct output directory
+   - Bun install command
+   - Git diff command to skip unnecessary builds
+
+## Why this works better:
+
+- **Monorepo-aware**: Turbo will handle building dependencies in the correct order
+- **Bun compatibility**: Uses bun for installation (matching your lockfile)
+- **Efficient builds**: Only builds the intentified app and its dependencies
+- **Skip unnecessary builds**: The `ignoreCommand` prevents rebuilds when nothing changed
+
+## Additional Environment Variables:
+
+Make sure all the environment variables listed in your `turbo.json` are set in Vercel:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `DATABASE_URL`
+- etc.
+
+Try deploying with these settings, and the build should work correctly. The key is running from the monorepo root so all packages are in scope during the build.
+
+---
+
+_**User**_
+
+Error: Command "turbo build --filter=@repo/intentified" exited with 1
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Let me help you debug this turbo build error. First, let's test the build command locally to see what's happening:
+
+---
+
+```bash
+turbo build --filter=@repo/intentified --dry-run
+```
+
+```
+
+Packages in Scope
+Name              Path 
+@repo/intentified apps/intentified
+
+Global Hash Inputs
+  Global Files                          = 6
+  External Dependencies Hash            = be4143f5def562b9
+  Global Cache Key                      = I can’t see ya, but I know you’re here
+  Global Env Vars                       = ANTHROPIC_API_KEY, BASEHUB_TOKEN, CAPTURE_API_KEY, CA
+PTURE_API_SECRET, CLERK_PUBLIC_KEY, CLERK_SECRET_KEY, DATABASE_URL, DIFY_API_KEY, DIRECT_URL, E
+XA_API_KEY, FIRECRAWL_API_KEY, GOOGLE_API_KEY, GOOGLE_CLOUD_CRUX_KEY, KV_REST_API_READ_ONLY_TOK
+EN, KV_URL, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, NEXT_PUBLIC_POSTHOG_HOST, NEXT_PUBLIC_POSTHOG_KE
+Y, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_API_KEY, NEXT_PUBLIC_SUPABA
+SE_URL, OPENAI_API_KEY, PRODUCT_BOARD_API_KEY, REDIS_URL, STRIPE_ACCOUNT_ID, SUPABASE_PROJECT_I
+D, SUPABASE_SERVICE_ROLE_API_KEY, SUPABASE_SERVICE_ROLE_KEY, UPSTASH_REDIS_TOKEN, UPSTASH_REDIS
+_URL, UPSTASH_VECTOR_REST_READONLY_TOKEN, UPSTASH_VECTOR_REST_TOKEN, UPSTASH_VECTOR_REST_URL, V
+0_API_KEY, XAI_API_KEY
+  Global Env Vars Values                = ANTHROPIC_API_KEY=57f2057f43f6415edd6e3446872e617fd8a
+7ceac7561b2a52fa8c8a108bd1438, OPENAI_API_KEY=8265ce682bdd956f16d05ec18a102255c7db60bf93beeae09
+e8198ce5826f31e
+  Inferred Global Env Vars Values       = 
+  Global Passed Through Env Vars        = 
+  Global Passed Through Env Vars Values = 
+  Engines Values                        = node=>=18
+
+Tasks to Run
+@repo/ai#build
+  Task                           = build
+  Package                        = @repo/ai
+  Hash                           = 1d3d89b0d55d58b6
+  Cached (Local)                 = false
+  Cached (Remote)                = false
+  Directory                      = packages/ai
+  Command                        = <NONEXISTENT>
+  Outputs                        = **/generated/**, *.d.ts, *.js, .basehub/**, .next/**, .react
+-email/**, dist/**, storybook-static/**
+  Log File                       = packages/ai/.turbo/turbo-build.log
+  Dependencies                   = @repo/typescript-config#build
+  Dependents                     = @repo/intentified#build
+  With                           = 
+  Inputs Files Considered        = 141
+  Env Vars                       = 
+  Env Vars Values                = 
+  Inferred Env Vars Values       = 
+  Passed Through Env Vars        = 
+  Passed Through Env Vars Values = 
+  Resolved Task Definition       = {"outputs":["!*.config.js","!.next/cache/**","**/generated/*
+*","*.d.ts","*.js",".basehub/**",".next/**",".react-email/**","dist/**","storybook-static/**"],
+"cache":true,"dependsOn":["^build"],"inputs":[],"outputLogs":"full","persistent":false,"interru
+ptible":false,"env":[],"passThroughEnv":null,"interactive":false}
+  Framework                      = 
+@repo/analytics#build
+  Task                           = build
+  Package                        = @repo/analytics
+  Hash                           = 7ff69fef45592b55
+  Cached (Local)                 = false
+  Cached (Remote)                = false
+  Directory                      = packages/analytics
+  Command                        = <NONEXISTENT>
+  Outputs                        = **/generated/**, *.d.ts, *.js, .basehub/**, .next/**, .react
+-email/**, dist/**, storybook-static/**
+  Log File                       = packages/analytics/.turbo/turbo-build.log
+  Dependencies                   = @repo/typescript-config#build
+  Dependents                     = @repo/design-system#build, @repo/intentified#build
+  With                           = 
+  Inputs Files Considered        = 8
+  Env Vars                       = 
+  Env Vars Values                = 
+  Inferred Env Vars Values       = 
+  Passed Through Env Vars        = 
+  Passed Through Env Vars Values = 
+  Resolved Task Definition       = {"outputs":["!*.config.js","!.next/cache/**","**/generated/*
+*","*.d.ts","*.js",".basehub/**",".next/**",".react-email/**","dist/**","storybook-static/**"],
+"cache":true,"dependsOn":["^build"],"inputs":[],"outputLogs":"full","persistent":false,"interru
+ptible":false,"env":[],"passThroughEnv":null,"interactive":false}
+  Framework                      = 
+@repo/auth#build
+  Task                           = build
+  Package                        = @repo/auth
+  Hash                           = 32bb7796881af54c
+  Cached (Local)                 = false
+  Cached (Remote)                = false
+  Directory                      = packages/auth
+  Command                        = <NONEXISTENT>
+  Outputs                        = **/generated/**, *.d.ts, *.js, .basehub/**, .next/**, .react
+-email/**, dist/**, storybook-static/**
+  Log File                       = packages/auth/.turbo/turbo-build.log
+  Dependencies                   = @repo/typescript-config#build
+  Dependents                     = @repo/design-system#build
+  With                           = 
+  Inputs Files Considered        = 8
+  Env Vars                       = 
+  Env Vars Values                = 
+  Inferred Env Vars Values       = 
+  Passed Through Env Vars        = 
+  Passed Through Env Vars Values = 
+  Resolved Task Definition       = {"outputs":["!*.config.js","!.next/cache/**","**/generated/*
+*","*.d.ts","*.js",".basehub/**",".next/**",".react-email/**","dist/**","storybook-static/**"],
+"cache":true,"dependsOn":["^build"],"inputs":[],"outputLogs":"full","persistent":false,"interru
+ptible":false,"env":[],"passThroughEnv":null,"interactive":false}
+  Framework                      = 
+@repo/design-system#build
+  Task                           = build
+  Package                        = @repo/design-system
+  Hash                           = b15d2400d5dde9c5
+  Cached (Local)                 = false
+  Cached (Remote)                = false
+  Directory                      = packages/design-system
+  Command                        = <NONEXISTENT>
+  Outputs                        = **/generated/**, *.d.ts, *.js, .basehub/**, .next/**, .react
+-email/**, dist/**, storybook-static/**
+  Log File                       = packages/design-system/.turbo/turbo-build.log
+  Dependencies                   = @repo/analytics#build, @repo/auth#build, @repo/typescript-co
+nfig#build
+  Dependents                     = @repo/intentified#build
+  With                           = 
+  Inputs Files Considered        = 120
+  Env Vars                       = 
+  Env Vars Values                = 
+  Inferred Env Vars Values       = 
+  Passed Through Env Vars        = 
+  Passed Through Env Vars Values = 
+  Resolved Task Definition       = {"outputs":["!*.config.js","!.next/cache/**","**/generated/*
+*","*.d.ts","*.js",".basehub/**",".next/**",".react-email/**","dist/**","storybook-static/**"],
+"cache":true,"dependsOn":["^build"],"inputs":[],"outputLogs":"full","persistent":false,"interru
+ptible":false,"env":[],"passThroughEnv":null,"interactive":false}
+  Framework                      = 
+@repo/intentified#build
+  Task                           = build
+  Package                        = @repo/intentified
+  Hash                           = a5bf575e9fe93a57
+  Cached (Local)                 = true
+  Cached (Remote)                = false
+  Directory                      = apps/intentified
+  Command                        = next build
+  Outputs                        = **/generated/**, *.d.ts, *.js, .basehub/**, .next/**, .react
+-email/**, dist/**, storybook-static/**
+  Log File                       = apps/intentified/.turbo/turbo-build.log
+  Dependencies                   = @repo/ai#build, @repo/analytics#build, @repo/design-system#b
+uild, @repo/typescript-config#build
+  Dependents                     = 
+  With                           = 
+  Inputs Files Considered        = 1
+  Env Vars                       = 
+  Env Vars Values                = 
+  Inferred Env Vars Values       = 
+  Passed Through Env Vars        = 
+  Passed Through Env Vars Values = 
+  Resolved Task Definition       = {"outputs":["!*.config.js","!.next/cache/**","**/generated/*
+*","*.d.ts","*.js",".basehub/**",".next/**",".react-email/**","dist/**","storybook-static/**"],
+"cache":true,"dependsOn":["^build"],"inputs":[],"outputLogs":"full","persistent":false,"interru
+ptible":false,"env":[],"passThroughEnv":null,"interactive":false}
+  Framework                      = nextjs
+@repo/typescript-config#build
+  Task                           = build
+  Package                        = @repo/typescript-config
+  Hash                           = 3b7537a9eddb35a9
+  Cached (Local)                 = false
+  Cached (Remote)                = false
+  Directory                      = packages/typescript-config
+  Command                        = <NONEXISTENT>
+  Outputs                        = **/generated/**, *.d.ts, *.js, .basehub/**, .next/**, .react
+-email/**, dist/**, storybook-static/**
+  Log File                       = packages/typescript-config/.turbo/turbo-build.log
+  Dependencies                   = 
+  Dependents                     = @repo/ai#build, @repo/analytics#build, @repo/auth#build, @re
+po/design-system#build, @repo/intentified#build
+  With                           = 
+  Inputs Files Considered        = 4
+  Env Vars                       = 
+  Env Vars Values                = 
+  Inferred Env Vars Values       = 
+  Passed Through Env Vars        = 
+  Passed Through Env Vars Values = 
+  Resolved Task Definition       = {"outputs":["!*.config.js","!.next/cache/**","**/generated/*
+*","*.d.ts","*.js",".basehub/**",".next/**",".react-email/**","dist/**","storybook-static/**"],
+"cache":true,"dependsOn":["^build"],"inputs":[],"outputLogs":"full","persistent":false,"interru
+ptible":false,"env":[],"passThroughEnv":null,"interactive":false}
+  Framework                      = 
+
+    ~/Des/intentified-platform  on   main *1                   ✔  at 10:08:16 PM  
+directory
+apps/          docs/          node_modules/  packages/      scripts/       turbo/
+```
+
+---
+
+
+
+---
+

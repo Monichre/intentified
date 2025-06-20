@@ -233,7 +233,7 @@ All project documentation, including coding standards, workflow guidelines, and 
     - Consider caching strategies for performance optimization.
 - When implementing the `Services Exploration` component in the `@intent-database.tsx` component:
     - Ensure that all `TabsTrigger` components are rendered within a `RovingFocusGroup` context, as required by Radix UI.
-    - Ensure that `TabsTrigger` components are direct children of `TabsList`. If the error persists, explicitly wrap `TabsList`'s children in a `RovingFocusGroup` (from `@radix-ui/react-roving-focus`), or ensure you are using a compatible version of Radix UI.
+    - Ensure that `TabsTrigger` components are direct children of `TabsList`. If the error persists, explicitly wrap `TabsList`s children in a `RovingFocusGroup` (from `@radix-ui/react-roving-focus`), or ensure you are using a compatible version of Radix UI.
     - The `Services Exploration` component in `@intent-database.tsx` should maintain the current theme's font and typography usage to render an "Intentified" version of the existing component.
     - Each animated card must display its corresponding icon (Activity, Users, Globe, Target) in the top-left corner.
     - Use semantic color tokens (`bg-card`, `border-border`, `text-foreground`, `text-muted-foreground`) for proper theme compatibility.
