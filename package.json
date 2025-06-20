@@ -9,7 +9,7 @@
   ],
   "scripts": {
 
-    "build": "turbo build --filter=@repo/intentified",
+    "build": "turbo build",
     "dev": "turbo dev",
     "lint": "ultracite lint",
     "format": "ultracite format",
