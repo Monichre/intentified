@@ -1,7 +1,6 @@
 {
-  "buildCommand": "npx turbo build --filter=@repo/intentified",
-  "framework": "nextjs",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "turbo build --filter=@repo/intentified",
   "outputDirectory": "apps/intentified/.next",
-  "installCommand": "bun install",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet ."
+  "installCommand": "bun install"
 } 
