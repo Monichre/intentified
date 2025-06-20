@@ -1,12 +1,7 @@
 {
   "name": "next-forge",
   "version": "4.2.8",
-  "bin": {
-    "next-forge": "dist/index.js"
-  },
-  "files": [
-    "dist/index.js"
-  ],
+
   "scripts": {
     "build": "turbo build",
     "build:intentified": "turbo build --filter=@repo/intentified",
@@ -19,7 +14,6 @@
     "boundaries": "turbo boundaries",
     "bump-deps": "npx npm-check-updates --deep -u -x react-day-picker && bun install",
     "bump-ui": "npx shadcn@latest add --all --overwrite -c packages/design-system",
-    "migrate": "cd packages/db/src/prisma && npx prisma format && npx prisma generate && npx prisma db push",
     "clean": "git clean -xdf node_modules"
   },
   "devDependencies": {
