@@ -293,4 +293,4 @@ All project documentation, including coding standards, workflow guidelines, and 
 - When refactoring multi-step form components:
     - Refactor `@ai-form-flow.tsx` to implement `@ai-onboard-tour.tsx` and `@multi-step-form.tsx`.
     - Both `@competitor-analysis-flow.tsx` and `@ai-onboarding-flow.tsx` should use the `@multi-step-form.tsx` as the base component.
-    - `@multi-step-form.tsx` will likely need to be refactored and enhanced to support `@AIOnboardingFlowProps` and `@FULL_ENRICHMENT_STEPS` and to utilize the proper hooks either `@
+    - `@multi-step-form.tsx` will likely need to be refactored and enhanced to support `@AIOnboardingFlowProps` and `@FULL_ENRICHMENT_STEPS` and to utilize the proper hooks either `@use
